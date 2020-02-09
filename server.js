@@ -3,6 +3,15 @@ require('isomorphic-fetch');
 
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
+
+app.use((req, res, next) => {
+  if(mongoose.connection.readyState) {
+    next();
+  } else {
+    require('./mongo').then(() => next());
+  }
+})
 
 app.set('port', (process.env.PORT || 3001));
 
