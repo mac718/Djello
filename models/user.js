@@ -4,8 +4,8 @@ const bcrypt = require('bcrypt');
 const uniqueValidator = require('mongoose-unique-validator');
 
 const UserSchema = new Schema({
-  username: {type: string, required: true, unique: true},
-  passwordHash: { type: string, required: true }
+  username: {type: String, required: true, unique: true},
+  passwordHash: { type: String, required: true }
 });
 
 UserSchema.plugin(uniqueValidator);
