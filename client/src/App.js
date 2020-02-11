@@ -10,6 +10,7 @@ import {
 import Register from './components/Register';
 import Login from './components/Login';
 import Board from './components/Board';
+import LoginContainer from './containers/LoginContainer';
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
         <Switch>
           <Route path='/' exact component={Board} />
           <Route path='/register' component={Register} />
-          <Route path='/login' component={Login} />
+          <Route path='/login' component={LoginContainer} />
         </Switch>
       </div>
     </Router>
