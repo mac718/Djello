@@ -42,38 +42,40 @@ class Resister extends Component {
 
   render() {
     return(
-      <div  className='card is-4'>
-      <form onSubmit={this.handleSubmit} className='card-content'>
-        <div className="field">
-          <label className="label">Enter Username</label>
-          <div className="control">
-            <input 
-              className="input" 
-              name='username' 
-              type="text" 
-              placeholder="Username" 
-              onChange={this.handleInputChange}
-            />
-          </div>
-        </div>
+      <div className='tile is-ancestor is-4' id='register'>
+        <div  className='card is-4 form-card'>
+          <form onSubmit={this.handleSubmit} className='card-content'>
+            <div className="field">
+              <label className="label">Enter Username</label>
+              <div className="control">
+                <input 
+                  className="input" 
+                  name='username' 
+                  type="text" 
+                  placeholder="Username" 
+                  onChange={this.handleInputChange}
+                />
+              </div>
+            </div>
 
-        <div className="field">
-          <label className="label">Enter Password</label>
-          <div className="control">
-            <input 
-              className="input" 
-              name='password' 
-              type="password" 
-              placeholder="Password" 
-              onChange={this.handleInputChange}
-            />
-          </div>
-        </div>
+            <div className="field">
+              <label className="label">Enter Password</label>
+              <div className="control">
+                <input 
+                  className="input" 
+                  name='password' 
+                  type="password" 
+                  placeholder="Password" 
+                  onChange={this.handleInputChange}
+                />
+              </div>
+            </div>
 
-        <div className="control">
-          <button className="button is-primary is-light">Submit</button>
+            <div className="control">
+              <button className="button is-primary is-light is-fullwidth">Sign Up</button>
+            </div>
+          </form>  
         </div>
-      </form>  
       </div>
     )
   }
