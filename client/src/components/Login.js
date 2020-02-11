@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 
-class Resister extends Component {
+class Login extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       username: '',
       password: ''
@@ -18,7 +18,7 @@ class Resister extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     console.log(JSON.stringify(this.state))
-    fetch('/register', {
+    fetch('/login', {
       method: 'POST',
       body: JSON.stringify(this.state),
       headers: {
@@ -30,6 +30,7 @@ class Resister extends Component {
           console.log('Yay!')
           //this.props.history.push('/');
         } else {
+          console.log('yo')
           const error = new Error(res.error)
           throw error;
         }
@@ -42,7 +43,8 @@ class Resister extends Component {
 
   render() {
     return(
-      <form onSubmit={this.handleSubmit}>
+      <div  className='card is-4'>
+      <form onSubmit={this.handleSubmit} className='card-content'>
         <div className="field">
           <label className="label">Enter Username</label>
           <div className="control">
@@ -73,8 +75,10 @@ class Resister extends Component {
           <button className="button is-primary is-light">Submit</button>
         </div>
       </form>  
+      </div>
     )
   }
+
 }
 
-export default Resister;
+export default Login;
