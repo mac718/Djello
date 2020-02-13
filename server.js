@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const expressSession = require('express-session');
+const withAuth = require('./middleware')
 
 
 app.use((req, res, next) => {
@@ -57,10 +58,15 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((user, done) => {
-  User.findById(id, function(err, user) {
+  User.findById(user.id, function(err, user) {
     done(err, user);
   });
 }); 
+
+app.use(function(req,res,next){
+  res.locals.currentUser = req.user;
+  next();
+})
 
 app.set('port', (process.env.PORT || 3001));
 
@@ -83,19 +89,31 @@ function parseJSON(response) {
 }
 
 app.get('/', (req, res) => {
+  console.log('route handler ' + res)
   res.send('Hello');
 })
 
-app.post('/login', (req, res, next) => {
-  passport.authenticate('local', function(err, user, info) {
-    if (err) { return next(err); }
-    if (!user) { return next(err); }
-    req.login(user, function(err) {
-      if (err) { return next(err); }
-      res.status(200).send;
-    });
-  })(req, res, next);
-});
+app.get('/checkForCurrentUser', withAuth, (req, res) => {
+  res.status(200).send();
+})
+
+app.post('/login', function(req, res, next) {
+  console.log(req.body)
+  console.log('================')
+  next()
+},
+passport.authenticate('local'),
+(req, res) => {
+  console.log('POST to /login')
+  const user = JSON.parse(JSON.stringify(req.user)) // hack
+  res.cookie('user', user);
+  const cleanUser = Object.assign({}, user)
+  if (cleanUser.local) {
+    console.log(`Deleting ${cleanUser.local.password}`)
+    delete cleanUser.local.password
+  }
+  res.json({ user: cleanUser })
+})
 
 app.post('/register', (req, res, next) => {
   let { username, password } = req.body;
@@ -111,6 +129,12 @@ app.post('/register', (req, res, next) => {
     });
   });
 });
+
+app.post('/logout', (req, res,) => {
+  req.logOut();
+  res.clearCookie('user');
+  res.json({loggedOut: true});
+})
 
 function errorHandler(err, req, res, next) {
   console.error('Error: ', err.stack);
