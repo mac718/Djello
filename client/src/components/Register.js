@@ -1,58 +1,58 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react'
 
 class Resister extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       username: '',
-      password: ''
+      password: '',
     }
   }
 
-  handleInputChange = (e) => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
-    console.log(this.state);
+  handleInputChange = e => {
+    const { name, value } = e.target
+    this.setState({ [name]: value })
+    console.log(this.state)
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
+  handleSubmit = e => {
+    e.preventDefault()
     console.log(JSON.stringify(this.state))
     fetch('/register', {
       method: 'POST',
       body: JSON.stringify(this.state),
       headers: {
         'Content-type': 'application/json',
-      }
+      },
     })
-    .then(res => {
-        if(res.status === 200) {
+      .then(res => {
+        if (res.status === 200) {
           console.log('Yay!')
           //this.props.history.push('/');
         } else {
           const error = new Error(res.error)
-          throw error;
+          throw error
         }
       })
       .catch(err => {
-        console.log(err);
-        alert('Error logging in');
+        console.log(err)
+        alert('Error logging in')
       })
   }
 
   render() {
-    return(
-      <div className='tile is-ancestor is-4' id='register'>
-        <div  className='card is-4 form-card'>
-          <form onSubmit={this.handleSubmit} className='card-content'>
+    return (
+      <div className="tile is-ancestor is-4" id="register">
+        <div className="card is-4 form-card">
+          <form onSubmit={this.handleSubmit} className="card-content">
             <div className="field">
               <label className="label">Enter Username</label>
               <div className="control">
-                <input 
-                  className="input" 
-                  name='username' 
-                  type="text" 
-                  placeholder="Username" 
+                <input
+                  className="input"
+                  name="username"
+                  type="text"
+                  placeholder="Username"
                   onChange={this.handleInputChange}
                 />
               </div>
@@ -61,24 +61,26 @@ class Resister extends Component {
             <div className="field">
               <label className="label">Enter Password</label>
               <div className="control">
-                <input 
-                  className="input" 
-                  name='password' 
-                  type="password" 
-                  placeholder="Password" 
+                <input
+                  className="input"
+                  name="password"
+                  type="password"
+                  placeholder="Password"
                   onChange={this.handleInputChange}
                 />
               </div>
             </div>
 
             <div className="control">
-              <button className="button is-primary is-light is-fullwidth">Sign Up</button>
+              <button className="button is-primary is-light is-fullwidth">
+                Sign Up
+              </button>
             </div>
-          </form>  
+          </form>
         </div>
       </div>
     )
   }
 }
 
-export default Resister;
+export default Resister

@@ -117,12 +117,14 @@ app.post('/register', (req, res, next) => {
   let user = new User({ username, password })
 
   user.save((err, user) => {
-    req.logIn(user, function(err) {
+    req.login(user, function(err) {
+      console.log(user)
       if (err) {
         console.log(err)
         return next(err)
       }
-      res.status(200).send
+      res.cookie('user', req.user.username)
+      res.status(200).send()
     })
   })
 })
