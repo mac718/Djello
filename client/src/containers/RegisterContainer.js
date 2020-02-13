@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Login from '../components/Login'
+import Register from '../components/Register'
 import {
   handleUsernameInputChange,
   handlePasswordInputChange,
   handleSubmit,
 } from '../actions'
 
-class LoginContainer extends Component {
+class RegisterContainer extends Component {
   render() {
     const { onUsernameChange, onPasswordChange, onSubmit } = this.props
     return (
-      <Login
+      <Register
         onUsernameChange={onUsernameChange}
         onPasswordChange={onPasswordChange}
         onSubmit={onSubmit}
@@ -35,9 +35,9 @@ const mapDispatchToProps = dispatch => {
     },
 
     onSubmit: e => {
-      dispatch(handleSubmit(e, '/login'))
+      dispatch(handleSubmit(e, '/register'))
     },
   }
 }
 
-export default connect(null, mapDispatchToProps)(LoginContainer)
+export default connect(null, mapDispatchToProps)(RegisterContainer)
