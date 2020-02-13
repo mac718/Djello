@@ -1,88 +1,46 @@
-import React, {Component} from 'react';
+import React from 'react'
 
-class Login extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      username: '',
-      password: ''
-    }
-  }
-
-  handleInputChange = (e) => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
-    console.log(this.state);
-  }
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(JSON.stringify(this.state))
-    fetch('/login', {
-      method: 'POST',
-      body: JSON.stringify(this.state),
-      headers: {
-        'Content-type': 'application/json',
-      }
-    })
-    .then(res => {
-        if(res.status === 200) {
-          console.log('Yay!')
-          //this.props.history.push('/');
-        } else {
-          console.log('yo')
-          const error = new Error(res.error)
-          throw error;
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        alert('Error logging in');
-      })
-  }
-
-  render() {
-    return(
-
-      <div className='tile is-ancestor is-4' id='login'>
-        <div  className='card is-4 form-card'>
-          <div className='card-header'>Sign In</div>
-          <form onSubmit={this.handleSubmit} className='card-content'>
-            <div className="field">
-              <label className="label">Enter Username</label>
-              <div className="control">
-                <input 
-                  className="input" 
-                  name='username' 
-                  type="text" 
-                  placeholder="Username" 
-                  onChange={this.handleInputChange}
-                />
-              </div>
-            </div>
-
-            <div className="field">
-              <label className="label">Enter Password</label>
-              <div className="control">
-                <input 
-                  className="input" 
-                  name='password' 
-                  type="password" 
-                  placeholder="Password" 
-                  onChange={this.handleInputChange}
-                />
-              </div>
-            </div>
-
+const LoginFunc = ({ onSubmit, onUsernameChange, onPasswordChange }) => {
+  return (
+    <div className="tile is-ancestor is-4" id="login">
+      <div className="card is-4 form-card">
+        <div className="card-header">Sign In</div>
+        <form onSubmit={onSubmit} className="card-content">
+          <div className="field">
+            <label className="label">Enter Username</label>
             <div className="control">
-              <button className="button is-primary is-light is-fullwidth">Sign In</button>
+              <input
+                className="input"
+                name="username"
+                type="text"
+                placeholder="Username"
+                onChange={onUsernameChange}
+              />
             </div>
-          </form>  
-        </div>
-      </div>
-    )
-  }
+          </div>
 
+          <div className="field">
+            <label className="label">Enter Password</label>
+            <div className="control">
+              <input
+                className="input"
+                name="password"
+                type="password"
+                placeholder="Password"
+                onChange={onPasswordChange}
+              />
+            </div>
+          </div>
+
+          <div className="control">
+            <button className="button is-primary is-light is-fullwidth">
+              Sign In
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
 }
 
-export default Login;
+export default LoginFunc

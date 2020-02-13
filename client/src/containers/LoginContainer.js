@@ -1,13 +1,17 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import LoginFunc from '../components/LoginFunc';
-import {handleUsernameInputChange, handlePasswordInputChange, handleLogIn} from '../actions'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import Login from '../components/Login'
+import {
+  handleUsernameInputChange,
+  handlePasswordInputChange,
+  handleLogIn,
+} from '../actions'
 
 class LoginContainer extends Component {
   render() {
-    const { onUsernameChange, onPasswordChange, onSubmit } = this.props;
+    const { onUsernameChange, onPasswordChange, onSubmit } = this.props
     return (
-      <LoginFunc
+      <Login
         onUsernameChange={onUsernameChange}
         onPasswordChange={onPasswordChange}
         onSubmit={onSubmit}
@@ -21,22 +25,19 @@ const mapDispatchToProps = dispatch => {
     onUsernameChange: e => {
       let data = e.target.value
       console.log(data)
-      dispatch(handleUsernameInputChange(data));
+      dispatch(handleUsernameInputChange(data))
     },
 
     onPasswordChange: e => {
       let data = e.target.value
       console.log(data)
-      dispatch(handlePasswordInputChange(data));
+      dispatch(handlePasswordInputChange(data))
     },
 
     onSubmit: e => {
-      dispatch(handleLogIn(e));
-    }
+      dispatch(handleLogIn(e))
+    },
   }
-};
+}
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(LoginContainer);
+export default connect(null, mapDispatchToProps)(LoginContainer)
