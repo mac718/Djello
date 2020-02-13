@@ -1,149 +1,147 @@
-require('es6-promise').polyfill();
-require('isomorphic-fetch');
+require('es6-promise').polyfill()
+require('isomorphic-fetch')
 
-const express = require('express');
-const app = express();
-const mongoose = require('mongoose');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const expressSession = require('express-session');
+const express = require('express')
+const app = express()
+const mongoose = require('mongoose')
+const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
+const expressSession = require('express-session')
 const withAuth = require('./middleware')
 
-
 app.use((req, res, next) => {
-  if(mongoose.connection.readyState) {
-    next();
+  if (mongoose.connection.readyState) {
+    next()
   } else {
-    require('./mongo')().then(() => next());
+    require('./mongo')().then(() => next())
   }
-});
+})
 
-app.use(cookieParser());
+app.use(cookieParser())
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
-
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(
   expressSession({
     secret: process.env.secret || 'keyboard cat',
     saveUninitialized: false,
-    resave: false
-  })
-);
+    resave: false,
+  }),
+)
 
-const passport = require('passport');
-app.use(passport.initialize());
-app.use(passport.session());
+const passport = require('passport')
+app.use(passport.initialize())
+app.use(passport.session())
 
-const User = require('./models/user');
+const User = require('./models/user')
 const LocalStrategy = require('passport-local').Strategy
 
 passport.use(
   new LocalStrategy(function(username, password, done) {
     User.findOne({ username }, function(err, user) {
-      console.log(user);
-      if (err) return done(err);
+      console.log(user)
+      if (err) return done(err)
       if (!user || !user.validPassword(password)) {
-        return done(null, false, { message: "Invalid username/password" });
+        return done(null, false, { message: 'Invalid username/password' })
       }
-      return done(null, user);
-    });
-  })
-);
+      return done(null, user)
+    })
+  }),
+)
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
+  done(null, user.id)
+})
 
 passport.deserializeUser((user, done) => {
   User.findById(user.id, function(err, user) {
-    done(err, user);
-  });
-}); 
-
-app.use(function(req,res,next){
-  res.locals.currentUser = req.user;
-  next();
+    done(err, user)
+  })
 })
 
-app.set('port', (process.env.PORT || 3001));
+app.use(function(req, res, next) {
+  res.locals.currentUser = req.user
+  next()
+})
 
-if(process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
+app.set('port', process.env.PORT || 3001)
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'))
 }
 
 function checkStatus(response) {
-  if(!response.ok) {
-    const error = new Error(response.statusText);
-    error.response = response;
+  if (!response.ok) {
+    const error = new Error(response.statusText)
+    error.response = response
     throw error
   }
 
-  return response;
+  return response
 }
 
 function parseJSON(response) {
-  return response.json();
+  return response.json()
 }
 
 app.get('/', (req, res) => {
   console.log('route handler ' + res)
-  res.send('Hello');
+  res.send('Hello')
 })
 
 app.get('/checkForCurrentUser', withAuth, (req, res) => {
-  res.status(200).send();
+  res.status(200).send()
 })
 
-app.post('/login', function(req, res, next) {
-  console.log(req.body)
-  console.log('================')
-  next()
-},
-passport.authenticate('local'),
-(req, res) => {
-  console.log('POST to /login')
-  const user = JSON.parse(JSON.stringify(req.user)) // hack
-  res.cookie('user', user);
-  const cleanUser = Object.assign({}, user)
-  if (cleanUser.local) {
-    console.log(`Deleting ${cleanUser.local.password}`)
-    delete cleanUser.local.password
-  }
-  res.json({ user: cleanUser })
-})
+app.post(
+  '/login',
+  function(req, res, next) {
+    console.log(req.body)
+    console.log('================')
+    next()
+  },
+  passport.authenticate('local'),
+  (req, res) => {
+    console.log('logged in', req.user)
+    res.cookie('user', req.user.username)
+    var userInfo = {
+      username: req.user.username,
+    }
+    res.send(userInfo)
+  },
+)
 
 app.post('/register', (req, res, next) => {
-  let { username, password } = req.body;
-  let user = new User({ username, password });
-  
-  user.save((err, user ) => {
-    req.logIn(user, function(err) {
-      if(err) {
-        console.log(err)
-        return next(err);
-      }
-      res.status(200).send;
-    });
-  });
-});
+  let { username, password } = req.body
+  let user = new User({ username, password })
 
-app.post('/logout', (req, res,) => {
-  req.logOut();
-  res.clearCookie('user');
-  res.json({loggedOut: true});
+  user.save((err, user) => {
+    req.logIn(user, function(err) {
+      if (err) {
+        console.log(err)
+        return next(err)
+      }
+      res.status(200).send
+    })
+  })
+})
+
+app.post('/logout', (req, res) => {
+  req.logOut()
+  res.clearCookie('user')
+  res.clearCookie('connect.sid')
+  res.json({ loggedOut: true })
 })
 
 function errorHandler(err, req, res, next) {
-  console.error('Error: ', err.stack);
-  res.status(err.response ? err.response.status : 500);
-  res.json({ error: err.message });
+  console.error('Error: ', err.stack)
+  res.status(err.response ? err.response.status : 500)
+  res.json({ error: err.message })
 }
 
-app.use(errorHandler);
+app.use(errorHandler)
 
 app.listen(app.get('port'), () => {
-  console.log(`Find the server at: http://localhost:${app.get('port')}/`);
+  console.log(`Find the server at: http://localhost:${app.get('port')}/`)
 })
