@@ -57,13 +57,17 @@ export function handleSubmit(e, route) {
       .then(res => {
         if (res.status === 200) {
           console.log('Yay!')
-          dispatch(getDataSuccess(res.status))
-          //this.props.history.push('/');
+          return res.json()
+          //this.props.history.push('/')
         } else {
-          console.log('yo')
+          console.log('no')
           const error = new Error(res.error)
           throw error
         }
+      })
+      .then(json => {
+        console.log('submit ' + JSON.stringify(json))
+        dispatch(getDataSuccess(json))
       })
       .catch(err => {
         console.log(err)

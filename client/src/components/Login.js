@@ -1,10 +1,10 @@
 import React from 'react'
 
-const LoginFunc = ({ onSubmit, onUsernameChange, onPasswordChange }) => {
+const Login = ({ onSubmit, onUsernameChange, onPasswordChange, redirect }) => {
   return (
     <div className="tile is-ancestor is-4" id="login">
       <div className="card is-4 form-card">
-        <div className="card-header">Sign In</div>
+        <div className="card-header form-header is-size-4">Sign In</div>
         <form onSubmit={onSubmit} className="card-content">
           <div className="field">
             <label className="label">Enter Username</label>
@@ -43,4 +43,4 @@ const LoginFunc = ({ onSubmit, onUsernameChange, onPasswordChange }) => {
   )
 }
 
-export default LoginFunc
+export default Login

@@ -105,10 +105,11 @@ app.post(
   (req, res) => {
     console.log('logged in', req.user)
     res.cookie('user', req.user.username)
-    var userInfo = {
+    var info = {
       username: req.user.username,
+      redirect: '/',
     }
-    res.send(userInfo)
+    res.send(info)
   },
 )
 
@@ -124,7 +125,11 @@ app.post('/register', (req, res, next) => {
         return next(err)
       }
       res.cookie('user', req.user.username)
-      res.status(200).send()
+      var info = {
+        username: req.user.username,
+        redirect: '/',
+      }
+      res.status(200).send(info)
     })
   })
 })

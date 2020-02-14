@@ -6,17 +6,36 @@ import {
   handlePasswordInputChange,
   handleSubmit,
 } from '../actions'
+import { Redirect } from 'react-router-dom'
 
 class LoginContainer extends Component {
   render() {
-    const { onUsernameChange, onPasswordChange, onSubmit } = this.props
+    const {
+      onUsernameChange,
+      onPasswordChange,
+      onSubmit,
+      redirect,
+    } = this.props
+
+    console.log(redirect)
+
+    if (redirect === '/') {
+      return <Redirect to="/" />
+    }
     return (
       <Login
         onUsernameChange={onUsernameChange}
         onPasswordChange={onPasswordChange}
         onSubmit={onSubmit}
+        redirect={redirect}
       />
     )
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    redirect: state.redirect,
   }
 }
 
@@ -40,4 +59,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(LoginContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer)

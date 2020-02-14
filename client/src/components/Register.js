@@ -4,6 +4,7 @@ const Register = ({ onSubmit, onUsernameChange, onPasswordChange }) => {
   return (
     <div className="tile is-ancestor is-4" id="register">
       <div className="card is-4 form-card">
+        <div className="card-header is-size-4">Sign Up</div>
         <form onSubmit={onSubmit} className="card-content">
           <div className="field">
             <label className="label">Enter Username</label>

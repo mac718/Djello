@@ -1,7 +1,12 @@
-#login, #register {
+#login,
+#register {
   margin: 50px auto;
 }
 
 .form-card {
   margin: auto;
+}
+
+.form-header {
+  text-align: center;
 }
