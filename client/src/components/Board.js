@@ -1,21 +1,14 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-class Board extends Component {
-  handleLogOut = () => {
-    fetch('/logout', {
-      method: 'POST',
-    }).then(res => console.log(res))
-  }
-  render() {
-    return (
-      <div className="Board">
-        Hello, I'm a board!
-        <button className="button" onClick={this.handleLogOut}>
-          Log Out
-        </button>
-      </div>
-    )
-  }
+const Board = ({ onClick }) => {
+  return (
+    <div className="Board">
+      Hello, I'm a board!
+      <button className="button" onClick={onClick}>
+        Log Out
+      </button>
+    </div>
+  )
 }
 
 export default Board
