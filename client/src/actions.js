@@ -78,7 +78,9 @@ export function handleSubmit(e, route) {
 }
 
 export function handleLogOut(e) {
-  fetch('/logout', {
-    method: 'POST',
-  }).then(res => console.log(res))
+  return () => {
+    fetch('/logout', {
+      method: 'POST',
+    }).then(res => console.log(res))
+  }
 }

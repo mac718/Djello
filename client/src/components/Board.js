@@ -1,11 +1,12 @@
 import React from 'react'
+import ShowContainer from '../containers/ShowContainer'
 
-const Board = ({ onClick }) => {
+const Board = ({ handleClick }) => {
   return (
-    <div className="Board">
-      Hello, I'm a board!
-      <button className="button" onClick={onClick}>
-        Log Out
+    <div className="board container is-fluid">
+      <ShowContainer />
+      <button className="button add-list is-light is-medium">
+        Add A List...
       </button>
     </div>
   )

@@ -1,19 +1,23 @@
 import React, { Component } from 'react'
 import Board from '../components/Board'
-import { Redirect } from 'react-router-dom'
 import { handleLogOut } from '../actions'
 import { connect } from 'react-redux'
 
 class BoardContainer extends Component {
   render() {
-    const { onClick } = this.props
-    return <Board onClick={handleLogOut} />
+    const { handleClick } = this.props
+    return <Board handleClick={handleLogOut} />
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    currentUser: state.currentUser,
+  }
+}
 const mapDispatchToProps = dispatch => {
   return {
-    onClick: e => {
+    handleClick: e => {
       dispatch(handleLogOut(e))
     },
   }

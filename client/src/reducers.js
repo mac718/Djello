@@ -4,7 +4,7 @@ const initialState = {
   username: '',
   password: '',
   isLoggingIn: false,
-  currentUser: '',
+  currentUser: null,
   error: '',
   redirect: '',
 }

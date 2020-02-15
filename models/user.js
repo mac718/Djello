@@ -1,29 +1,29 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const bcrypt = require('bcrypt');
-const uniqueValidator = require('mongoose-unique-validator');
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+const bcrypt = require('bcrypt')
+const uniqueValidator = require('mongoose-unique-validator')
 
 const UserSchema = new Schema({
-  username: {type: String, required: true, unique: true},
-  passwordHash: { type: String, required: true }
-});
+  username: { type: String, required: true, unique: true },
+  passwordHash: { type: String, required: true },
+  boards: { type: Array },
+})
 
-UserSchema.plugin(uniqueValidator);
+UserSchema.plugin(uniqueValidator)
 
 UserSchema.methods.validPassword = function(password) {
-  return bcrypt.compareSync(password, this.passwordHash);
-};
+  return bcrypt.compareSync(password, this.passwordHash)
+}
 
-UserSchema.virtual("password")
+UserSchema.virtual('password')
   .get(function() {
-    return this._password;
+    return this._password
   })
   .set(function(value) {
-    this._password = value;
-    this.passwordHash = bcrypt.hashSync(value, 8);
-  });
+    this._password = value
+    this.passwordHash = bcrypt.hashSync(value, 8)
+  })
 
-  const User = mongoose.model('User', UserSchema);
+const User = mongoose.model('User', UserSchema)
 
-  module.exports = User;
-
+module.exports = User

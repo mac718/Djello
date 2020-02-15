@@ -1,13 +1,13 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Login = ({ onSubmit, onUsernameChange, onPasswordChange, redirect }) => {
   return (
     <div className="tile is-ancestor is-4" id="login">
-      <div className="card is-4 form-card">
-        <div className="card-header form-header is-size-4">Sign In</div>
+      <div className="card is-4 form-card has-background-light">
+        <div className="form-header is-size-4">Sign In</div>
         <form onSubmit={onSubmit} className="card-content">
           <div className="field">
-            <label className="label">Enter Username</label>
             <div className="control">
               <input
                 className="input"
@@ -20,7 +20,6 @@ const Login = ({ onSubmit, onUsernameChange, onPasswordChange, redirect }) => {
           </div>
 
           <div className="field">
-            <label className="label">Enter Password</label>
             <div className="control">
               <input
                 className="input"
@@ -30,6 +29,10 @@ const Login = ({ onSubmit, onUsernameChange, onPasswordChange, redirect }) => {
                 onChange={onPasswordChange}
               />
             </div>
+          </div>
+
+          <div className="form-footer">
+            Don't have an account yet? <Link to="/register">Register</Link> now.
           </div>
 
           <div className="control">

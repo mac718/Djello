@@ -109,7 +109,7 @@ app.post(
       username: req.user.username,
       redirect: '/',
     }
-    res.send(info)
+    res.json(info)
   },
 )
 
