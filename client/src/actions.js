@@ -4,6 +4,7 @@ export const GET_DATA_FAILURE = 'GET_DATA_FAILURE'
 
 export const HANDLE_USERNAME_INPUT_CHANGE = 'HANDLE_USERNAME_INPUT_CHANGE'
 export const HANDLE_PASSWORD_INPUT_CHANGE = 'HANDLE_PASSWORD_INPUT_CHANGE'
+export const SET_CURRENT_BOARD = 'SET_CURRENT_BOARD'
 
 export function getDataRequest() {
   return {
@@ -35,6 +36,13 @@ export function handleUsernameInputChange(data) {
 export function handlePasswordInputChange(data) {
   return {
     type: HANDLE_PASSWORD_INPUT_CHANGE,
+    data,
+  }
+}
+
+export function setCurrentBoard(data) {
+  return {
+    type: SET_CURRENT_BOARD,
     data,
   }
 }
@@ -82,5 +90,20 @@ export function handleLogOut(e) {
     fetch('/logout', {
       method: 'POST',
     }).then(res => console.log(res))
+  }
+}
+
+export function createBoard(e) {
+  return dispatch => {
+    fetch('/createBoard', {
+      method: 'POST',
+    })
+      .then(res => {
+        console.log(res)
+        return res.json()
+      })
+      .then(json => {
+        dispatch(setCurrentBoard(json))
+      })
   }
 }

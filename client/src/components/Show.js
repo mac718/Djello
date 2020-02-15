@@ -1,6 +1,11 @@
 import React from 'react'
 
-const Show = ({ boards, handleLogoutClick }) => {
+const Show = ({
+  boards,
+  handleLogoutClick,
+  handleCreateBoard,
+  currentBoard,
+}) => {
   return (
     <div className="show">
       <nav
@@ -26,6 +31,14 @@ const Show = ({ boards, handleLogoutClick }) => {
           </div>
         </div>
       </nav>
+      {/* <div className="create-board">
+        <button
+          className="button is-success is-large"
+          onClick={handleCreateBoard}
+        >
+          Create a new board!
+        </button>
+      </div> */}
     </div>
   )
 }

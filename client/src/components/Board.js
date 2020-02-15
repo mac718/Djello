@@ -5,9 +5,9 @@ const Board = ({ handleClick }) => {
   return (
     <div className="board container is-fluid">
       <ShowContainer />
-      <button className="button add-list is-light is-medium">
+      {/* <button className="button add-list is-light is-medium">
         Add A List...
-      </button>
+      </button> */}
     </div>
   )
 }

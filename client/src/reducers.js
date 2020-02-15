@@ -5,6 +5,7 @@ const initialState = {
   password: '',
   isLoggingIn: false,
   currentUser: null,
+  currentBoard: {},
   error: '',
   redirect: '',
 }
@@ -38,6 +39,11 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         password: action.data,
+      }
+    case Actions.SET_CURRENT_BOARD:
+      return {
+        ...state,
+        currentBoard: action.data,
       }
     default:
       return state

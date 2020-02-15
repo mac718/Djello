@@ -6,6 +6,7 @@ import RegisterContainer from './containers/RegisterContainer'
 import BoardContainer from './containers/BoardContainer'
 import LoginContainer from './containers/LoginContainer'
 import withAuth from './components/withAuth'
+import ShowContainer from './containers/ShowContainer'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" exact component={withAuth(BoardContainer)} />
           <Route path="/register" component={RegisterContainer} />
           <Route path="/login" component={LoginContainer} />
+          <Route path="/:user" component={ShowContainer} />
         </Switch>
       </div>
     </Router>

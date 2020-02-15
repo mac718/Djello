@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const expressSession = require('express-session')
 const withAuth = require('./middleware')
+const Board = require('./models/board')
 
 app.use((req, res, next) => {
   if (mongoose.connection.readyState) {
@@ -94,6 +95,12 @@ app.get('/checkForCurrentUser', withAuth, (req, res) => {
   res.status(200).send()
 })
 
+app.get('/:user', (req, res, next) => {
+  let username = req.cookies.username
+  let user = User.findById(user.id)
+  res.json(user)
+})
+
 app.post(
   '/login',
   function(req, res, next) {
@@ -107,7 +114,7 @@ app.post(
     res.cookie('user', req.user.username)
     var info = {
       username: req.user.username,
-      redirect: '/',
+      redirect: `/${req.user.username}`,
     }
     res.json(info)
   },
@@ -139,6 +146,18 @@ app.post('/logout', (req, res) => {
   res.clearCookie('user')
   res.clearCookie('connect.sid')
   res.json({ loggedOut: true })
+})
+
+app.post('/createBoard', (req, res, next) => {
+  let board = new Board({ name: 'New Board', lists: [] })
+  board.save((err, board) => {
+    if (err) {
+      console.error(err)
+      return next(err)
+    }
+    console.log('board ' + board)
+    res.status(200).json(board)
+  })
 })
 
 function errorHandler(err, req, res, next) {

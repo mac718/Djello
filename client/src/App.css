@@ -14,3 +14,11 @@
 .add-list {
   margin-top: 50px;
 }
+
+.create-board {
+  margin: 50px;
+}
+
+.create-board button {
+  margin: auto;
+}

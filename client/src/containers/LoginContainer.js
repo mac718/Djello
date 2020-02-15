@@ -15,12 +15,13 @@ class LoginContainer extends Component {
       onPasswordChange,
       onSubmit,
       redirect,
+      currentUser,
     } = this.props
 
     console.log(redirect)
 
-    if (redirect === '/') {
-      return <Redirect to="/" />
+    if (redirect === `/${currentUser}`) {
+      return <Redirect to={`/${currentUser}`} />
     }
     return (
       <Login
@@ -36,6 +37,7 @@ class LoginContainer extends Component {
 const mapStateToProps = state => {
   return {
     redirect: state.redirect,
+    currentUser: state.currentUser,
   }
 }
 
