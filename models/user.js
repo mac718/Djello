@@ -7,6 +7,7 @@ const UserSchema = new Schema({
   username: { type: String, required: true, unique: true },
   passwordHash: { type: String, required: true },
   boards: { type: Array },
+  activeBoard: { type: String },
 })
 
 UserSchema.plugin(uniqueValidator)

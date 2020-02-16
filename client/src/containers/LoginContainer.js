@@ -20,8 +20,8 @@ class LoginContainer extends Component {
 
     console.log(redirect)
 
-    if (redirect === `/${currentUser}`) {
-      return <Redirect to={`/${currentUser}`} />
+    if (redirect === `/${currentUser.username}`) {
+      return <Redirect to={`/${currentUser.username}`} />
     }
     return (
       <Login

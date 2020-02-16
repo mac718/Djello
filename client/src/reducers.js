@@ -4,8 +4,9 @@ const initialState = {
   username: '',
   password: '',
   isLoggingIn: false,
-  currentUser: null,
+  currentUser: {},
   currentBoard: {},
+  userBoards: [],
   error: '',
   redirect: '',
 }
@@ -21,8 +22,9 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         isLoggingIn: false,
-        currentUser: action.data.username,
+        currentUser: action.data.user,
         redirect: action.data.redirect,
+        userBoards: action.data.boards,
       }
     case Actions.GET_DATA_FAILURE:
       return {

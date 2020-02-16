@@ -113,8 +113,9 @@ app.post(
     console.log('logged in', req.user)
     res.cookie('user', req.user.username)
     var info = {
-      username: req.user.username,
+      user: req.user,
       redirect: `/${req.user.username}`,
+      boards: req.user.boards,
     }
     res.json(info)
   },
@@ -133,8 +134,9 @@ app.post('/register', (req, res, next) => {
       }
       res.cookie('user', req.user.username)
       var info = {
-        username: req.user.username,
-        redirect: '/',
+        user: req.user,
+        redirect: `/${req.user.username}`,
+        boards: req.user.boards,
       }
       res.status(200).send(info)
     })

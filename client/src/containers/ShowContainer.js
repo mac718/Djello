@@ -4,13 +4,15 @@ import Show from '../components/Show'
 import { handleLogOut, createBoard } from '../actions'
 
 class ShowContainer extends Component {
+  componentDidMount() {}
   render() {
-    const { handleLogoutClick, handleCreateBoard, currentBoard } = this.props
+    const { handleLogoutClick, handleCreateBoard, currentUser } = this.props
+    console.log(currentUser)
     return (
       <Show
         handleLogoutClick={handleLogoutClick}
         handleCreateBoard={handleCreateBoard}
-        currentBoard={currentBoard}
+        currentUser={currentUser}
       />
     )
   }
@@ -18,7 +20,7 @@ class ShowContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    currentBoard: state.currentBoard,
+    currentUser: state.currentUser,
   }
 }
 const mapDispatchToProps = dispatch => {
@@ -33,4 +35,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(ShowContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(ShowContainer)

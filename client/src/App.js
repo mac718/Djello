@@ -11,7 +11,7 @@ import ShowContainer from './containers/ShowContainer'
 function App() {
   return (
     <Router>
-      <div className="App container">
+      <div className="App container is-fluid">
         <Switch>
           <Route path="/" exact component={withAuth(BoardContainer)} />
           <Route path="/register" component={RegisterContainer} />

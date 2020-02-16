@@ -1,11 +1,22 @@
 import React from 'react'
+import Board from './Board'
 
-const Show = ({
-  boards,
-  handleLogoutClick,
-  handleCreateBoard,
-  currentBoard,
-}) => {
+const Show = ({ handleLogoutClick, handleCreateBoard, currentUser }) => {
+  if (currentUser.boards) {
+    const boards = currentUser.boards.map(board => {
+      return <Board name={board.name} lists={board.lists} key={board.id} />
+    })
+  }
+
+  if (currentUser.activeBoard) {
+    const activeBoard = (
+      <Board
+        name={currentUser.activeBoard.name}
+        lists={currentUser.activeBoard.lists}
+      />
+    )
+  }
+
   return (
     <div className="show">
       <nav
@@ -31,6 +42,7 @@ const Show = ({
           </div>
         </div>
       </nav>
+      <div className="current-board"></div>
       {/* <div className="create-board">
         <button
           className="button is-success is-large"
