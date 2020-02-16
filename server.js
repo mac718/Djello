@@ -95,11 +95,12 @@ app.get('/checkForCurrentUser', withAuth, (req, res) => {
   res.status(200).send()
 })
 
-app.get('/:user', (req, res, next) => {
-  let username = req.cookies.username
-  let user = User.findById(user.id)
-  res.json(user)
-})
+// app.get('/:user', (req, res, next) => {
+//   let username = req.params.name
+//   let user = User.findById(user.id)
+//   console.log('user ' + user)
+//   res.json(user)
+// })
 
 app.post(
   '/login',
@@ -123,7 +124,8 @@ app.post(
 
 app.post('/register', (req, res, next) => {
   let { username, password } = req.body
-  let user = new User({ username, password })
+  let activeBoard = new Board({ name: '', lists: [] })
+  let user = new User({ username, password, activeBoard })
 
   user.save((err, user) => {
     req.login(user, function(err) {
@@ -138,7 +140,7 @@ app.post('/register', (req, res, next) => {
         redirect: `/${req.user.username}`,
         boards: req.user.boards,
       }
-      res.status(200).send(info)
+      res.json(info)
     })
   })
 })

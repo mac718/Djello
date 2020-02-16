@@ -2,20 +2,23 @@ import React from 'react'
 import Board from './Board'
 
 const Show = ({ handleLogoutClick, handleCreateBoard, currentUser }) => {
+  console.log(JSON.stringify(currentUser))
   if (currentUser.boards) {
     const boards = currentUser.boards.map(board => {
       return <Board name={board.name} lists={board.lists} key={board.id} />
     })
   }
 
+  var activeBoard = []
   if (currentUser.activeBoard) {
-    const activeBoard = (
+    activeBoard = (
       <Board
         name={currentUser.activeBoard.name}
         lists={currentUser.activeBoard.lists}
       />
     )
   }
+  console.log(activeBoard)
 
   return (
     <div className="show">
@@ -50,7 +53,8 @@ const Show = ({ handleLogoutClick, handleCreateBoard, currentUser }) => {
         >
           Create a new board!
         </button>
-      </div> */}
+  </div> */}
+      show
     </div>
   )
 }

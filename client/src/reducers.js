@@ -19,6 +19,7 @@ export function djello(state = initialState, action) {
         isLoggingIn: true,
       }
     case Actions.GET_DATA_SUCCESS:
+      console.log('reducer ' + JSON.stringify(action.data.user))
       return {
         ...state,
         isLoggingIn: false,

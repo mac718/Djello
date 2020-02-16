@@ -13,9 +13,9 @@ function App() {
     <Router>
       <div className="App container is-fluid">
         <Switch>
-          <Route path="/" exact component={withAuth(BoardContainer)} />
+          {/* <Route path="/" exact component={BoardContainer} /> */}
+          <Route path="/login" exact component={LoginContainer} />
           <Route path="/register" component={RegisterContainer} />
-          <Route path="/login" component={LoginContainer} />
           <Route path="/:user" component={ShowContainer} />
         </Switch>
       </div>

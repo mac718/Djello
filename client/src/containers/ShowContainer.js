@@ -4,7 +4,6 @@ import Show from '../components/Show'
 import { handleLogOut, createBoard } from '../actions'
 
 class ShowContainer extends Component {
-  componentDidMount() {}
   render() {
     const { handleLogoutClick, handleCreateBoard, currentUser } = this.props
     console.log(currentUser)

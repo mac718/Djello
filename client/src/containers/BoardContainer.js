@@ -5,8 +5,10 @@ import { connect } from 'react-redux'
 
 class BoardContainer extends Component {
   render() {
-    const { handleClick } = this.props
-    return <Board handleClick={handleLogOut} />
+    const { handleClick, currentUser } = this.props
+    let name = currentUser.activeBoard.name
+    let lists = currentUser.activeBoard.lists
+    return <Board handleClick={handleLogOut} name={name} lists={lists} />
   }
 }
 
