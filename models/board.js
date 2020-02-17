@@ -6,6 +6,6 @@ const BoardSchema = new Schema({
   lists: { type: Array, required: true },
 })
 
-const User = mongoose.model('Board', BoardSchema)
+const Board = mongoose.model('Board', BoardSchema)
 
-module.exports = User
+module.exports = Board
