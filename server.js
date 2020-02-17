@@ -124,8 +124,17 @@ app.post(
 
 app.post('/register', (req, res, next) => {
   let { username, password } = req.body
-  let activeBoard = new Board({ name: '', lists: [] })
-  let user = new User({ username, password, activeBoard })
+  let activeBoard = new Board({ name: 'New Board', lists: [] })
+  activeBoard.save((err, board) => {
+    if (err) console.log(err)
+  })
+  let boards = [activeBoard]
+  let user = new User({
+    username,
+    password,
+    activeBoard: activeBoard._id,
+    boards,
+  })
 
   user.save((err, user) => {
     req.login(user, function(err) {

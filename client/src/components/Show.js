@@ -2,21 +2,17 @@ import React from 'react'
 import Board from './Board'
 
 const Show = ({ handleLogoutClick, handleCreateBoard, currentUser }) => {
-  console.log(JSON.stringify(currentUser))
+  console.log(currentUser.activeBoard)
+  var boards = []
   if (currentUser.boards) {
-    const boards = currentUser.boards.map(board => {
+    boards = currentUser.boards.map(board => {
       return <Board name={board.name} lists={board.lists} key={board.id} />
     })
   }
 
   var activeBoard = []
   if (currentUser.activeBoard) {
-    activeBoard = (
-      <Board
-        name={currentUser.activeBoard.name}
-        lists={currentUser.activeBoard.lists}
-      />
-    )
+    activeBoard = <Board name={currentUser.activeBoard} lists={boards} />
   }
   console.log(activeBoard)
 
@@ -55,6 +51,8 @@ const Show = ({ handleLogoutClick, handleCreateBoard, currentUser }) => {
         </button>
   </div> */}
       show
+      {activeBoard}
+      {boards}
     </div>
   )
 }

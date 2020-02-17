@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const Login = ({ onSubmit, onUsernameChange, onPasswordChange, redirect }) => {
   return (
     <div className="tile is-ancestor is-4" id="login">
-      <div className="card is-4 form-card has-background-light">
+      <div className="card is-4 form-card has-background-grey-lighter">
         <div className="form-header is-size-4">Sign In</div>
         <form onSubmit={onSubmit} className="card-content">
           <div className="field">

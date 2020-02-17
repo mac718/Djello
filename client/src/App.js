@@ -7,6 +7,7 @@ import BoardContainer from './containers/BoardContainer'
 import LoginContainer from './containers/LoginContainer'
 import withAuth from './components/withAuth'
 import ShowContainer from './containers/ShowContainer'
+import Home from './components/Home'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <div className="App container is-fluid">
         <Switch>
           {/* <Route path="/" exact component={BoardContainer} /> */}
+          <Route path="/" exact component={Home} />
           <Route path="/login" exact component={LoginContainer} />
           <Route path="/register" component={RegisterContainer} />
           <Route path="/:user" component={ShowContainer} />

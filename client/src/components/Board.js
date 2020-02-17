@@ -2,6 +2,7 @@ import React from 'react'
 import ShowContainer from '../containers/ShowContainer'
 
 const Board = ({ handleClick, name, lists }) => {
+  console.log('name ' + name)
   return (
     <div className="board container is-fluid">
       <div className="is-size-4">{name}</div>

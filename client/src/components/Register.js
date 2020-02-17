@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom'
 const Register = ({ onSubmit, onUsernameChange, onPasswordChange }) => {
   return (
     <div className="tile is-ancestor is-4" id="register">
-      <div className="card is-4 form-card has-background-light">
-        <div className="form-header is-size-4">Sign Up</div>
+      <div className="card is-4 form-card has-background-grey-lighter">
+        <div className="form-header is-size-4">Create a New Account</div>
         <form onSubmit={onSubmit} className="card-content">
           <div className="field">
             <div className="control">

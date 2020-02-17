@@ -22,3 +22,19 @@
 .create-board button {
   margin: auto;
 }
+
+.container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.Home {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
