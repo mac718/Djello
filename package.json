@@ -21,6 +21,7 @@
     "mongoose": "^5.8.11",
     "mongoose-unique-validator": "^2.0.3",
     "passport": "^0.4.1",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "redux-persist": "^6.0.0"
   }
 }

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 const Home = () => {
   return (
-    <div id="Home" className="hero is-primary is-bold is-large">
+    <div id="Home" className="hero is-primary is-bold is-fullheight">
       <div className="hero-body">
         <h1 className="is-size-1 has-text-weight-light">DJELLO</h1>
         <p>The task manager of tomorrow, today.</p>

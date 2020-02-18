@@ -32,3 +32,8 @@
 #Home {
   text-align: center;
 }
+
+.hero-body {
+  flex-direction: column;
+  justify-content: center;
+}
