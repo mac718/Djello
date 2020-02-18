@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 
 const Home = () => {
   return (
-    <div className="Home container is-fluid hero is-primary is-bold">
-      <div className="vertical-center">
-        <h1 className="is-size-1">DJELLO</h1>
-        <p>The Task Manager of Tomorrow, Today.</p>
+    <div id="Home" className="hero is-primary is-bold is-large">
+      <div className="hero-body">
+        <h1 className="is-size-1 has-text-weight-light">DJELLO</h1>
+        <p>The task manager of tomorrow, today.</p>
         <div>
           <Link to="/login">
             <button className="button">Sign in</button>

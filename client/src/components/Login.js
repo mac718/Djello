@@ -12,7 +12,7 @@ const Login = ({ onSubmit, onUsernameChange, onPasswordChange, redirect }) => {
               <input
                 className="input"
                 name="username"
-                type="text"
+                type="email"
                 placeholder="Username"
                 onChange={onUsernameChange}
               />
