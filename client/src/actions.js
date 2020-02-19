@@ -107,3 +107,14 @@ export function createBoard(e) {
       })
   }
 }
+
+export function createList(e) {
+  return () => {
+    fetch('/createList', {
+      method: 'POST',
+    }).then(res => {
+      console.log(res)
+      return res.json()
+    })
+  }
+}

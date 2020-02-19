@@ -1,13 +1,22 @@
 import React from 'react'
-import ShowContainer from '../containers/ShowContainer'
+import List from './List'
 
 const Board = ({ handleClick, name, lists }) => {
   console.log('name ' + name)
+  const boardLists = 'hello'
+  if (lists) {
+    boardLists = lists.map(list => {
+      return <List name={list.name} cards={list.cards} />
+    })
+  }
   return (
-    <div className="board container is-fluid">
+    <div className="board">
       <div className="is-size-4">{name}</div>
-      {lists}
-      <button className="button add-list is-light is-medium">
+      {boardLists}
+      <button
+        className="button add-list is-light is-medium"
+        onClick={handleClick}
+      >
         Add A List...
       </button>
     </div>

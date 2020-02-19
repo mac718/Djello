@@ -9,6 +9,7 @@ const bodyParser = require('body-parser')
 const expressSession = require('express-session')
 const withAuth = require('./middleware')
 const Board = require('./models/board')
+const List = require('./models/list')
 
 app.use((req, res, next) => {
   if (mongoose.connection.readyState) {
@@ -163,6 +164,7 @@ app.post('/logout', (req, res) => {
 
 app.post('/createBoard', (req, res, next) => {
   let board = new Board({ name: 'New Board', lists: [] })
+
   board.save((err, board) => {
     if (err) {
       console.error(err)
@@ -170,6 +172,23 @@ app.post('/createBoard', (req, res, next) => {
     }
     console.log('board ' + board)
     res.status(200).json(board)
+  })
+})
+
+app.post('/createList', (req, res, next) => {
+  let list = new List({ name: '', cards: [] })
+  let user = req.cookies.user
+  console.log('user ' + user)
+
+  list.save((err, list) => {
+    console.log('hello')
+    if (err) {
+      console.log('goodbye')
+      console.error(err)
+      return next(err)
+    }
+    User.findByIdAndUpdate(user._id, { lists: [...lists, list] })
+    res.status(200).json(list)
   })
 })
 

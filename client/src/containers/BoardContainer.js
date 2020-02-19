@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import Board from '../components/Board'
-import { handleLogOut } from '../actions'
 import { connect } from 'react-redux'
+import { createList } from '../actions'
 
 class BoardContainer extends Component {
   render() {
     const { handleClick, currentUser } = this.props
     let name = currentUser.activeBoard.name
     let lists = currentUser.activeBoard.lists
-    return <Board handleClick={handleLogOut} name={name} lists={lists} />
+    return <Board handleClick={handleClick} name={name} lists={lists} />
   }
 }
 
@@ -20,9 +20,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     handleClick: e => {
-      dispatch(handleLogOut(e))
+      dispatch(createList(e))
     },
   }
 }
 
-export default connect(null, mapDispatchToProps)(BoardContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(BoardContainer)

@@ -10,6 +10,7 @@ const persistConfig = {
   key: 'root',
   storage,
   stateReconciler: autoMergeLevel2,
+  blacklist: ['redirect'],
 }
 
 const persistedReducer = persistReducer(persistConfig, djello)
