@@ -7,14 +7,18 @@ const Show = ({ handleLogoutClick, handleCreateBoard, currentUser }) => {
   var boards = []
   if (currentUser.boards) {
     boards = currentUser.boards.map(board => {
-      return <Board name={board.name} lists={board.lists} key={board.id} />
+      return <BoardContainer />
     })
   }
 
   var activeBoard = []
   if (currentUser.activeBoard) {
-    activeBoard = <BoardContainer />
+    activeBoard = currentUser.boards.filter(board => {
+      return board._id === currentUser.activeBoard
+    })
   }
+
+  activeBoard = <BoardContainer currentBoard={activeBoard} />
   console.log(activeBoard)
 
   return (

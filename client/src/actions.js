@@ -5,6 +5,7 @@ export const GET_DATA_FAILURE = 'GET_DATA_FAILURE'
 export const HANDLE_USERNAME_INPUT_CHANGE = 'HANDLE_USERNAME_INPUT_CHANGE'
 export const HANDLE_PASSWORD_INPUT_CHANGE = 'HANDLE_PASSWORD_INPUT_CHANGE'
 export const SET_CURRENT_BOARD = 'SET_CURRENT_BOARD'
+export const UPDATE_CURRENT_USER = 'UPDATE_CURRENT_USER'
 
 export function getDataRequest() {
   return {
@@ -43,6 +44,13 @@ export function handlePasswordInputChange(data) {
 export function setCurrentBoard(data) {
   return {
     type: SET_CURRENT_BOARD,
+    data,
+  }
+}
+
+export function updateCurrentUser(data) {
+  return {
+    type: UPDATE_CURRENT_USER,
     data,
   }
 }
@@ -109,12 +117,29 @@ export function createBoard(e) {
 }
 
 export function createList(e) {
-  return () => {
+  return (dispatch, getState) => {
+    let state = getState()
+    console.log('state ' + JSON.stringify(state))
+
     fetch('/createList', {
       method: 'POST',
-    }).then(res => {
-      console.log(res)
-      return res.json()
+      body: JSON.stringify({ activeBoard: state.currentUser.activeBoard }),
+      headers: {
+        'Content-type': 'application/json',
+      },
     })
+      .then(res => {
+        console.log('json ' + JSON.stringify(res))
+        return res.json()
+      })
+      .then(json => {
+        //console.log('create list ' + JSON.stringify(json))
+        dispatch(updateCurrentUser(json))
+      })
+      .catch(err => {
+        console.log(err)
+        dispatch(getDataFailure(err))
+        alert('hmmmm')
+      })
   }
 }

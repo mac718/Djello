@@ -6,7 +6,6 @@ import { handleLogOut, createBoard } from '../actions'
 class ShowContainer extends Component {
   render() {
     const { handleLogoutClick, handleCreateBoard, currentUser } = this.props
-    console.log(currentUser)
     return (
       <Show
         handleLogoutClick={handleLogoutClick}

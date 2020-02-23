@@ -5,16 +5,26 @@ import { createList } from '../actions'
 
 class BoardContainer extends Component {
   render() {
-    const { handleClick, currentUser } = this.props
-    let name = currentUser.activeBoard.name
-    let lists = currentUser.activeBoard.lists
-    return <Board handleClick={handleClick} name={name} lists={lists} />
+    const { handleClick, currentUser, currentBoard } = this.props
+
+    let name = currentBoard[0].name
+    let lists = currentBoard[0].lists
+    console.log('BoardContainer ' + JSON.stringify(currentBoard))
+    return (
+      <Board
+        handleClick={handleClick}
+        name={name}
+        lists={lists}
+        currentBoard={currentBoard}
+      />
+    )
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   return {
     currentUser: state.currentUser,
+    currentBoard: ownProps.currentBoard,
   }
 }
 const mapDispatchToProps = dispatch => {

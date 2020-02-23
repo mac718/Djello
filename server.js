@@ -126,14 +126,16 @@ app.post(
 app.post('/register', (req, res, next) => {
   let { username, password } = req.body
   let activeBoard = new Board({ name: 'New Board', lists: [] })
+  let boards = [activeBoard]
+  let activeBoardId = activeBoard.id
   activeBoard.save((err, board) => {
     if (err) console.log(err)
   })
-  let boards = [activeBoard]
+
   let user = new User({
     username,
     password,
-    activeBoard: activeBoard._id,
+    activeBoard: activeBoardId,
     boards,
   })
 
@@ -146,9 +148,10 @@ app.post('/register', (req, res, next) => {
       }
       res.cookie('user', req.user.username)
       var info = {
-        user: req.user,
-        redirect: `/${req.user.username}`,
-        boards: req.user.boards,
+        user: user,
+        redirect: `/${user.username}`,
+        boards: user.boards,
+        activeBoard: activeBoardId,
       }
       res.json(info)
     })
@@ -176,19 +179,58 @@ app.post('/createBoard', (req, res, next) => {
 })
 
 app.post('/createList', (req, res, next) => {
+  console.log('hi')
   let list = new List({ name: '', cards: [] })
-  let user = req.cookies.user
-  console.log('user ' + user)
+  let activeBoard = req.body['activeBoard']
+  let username = req.cookies['user']
+  console.log('activeBoard ' + JSON.stringify(req.body))
 
   list.save((err, list) => {
     console.log('hello')
     if (err) {
-      console.log('goodbye')
+      alert('goodbye')
       console.error(err)
       return next(err)
     }
-    User.findByIdAndUpdate(user._id, { lists: [...lists, list] })
-    res.status(200).json(list)
+    Board.findById(activeBoard, (err, board) => {
+      console.log('191 ' + board)
+      board.lists.push(list)
+      board.save((err, board) => {
+        if (err) {
+          console.log('goodbye')
+          console.error(err)
+          return next(err)
+        }
+        User.find({ username: username }, (err, user) => {
+          console.log('user ' + JSON.stringify(user[0].boards[0]._id))
+          console.log(JSON.stringify(board._id))
+          if (err) {
+            alert('goodbye')
+            console.error(err)
+            return next(err)
+          }
+          let oldBoard = user[0].boards.filter(json => {
+            return JSON.stringify(json._id) == JSON.stringify(board._id)
+          })[0]
+
+          console.log('oldBOard ' + JSON.stringify(oldBoard))
+          let oldBoardIndex = user[0].boards.indexOf(oldBoard)
+
+          user[0].boards.splice(oldBoardIndex, 1, board)
+
+          console.log('user boards ' + JSON.stringify(user[0].boards))
+          user[0].save((err, user) => {
+            if (err) {
+              alert('goodbye')
+              console.error(err)
+              return next(err)
+            }
+            console.log('server user ' + user)
+            return res.json(user)
+          })
+        })
+      })
+    })
   })
 })
 

@@ -19,13 +19,14 @@ export function djello(state = initialState, action) {
         isLoggingIn: true,
       }
     case Actions.GET_DATA_SUCCESS:
-      console.log('reducer ' + JSON.stringify(action.data.user))
+      console.log('reducer ' + JSON.stringify(action.data.user.activeBoard))
       return {
         ...state,
         isLoggingIn: false,
         currentUser: action.data.user,
         redirect: action.data.redirect,
         userBoards: action.data.boards,
+        currentBoard: action.data.user.activeBoard,
       }
     case Actions.GET_DATA_FAILURE:
       return {
@@ -44,9 +45,15 @@ export function djello(state = initialState, action) {
         password: action.data,
       }
     case Actions.SET_CURRENT_BOARD:
+      console.log(action.data)
       return {
         ...state,
         currentBoard: action.data,
+      }
+    case Actions.UPDATE_CURRENT_USER:
+      return {
+        ...state,
+        currentUser: action.data,
       }
     default:
       return state

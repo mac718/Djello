@@ -2,11 +2,11 @@ import React from 'react'
 import List from './List'
 
 const Board = ({ handleClick, name, lists }) => {
-  console.log('name ' + name)
-  const boardLists = 'hello'
+  console.log('name ' + lists)
+  let boardLists = 'hello'
   if (lists) {
     boardLists = lists.map(list => {
-      return <List name={list.name} cards={list.cards} />
+      return <List name={list.name} cards={list.cards} key={list._id} />
     })
   }
   return (
