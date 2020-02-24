@@ -10,6 +10,7 @@ const expressSession = require('express-session')
 const withAuth = require('./middleware')
 const Board = require('./models/board')
 const List = require('./models/list')
+const Card = require('./models/card')
 
 app.use((req, res, next) => {
   if (mongoose.connection.readyState) {

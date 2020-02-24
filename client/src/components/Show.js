@@ -30,9 +30,9 @@ const Show = ({ handleLogoutClick, handleCreateBoard, currentUser }) => {
           aria-label="main navigation"
         >
           <div className="navbar-brand">
-            <p className="navbar-item is-size-1 is-family-secondary has-text-white">
-              Djello
-            </p>
+            <div className="navbar-item is-size-1 is-family-secondary has-text-white">
+              DJELLO
+            </div>
           </div>
           <div className="navbar-end">
             <div className="navbar-item">
@@ -48,6 +48,23 @@ const Show = ({ handleLogoutClick, handleCreateBoard, currentUser }) => {
           </div>
         </nav>
       </div>
+      <nav
+        className="navbar board-dropdown"
+        role="navigation"
+        aria-label="dropdown navigation"
+      >
+        <div className="navbar-item has-dropdown">
+          <a className="navbar-link">Docs</a>
+
+          <div className="navbar-dropdown">
+            <a className="navbar-item">Overview</a>
+            <a className="navbar-item">Elements</a>
+            <a className="navbar-item">Components</a>
+            <hr className="navbar-divider" />
+            <div className="navbar-item">Version 0.8.0</div>
+          </div>
+        </div>
+      </nav>
       <div className="current-board">{activeBoard}</div>
       {/* <div className="create-board">
         <button

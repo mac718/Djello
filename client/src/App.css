@@ -37,3 +37,22 @@
   flex-direction: column;
   justify-content: center;
 }
+
+.board {
+  display: flex;
+  overflow: auto;
+  height: 100vh;
+  flex-wrap: wrap;
+}
+
+.list {
+  height: max-content;
+}
+
+.list-name {
+  text-align: center;
+}
+
+.board-dropdown {
+  float: right;
+}

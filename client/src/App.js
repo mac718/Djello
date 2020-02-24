@@ -18,7 +18,7 @@ function App() {
           <Route path="/" exact component={Home} />
           <Route path="/login" exact component={LoginContainer} />
           <Route path="/register" component={RegisterContainer} />
-          <Route path="/:user" component={ShowContainer} />
+          <Route path="/:user" component={withAuth(ShowContainer)} />
         </Switch>
       </div>
     </Router>

@@ -55,6 +55,7 @@ export function updateCurrentUser(data) {
   }
 }
 
+//handles register and login
 export function handleSubmit(e, route) {
   return (dispatch, getState) => {
     e.preventDefault()

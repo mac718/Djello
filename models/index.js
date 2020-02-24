@@ -9,5 +9,6 @@ var models = {}
 models.User = require('./user')
 models.Board = require('./board')
 models.List = require('./list')
+models.Card = require('./card')
 
 module.exports = models
