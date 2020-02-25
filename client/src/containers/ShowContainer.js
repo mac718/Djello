@@ -1,15 +1,21 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Show from '../components/Show'
-import { handleLogOut, createBoard } from '../actions'
+import { handleLogOut, createBoard, deleteBoard } from '../actions'
 
 class ShowContainer extends Component {
   render() {
-    const { handleLogoutClick, handleCreateBoard, currentUser } = this.props
+    const {
+      handleLogoutClick,
+      handleCreateBoard,
+      currentUser,
+      handleDeleteBoard,
+    } = this.props
     return (
       <Show
         handleLogoutClick={handleLogoutClick}
         handleCreateBoard={handleCreateBoard}
+        handleDeleteBoard={handleDeleteBoard}
         currentUser={currentUser}
       />
     )
@@ -29,6 +35,10 @@ const mapDispatchToProps = dispatch => {
 
     handleCreateBoard: e => {
       dispatch(createBoard(e))
+    },
+
+    handleDeleteBoard: e => {
+      dispatch(deleteBoard(e))
     },
   }
 }

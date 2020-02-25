@@ -144,3 +144,26 @@ export function createList(e) {
       })
   }
 }
+
+export function deleteBoard(e) {
+  return (dispatch, getState) => {
+    console.log('butts')
+    let state = getState()
+    let id = state.currentUser.activeBoard
+    fetch('/deleteBoard', {
+      method: 'DELETE',
+      body: JSON.stringify({ board: id }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then(res => {
+        dispatch(updateCurrentUser(res))
+      })
+      .catch(err => {
+        console.log(err)
+        dispatch(getDataFailure(err))
+        alert('hmmmm')
+      })
+  }
+}

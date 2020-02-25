@@ -55,4 +55,6 @@
 
 .board-dropdown {
   float: right;
+  display: flex;
+  flex-direction: column;
 }

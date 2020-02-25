@@ -2,7 +2,12 @@ import React from 'react'
 import Board from './Board'
 import BoardContainer from '../containers/BoardContainer'
 
-const Show = ({ handleLogoutClick, handleCreateBoard, currentUser }) => {
+const Show = ({
+  handleLogoutClick,
+  handleCreateBoard,
+  currentUser,
+  handleDeleteBoard,
+}) => {
   console.log(currentUser.activeBoard)
   var boards = []
   if (currentUser.boards) {
@@ -53,8 +58,8 @@ const Show = ({ handleLogoutClick, handleCreateBoard, currentUser }) => {
         role="navigation"
         aria-label="dropdown navigation"
       >
-        <div className="navbar-item has-dropdown">
-          <a className="navbar-link">Docs</a>
+        <div className="navbar-item has-dropdown is-hoverable">
+          <a className="navbar-link">Boards</a>
 
           <div className="navbar-dropdown">
             <a className="navbar-item">Overview</a>
@@ -64,6 +69,18 @@ const Show = ({ handleLogoutClick, handleCreateBoard, currentUser }) => {
             <div className="navbar-item">Version 0.8.0</div>
           </div>
         </div>
+        <button
+          className="button is-danger is-light"
+          onClick={handleDeleteBoard}
+        >
+          Delete Current Board
+        </button>
+        <button
+          className="button is-primary is-light"
+          onClick={() => alert('hello')}
+        >
+          Create New Board
+        </button>
       </nav>
       <div className="current-board">{activeBoard}</div>
       {/* <div className="create-board">

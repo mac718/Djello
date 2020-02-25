@@ -179,6 +179,38 @@ app.post('/createBoard', (req, res, next) => {
   })
 })
 
+app.delete('/deleteBoard', (req, res, next) => {
+  let board = req.body['board']
+  console.log('delete board ' + board)
+
+  Board.findById(board, err => {
+    if (err) {
+      console.log(err)
+      res.status(401).json({ error: err })
+    }
+    User.find({ username: req.cookies['user'] }, (err, user) => {
+      console.log('jser ' + user[0].boards)
+      if (err) {
+        console.log(err)
+        res.status(401).json({ error: err })
+      }
+      let index = user[0].boards.indexOf(board)
+      user[0].boards.splice(index, 1)
+      user[0].save(err => {
+        if (err) {
+          console.log(err)
+          res.status(401).json({ error: err })
+        }
+        Board.findByIdAndDelete(board, err => {
+          if (err) console.log(err)
+          console.log('hoooray ' + board)
+          res.status(200).json(user[0])
+        })
+      })
+    })
+  })
+})
+
 app.post('/createList', (req, res, next) => {
   console.log('hi')
   let list = new List({ name: '', cards: [] })
