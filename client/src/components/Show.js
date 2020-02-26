@@ -8,7 +8,7 @@ const Show = ({
   currentUser,
   handleDeleteBoard,
 }) => {
-  console.log(currentUser.activeBoard)
+  console.log('active ' + currentUser.activeBoard)
   var boards = []
   if (currentUser.boards) {
     boards = currentUser.boards.map(board => {
@@ -16,7 +16,7 @@ const Show = ({
     })
   }
 
-  var activeBoard = []
+  var activeBoard
   if (currentUser.activeBoard) {
     activeBoard = currentUser.boards.filter(board => {
       return board._id === currentUser.activeBoard

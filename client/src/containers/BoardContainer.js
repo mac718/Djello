@@ -6,18 +6,25 @@ import { createList } from '../actions'
 class BoardContainer extends Component {
   render() {
     const { handleClick, currentUser, currentBoard } = this.props
+    let name
+    let lists
+    console.log(currentBoard)
+    if (currentBoard && currentBoard[0]) {
+      name = currentBoard[0].name
+      lists = currentBoard[0].lists
 
-    let name = currentBoard[0].name
-    let lists = currentBoard[0].lists
-    console.log('BoardContainer ' + JSON.stringify(currentBoard))
-    return (
-      <Board
-        handleClick={handleClick}
-        name={name}
-        lists={lists}
-        currentBoard={currentBoard}
-      />
-    )
+      console.log('BoardContainer ' + JSON.stringify(currentBoard))
+      return (
+        <Board
+          handleClick={handleClick}
+          name={name}
+          lists={lists}
+          currentBoard={currentBoard}
+        />
+      )
+    } else {
+      return <div>no board selected</div>
+    }
   }
 }
 

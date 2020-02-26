@@ -158,7 +158,11 @@ export function deleteBoard(e) {
       },
     })
       .then(res => {
-        dispatch(updateCurrentUser(res))
+        return res.json()
+      })
+      .then(json => {
+        console.log('current User ' + JSON.stringify(json))
+        dispatch(updateCurrentUser(json))
       })
       .catch(err => {
         console.log(err)

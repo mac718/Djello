@@ -196,6 +196,8 @@ app.delete('/deleteBoard', (req, res, next) => {
       }
       let index = user[0].boards.indexOf(board)
       user[0].boards.splice(index, 1)
+      user[0].activeBoard = null
+      console.log(user[0])
       user[0].save(err => {
         if (err) {
           console.log(err)
@@ -204,7 +206,7 @@ app.delete('/deleteBoard', (req, res, next) => {
         Board.findByIdAndDelete(board, err => {
           if (err) console.log(err)
           console.log('hoooray ' + board)
-          res.status(200).json(user[0])
+          res.json(user[0])
         })
       })
     })
