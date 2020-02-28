@@ -112,7 +112,10 @@ export function createBoard(e) {
         return res.json()
       })
       .then(json => {
-        dispatch(setCurrentBoard(json))
+        dispatch(updateCurrentUser(json))
+      })
+      .catch(err => {
+        alert(err)
       })
   }
 }

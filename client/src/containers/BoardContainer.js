@@ -23,7 +23,11 @@ class BoardContainer extends Component {
         />
       )
     } else {
-      return <div>no board selected</div>
+      return (
+        <div className="no-board is-size-2 has-text-danger">
+          no board selected
+        </div>
+      )
     }
   }
 }

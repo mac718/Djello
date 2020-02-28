@@ -77,7 +77,7 @@ const Show = ({
         </button>
         <button
           className="button is-primary is-light"
-          onClick={() => alert('hello')}
+          onClick={handleCreateBoard}
         >
           Create New Board
         </button>
@@ -91,7 +91,6 @@ const Show = ({
           Create a new board!
         </button>
   </div> */}
-      show
     </div>
   )
 }

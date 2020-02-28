@@ -51,6 +51,7 @@ export function djello(state = initialState, action) {
         currentBoard: action.data,
       }
     case Actions.UPDATE_CURRENT_USER:
+      console.log('current user ' + action.data)
       return {
         ...state,
         currentUser: action.data,

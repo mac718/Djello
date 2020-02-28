@@ -97,13 +97,6 @@ app.get('/checkForCurrentUser', withAuth, (req, res) => {
   res.status(200).send()
 })
 
-// app.get('/:user', (req, res, next) => {
-//   let username = req.params.name
-//   let user = User.findById(user.id)
-//   console.log('user ' + user)
-//   res.json(user)
-// })
-
 app.post(
   '/login',
   function(req, res, next) {
@@ -174,8 +167,24 @@ app.post('/createBoard', (req, res, next) => {
       console.error(err)
       return next(err)
     }
+    let username = req.cookies.user
+    let user = User.find({ username }, (err, user) => {
+      if (err) {
+        console.log(err)
+        res.json({ error: 'Error saving board' })
+      }
+      user[0].boards.push(board)
+      user[0].activeBoard = board._id
+      user[0].save((err, user) => {
+        if (err) {
+          console.log(err)
+          res.json({ error: 'Error saving board' })
+        }
+        console.log('user[0] ' + user)
+        return res.json(user)
+      })
+    })
     console.log('board ' + board)
-    res.status(200).json(board)
   })
 })
 
