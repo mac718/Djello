@@ -6,7 +6,14 @@ const Board = ({ handleClick, name, lists }) => {
   let boardLists = 'hello'
   if (lists) {
     boardLists = lists.map(list => {
-      return <List name={list.name} cards={list.cards} key={list._id} />
+      return (
+        <List
+          name={list.name}
+          cards={list.cards}
+          id={list._id}
+          key={list._id}
+        />
+      )
     })
   }
   return (

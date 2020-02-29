@@ -88,11 +88,6 @@ function parseJSON(response) {
   return response.json()
 }
 
-app.get('/', (req, res) => {
-  console.log('route handler ' + res)
-  res.send('Hello')
-})
-
 app.get('/checkForCurrentUser', withAuth, (req, res) => {
   res.status(200).send()
 })
