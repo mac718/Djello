@@ -273,6 +273,55 @@ app.post('/createList', (req, res, next) => {
   })
 })
 
+app.delete('/deleteList', (req, res, next) => {
+  let listId = req.body.listId
+  List.deleteOne({ id: listId }, err => {
+    if (err) {
+      console.log(err)
+      next(err)
+    }
+    User.find({ username: req.cookies.user }, (err, user) => {
+      if (err) {
+        console.log(err)
+        next(err)
+      }
+      Board.find({ _id: user[0].activeBoard }, (err, board) => {
+        console.log('modify ' + JSON.stringify(board))
+        if (err) {
+          console.log(err)
+          next(err)
+        }
+        let deletedList = board[0].lists.filter(list => {
+          return list._id === listId
+        })
+        let deletedListIndex = board[0].lists.indexOf(deletedList)
+        board[0].lists.splice(deletedListIndex, 1)
+        board[0].save((err, board) => {
+          if (err) {
+            console.log(err)
+            next(err)
+          }
+          let modifiedBoard = user[0].boards.filter(board => {
+            return (
+              JSON.stringify(board._id) === JSON.stringify(user[0].activeBoard)
+            )
+          })
+          let modifiedBoardIndex = user[0].boards.indexOf(modifiedBoard)
+          user[0].boards.splice(modifiedBoardIndex, 1, board)
+          user[0].save((err, user) => {
+            if (err) {
+              console.log(err)
+              next(err)
+            }
+            console.log('user[0] ' + user)
+            return res.json(user)
+          })
+        })
+      })
+    })
+  })
+})
+
 function errorHandler(err, req, res, next) {
   console.error('Error: ', err.stack)
   res.status(err.response ? err.response.status : 500)

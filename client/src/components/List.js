@@ -1,6 +1,6 @@
 import React from 'react'
 
-const List = ({ cards, name, id }) => {
+const List = ({ cards, name, id, deleteList }) => {
   return (
     <div
       id={id}
@@ -12,6 +12,9 @@ const List = ({ cards, name, id }) => {
       </div>
       {cards}
       <button className="button is-primary is-light">Add Task</button>
+      <button className="button is-danger is-light" onClick={deleteList}>
+        Delete List
+      </button>
     </div>
   )
 }

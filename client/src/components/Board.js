@@ -1,5 +1,6 @@
 import React from 'react'
 import List from './List'
+import ListContainer from '../containers/ListContainer'
 
 const Board = ({ handleClick, name, lists }) => {
   console.log('name ' + lists)
@@ -7,12 +8,13 @@ const Board = ({ handleClick, name, lists }) => {
   if (lists) {
     boardLists = lists.map(list => {
       return (
-        <List
-          name={list.name}
-          cards={list.cards}
-          id={list._id}
-          key={list._id}
-        />
+        <ListContainer id={list._id} key={list._id} />
+        // <List
+        //   name={list.name}
+        //   cards={list.cards}
+        //   id={list._id}
+        //   key={list._id}
+        // />
       )
     })
   }

@@ -21,4 +21,46 @@ router.post(
   },
 )
 
+app.post('/register', (req, res, next) => {
+  let { username, password } = req.body
+  let activeBoard = new Board({ name: 'New Board', lists: [] })
+  let boards = [activeBoard]
+  let activeBoardId = activeBoard.id
+  activeBoard.save((err, board) => {
+    if (err) console.log(err)
+  })
+
+  let user = new User({
+    username,
+    password,
+    activeBoard: activeBoardId,
+    boards,
+  })
+
+  user.save((err, user) => {
+    req.login(user, function(err) {
+      console.log(user)
+      if (err) {
+        console.log(err)
+        return next(err)
+      }
+      res.cookie('user', req.user.username)
+      var info = {
+        user: user,
+        redirect: `/${user.username}`,
+        boards: user.boards,
+        activeBoard: activeBoardId,
+      }
+      res.json(info)
+    })
+  })
+})
+
+app.post('/logout', (req, res) => {
+  req.logOut()
+  res.clearCookie('user')
+  res.clearCookie('connect.sid')
+  res.json({ loggedOut: true })
+})
+
 module.exports = router

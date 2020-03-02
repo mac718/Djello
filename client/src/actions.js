@@ -148,6 +148,32 @@ export function createList(e) {
   }
 }
 
+export function deleteList(e) {
+  return dispatch => {
+    let listId = e.target.parentElement.id
+    fetch('/deleteList', {
+      method: 'DELETE',
+      body: JSON.stringify({ listId }),
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then(res => {
+        console.log(JSON.stringify(res))
+        return res.json()
+      })
+      .then(json => {
+        console.log(json)
+        dispatch(updateCurrentUser(json))
+      })
+      .catch(err => {
+        console.log(err)
+        dispatch(getDataFailure(err))
+        alert('hmmmm')
+      })
+  }
+}
+
 export function deleteBoard(e) {
   return (dispatch, getState) => {
     console.log('butts')
