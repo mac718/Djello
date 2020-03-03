@@ -241,4 +241,42 @@ router.delete('/deleteList', (req, res, next) => {
   })
 })
 
+router.post('/changeBoardName', (req, res, next) => {
+  let name = req.body.boardName
+  let currentUser = req.body.currentUser
+  let activeBoardId = currentUser.activeBoard
+
+  Board.findById(activeBoardId, (err, board) => {
+    if (err) {
+      console.log(err)
+      next(err)
+    }
+    board.name = name
+    board.save((err, board) => {
+      if (err) {
+        console.log(err)
+        next(err)
+      }
+
+      User.findById(currentUser._id, (err, user) => {
+        if (err) {
+          console.log(err)
+          next(err)
+        }
+        let modifiedBoard = user.boards.filter(board => {
+          return board._id === activeBoardId
+        })
+        user.boards.splice(modifiedBoard, 1, board)
+        user.save((err, user) => {
+          if (err) {
+            console.log(err)
+            next(err)
+          }
+          return res.json(user)
+        })
+      })
+    })
+  })
+})
+
 module.exports = router

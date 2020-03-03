@@ -6,6 +6,7 @@ export const HANDLE_USERNAME_INPUT_CHANGE = 'HANDLE_USERNAME_INPUT_CHANGE'
 export const HANDLE_PASSWORD_INPUT_CHANGE = 'HANDLE_PASSWORD_INPUT_CHANGE'
 export const SET_CURRENT_BOARD = 'SET_CURRENT_BOARD'
 export const UPDATE_CURRENT_USER = 'UPDATE_CURRENT_USER'
+export const CHANGE_BOARD_NAME = 'CHANGE_BOARD_NAME'
 
 export function getDataRequest() {
   return {
@@ -196,6 +197,34 @@ export function deleteBoard(e) {
       .catch(err => {
         console.log(err)
         dispatch(getDataFailure(err))
+        alert('hmmmm')
+      })
+  }
+}
+
+export function changeBoardName(e) {
+  return (dispatch, getState) => {
+    let state = getState()
+    let currentUser = state.currentUser
+    let boardName = e.target.value
+
+    fetch('/changeBoardName', {
+      method: 'POST',
+      body: JSON.stringify({ boardName, currentUser }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then(res => {
+        return res.json()
+      })
+      .then(json => {
+        console.log(json)
+        dispatch(updateCurrentUser(json))
+      })
+      .catch(err => {
+        console.log(err)
+        //dispatch(getDataFailure(err))
         alert('hmmmm')
       })
   }
