@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Board from '../components/Board'
 import { connect } from 'react-redux'
-import { createList, changeBoardName } from '../actions'
+import { createList, changeName } from '../actions'
 
 class BoardContainer extends Component {
   render() {
@@ -51,7 +51,7 @@ const mapDispatchToProps = dispatch => {
     },
 
     handleBoardNameChange: e => {
-      dispatch(changeBoardName(e))
+      dispatch(changeName(e, 'changeBoardName'))
     },
   }
 }

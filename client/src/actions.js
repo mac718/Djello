@@ -202,15 +202,19 @@ export function deleteBoard(e) {
   }
 }
 
-export function changeBoardName(e) {
+export function changeName(e, route) {
   return (dispatch, getState) => {
+    let listId
+    if (route === '/changeListName') {
+      listId = e.target.parentElement.parentElement.id
+    }
     let state = getState()
     let currentUser = state.currentUser
-    let boardName = e.target.value
+    let componentName = e.target.value
 
-    fetch('/changeBoardName', {
+    fetch(route, {
       method: 'POST',
-      body: JSON.stringify({ boardName, currentUser }),
+      body: JSON.stringify({ componentName, currentUser, listId }),
       headers: {
         'Content-type': 'application/json',
       },

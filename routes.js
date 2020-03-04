@@ -242,7 +242,7 @@ router.delete('/deleteList', (req, res, next) => {
 })
 
 router.post('/changeBoardName', (req, res, next) => {
-  let name = req.body.boardName
+  let name = req.body.componentName
   let currentUser = req.body.currentUser
   let activeBoardId = currentUser.activeBoard
 
@@ -263,16 +263,68 @@ router.post('/changeBoardName', (req, res, next) => {
           console.log(err)
           next(err)
         }
-        let modifiedBoard = user.boards.filter(board => {
+        let modifiedBoardIndex
+        let modifiedBoard = user.boards.filter((board, index) => {
+          modifiedBoardIndex = index
           return board._id === activeBoardId
         })
-        user.boards.splice(modifiedBoard, 1, board)
+        user.boards.splice(modifiedBoardIndex, 1, board)
         user.save((err, user) => {
           if (err) {
             console.log(err)
             next(err)
           }
           return res.json(user)
+        })
+      })
+    })
+  })
+})
+
+router.post('/changeListName', (req, res, next) => {
+  let name = req.body.componentName
+  let currentUser = req.body.currentUser
+  let activeBoardId = currentUser.activeBoard
+  let listId = req.body.listId
+
+  List.findById(listId, (err, list) => {
+    if (err) {
+      console.log(err)
+      next(err)
+    }
+
+    list.name = name
+    console.log(list.name)
+    list.save((err, list) => {
+      Board.findById(activeBoardId, (err, board) => {
+        if (err) {
+          console.log(err)
+          next(err)
+        }
+        let modifiedListIndex
+        let modifiedList = board.lists.filter((list, index) => {
+          modifiedBoardIndex = index
+          return listId === list._id
+        })
+        board.lists.splice(modifiedListIndex, 1, list)
+        User.findById(currentUser._id, (err, user) => {
+          if (err) {
+            console.log(err)
+            next(err)
+          }
+          let modifiedBoardIndex
+          let modifiedBoard = user.boards.filter((userBoard, index) => {
+            modifiedBoardIndex = index
+            return userBoard._id === board._id
+          })
+          user.boards.splice(modifiedBoardIndex, 1, board)
+          user.save((err, user) => {
+            if (err) {
+              console.log(err)
+              next(err)
+            }
+            res.json(user)
+          })
         })
       })
     })

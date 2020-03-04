@@ -15,9 +15,10 @@ const Board = ({ handleClick, name, lists, handleBoardNameChange }) => {
       <div className="is-size-4">
         <input
           id="board-name"
-          className="input"
+          className="input is-large"
           type="text"
-          placeholder={name}
+          placeholder="Enter Board Name"
+          defaultValue={name}
           onBlur={handleBoardNameChange}
         />
       </div>
