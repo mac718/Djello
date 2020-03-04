@@ -5,12 +5,13 @@ import { deleteList, changeName } from '../actions'
 
 class ListContainer extends Component {
   render() {
-    const { id, deleteList, handleListNameChange } = this.props
+    const { id, deleteList, handleListNameChange, currentUser } = this.props
     return (
       <List
         id={id}
         deleteList={deleteList}
         handleListNameChange={handleListNameChange}
+        currentUser={currentUser}
       />
     )
   }
@@ -19,6 +20,7 @@ class ListContainer extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     id: ownProps.id,
+    currentUser: state.currentUser,
   }
 }
 

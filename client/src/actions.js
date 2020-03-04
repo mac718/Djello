@@ -223,7 +223,7 @@ export function changeName(e, route) {
         return res.json()
       })
       .then(json => {
-        console.log(json)
+        console.log('change name ' + JSON.stringify(json))
         dispatch(updateCurrentUser(json))
       })
       .catch(err => {

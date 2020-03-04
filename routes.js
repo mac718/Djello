@@ -323,7 +323,7 @@ router.post('/changeListName', (req, res, next) => {
               console.log(err)
               next(err)
             }
-            res.json(user)
+            return res.json(user)
           })
         })
       })

@@ -8,7 +8,7 @@ const Show = ({
   currentUser,
   handleDeleteBoard,
 }) => {
-  console.log('active ' + currentUser.activeBoard)
+  console.log('active ' + JSON.stringify(currentUser))
   var boards = []
   if (currentUser.boards) {
     boards = currentUser.boards.map(board => {

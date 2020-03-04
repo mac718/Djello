@@ -1,6 +1,16 @@
 import React from 'react'
 
-const List = ({ cards, name, id, deleteList, handleListNameChange }) => {
+const List = ({ cards, currentUser, id, deleteList, handleListNameChange }) => {
+  let currentBoard = currentUser.boards.filter(board => {
+    return board._id === currentUser.activeBoard
+  })
+
+  let currentList = currentBoard[0].lists.filter(list => {
+    return id === list._id
+  })
+
+  let name = currentList[0].name
+
   return (
     <div
       id={id}
