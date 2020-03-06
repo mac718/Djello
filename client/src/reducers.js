@@ -9,6 +9,7 @@ const initialState = {
   userBoards: [],
   error: '',
   redirect: '',
+  showCardForm: false,
 }
 
 export function djello(state = initialState, action) {
@@ -55,6 +56,16 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         currentUser: action.data,
+      }
+    case Actions.CREATE_CARD_FORM:
+      return {
+        ...state,
+        showCardForm: true,
+      }
+    case Actions.HIDE_CARD_FORM:
+      return {
+        ...state,
+        showCardForm: false,
       }
     default:
       return state

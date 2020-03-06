@@ -1,12 +1,16 @@
 import React from 'react'
 import Card from './Card'
+import CardForm from './CardForm'
 
 const List = ({
   currentUser,
   id,
   deleteList,
   handleListNameChange,
-  handleCreateCard,
+  handleSaveCard,
+  handleShowCardForm,
+  handleHideCardForm,
+  showCardForm,
 }) => {
   let currentBoard = currentUser.boards.filter(board => {
     return board._id === currentUser.activeBoard
@@ -16,12 +20,24 @@ const List = ({
     return id === list._id
   })
   let cardComponents
+  let cardForm
   let name = currentList[0].name
   let cards = currentList[0].cards
   if (cards) {
     cardComponents = cards.map(card => {
       return <Card content={card.content} key={card._id} />
     })
+  }
+
+  if (showCardForm) {
+    cardForm = (
+      <CardForm
+        handleSaveCard={handleSaveCard}
+        handleHideCardForm={handleHideCardForm}
+      />
+    )
+  } else {
+    cardForm = null
   }
 
   return (
@@ -40,7 +56,11 @@ const List = ({
         />
       </div>
       {cardComponents}
-      <button className="button is-primary is-light" onClick={handleCreateCard}>
+      {cardForm}
+      <button
+        className="button is-primary is-light"
+        onClick={handleShowCardForm}
+      >
         Add Task
       </button>
       <button className="button is-danger is-light" onClick={deleteList}>

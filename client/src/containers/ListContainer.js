@@ -1,7 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import List from '../components/List'
-import { deleteList, changeName, createCard } from '../actions'
+import {
+  deleteList,
+  changeName,
+  createCardForm,
+  saveCard,
+  hideCardForm,
+} from '../actions'
 
 class ListContainer extends Component {
   render() {
@@ -10,7 +16,10 @@ class ListContainer extends Component {
       deleteList,
       handleListNameChange,
       currentUser,
-      handleCreateCard,
+      handleSaveCard,
+      handleShowCardForm,
+      handleHideCardForm,
+      showCardForm,
     } = this.props
     return (
       <List
@@ -18,7 +27,10 @@ class ListContainer extends Component {
         deleteList={deleteList}
         handleListNameChange={handleListNameChange}
         currentUser={currentUser}
-        handleCreateCard={handleCreateCard}
+        handleSaveCard={handleSaveCard}
+        handleShowCardForm={handleShowCardForm}
+        handleHideCardForm={handleHideCardForm}
+        showCardForm={showCardForm}
       />
     )
   }
@@ -28,6 +40,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     id: ownProps.id,
     currentUser: state.currentUser,
+    showCardForm: state.showCardForm,
   }
 }
 
@@ -41,8 +54,16 @@ const mapDispatchToProps = dispatch => {
       dispatch(changeName(e, '/changeListName'))
     },
 
-    handleCreateCard: e => {
-      dispatch(createCard(e))
+    handleShowCardForm: () => {
+      dispatch(createCardForm())
+    },
+
+    handleHideCardForm: () => {
+      dispatch(hideCardForm())
+    },
+
+    handleSaveCard: e => {
+      dispatch(saveCard(e))
     },
   }
 }

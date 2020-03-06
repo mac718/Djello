@@ -138,7 +138,7 @@ router.delete('/deleteBoard', (req, res, next) => {
 
 router.post('/createList', (req, res, next) => {
   console.log('hi')
-  let list = new List({ name: '', cards: [''] })
+  let list = new List({ name: '', cards: [] })
   let activeBoard = req.body['activeBoard']
   let username = req.cookies['user']
   console.log('activeBoard ' + JSON.stringify(req.body))
@@ -331,7 +331,7 @@ router.post('/changeListName', (req, res, next) => {
   })
 })
 
-router.post('/createCard', (req, res, next) => {
+router.post('/saveCard', (req, res, next) => {
   let listId = req.body.listId
   let card = new Card({ content: '' })
   let currentUser = req.body.currentUser

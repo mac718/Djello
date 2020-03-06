@@ -7,6 +7,8 @@ export const HANDLE_PASSWORD_INPUT_CHANGE = 'HANDLE_PASSWORD_INPUT_CHANGE'
 export const SET_CURRENT_BOARD = 'SET_CURRENT_BOARD'
 export const UPDATE_CURRENT_USER = 'UPDATE_CURRENT_USER'
 export const CHANGE_BOARD_NAME = 'CHANGE_BOARD_NAME'
+export const CREATE_CARD_FORM = 'CREAT_CARD_FORM'
+export const HIDE_CARD_FORM = 'HIDE_CARD_FORM'
 
 export function getDataRequest() {
   return {
@@ -53,6 +55,18 @@ export function updateCurrentUser(data) {
   return {
     type: UPDATE_CURRENT_USER,
     data,
+  }
+}
+
+export function createCardForm() {
+  return {
+    type: CREATE_CARD_FORM,
+  }
+}
+
+export function hideCardForm() {
+  return {
+    type: HIDE_CARD_FORM,
   }
 }
 
@@ -234,7 +248,7 @@ export function changeName(e, route) {
   }
 }
 
-export function createCard(e) {
+export function saveCard(e) {
   return (dispatch, getState) => {
     let state = getState()
     let currentUser = state.currentUser
