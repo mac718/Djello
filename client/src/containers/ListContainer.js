@@ -1,17 +1,24 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import List from '../components/List'
-import { deleteList, changeName } from '../actions'
+import { deleteList, changeName, createCard } from '../actions'
 
 class ListContainer extends Component {
   render() {
-    const { id, deleteList, handleListNameChange, currentUser } = this.props
+    const {
+      id,
+      deleteList,
+      handleListNameChange,
+      currentUser,
+      handleCreateCard,
+    } = this.props
     return (
       <List
         id={id}
         deleteList={deleteList}
         handleListNameChange={handleListNameChange}
         currentUser={currentUser}
+        handleCreateCard={handleCreateCard}
       />
     )
   }
@@ -32,6 +39,10 @@ const mapDispatchToProps = dispatch => {
 
     handleListNameChange: e => {
       dispatch(changeName(e, '/changeListName'))
+    },
+
+    handleCreateCard: e => {
+      dispatch(createCard(e))
     },
   }
 }

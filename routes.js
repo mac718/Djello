@@ -138,7 +138,7 @@ router.delete('/deleteBoard', (req, res, next) => {
 
 router.post('/createList', (req, res, next) => {
   console.log('hi')
-  let list = new List({ name: '', cards: [] })
+  let list = new List({ name: '', cards: [''] })
   let activeBoard = req.body['activeBoard']
   let username = req.cookies['user']
   console.log('activeBoard ' + JSON.stringify(req.body))
@@ -324,6 +324,67 @@ router.post('/changeListName', (req, res, next) => {
               next(err)
             }
             return res.json(user)
+          })
+        })
+      })
+    })
+  })
+})
+
+router.post('/createCard', (req, res, next) => {
+  let listId = req.body.listId
+  let card = new Card({ content: '' })
+  let currentUser = req.body.currentUser
+  List.findById(listId, (err, list) => {
+    if (err) {
+      console.error(err)
+      next(err)
+    }
+    console.log('cards ' + list)
+    list.cards = [...list.cards, card]
+    list.save((err, list) => {
+      if (err) {
+        console.error(err)
+        next(err)
+      }
+      Board.findById(currentUser.activeBoard, (err, board) => {
+        if (err) {
+          console.error(err)
+          next(err)
+        }
+        let modifiedListIndex
+        let modifiedList = board.lists.filter((boardList, index) => {
+          modifiedListIndex = index
+          return boardList._id === listId
+        })
+
+        board.lists.splice(modifiedListIndex, 1, list)
+
+        board.save((err, board) => {
+          if (err) {
+            console.error(err)
+            next(err)
+          }
+          User.findById(currentUser._id, (err, user) => {
+            if (err) {
+              console.error(err)
+              next(err)
+            }
+            let modifiedBoardIndex
+            user.boards.forEach((userBoard, index) => {
+              if (userBoard._id === board._id) {
+                modifiedBoardIndex = index
+              }
+            })
+            user.boards.splice(modifiedBoardIndex, 1, board)
+            user.save((err, user) => {
+              if (err) {
+                console.error(err)
+                next(err)
+              }
+              console.log('butts ' + user)
+              return res.json(user)
+            })
           })
         })
       })

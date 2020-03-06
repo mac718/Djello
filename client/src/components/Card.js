@@ -4,7 +4,7 @@ const Card = ({ handleContentChange }) => {
   return (
     <div className="card control">
       <textarea
-        className="card-content textarea is-hovered"
+        className="card-content textarea task is-hovered"
         onChange={handleContentChange}
       ></textarea>
     </div>

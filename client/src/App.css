@@ -68,3 +68,7 @@
   border: none;
   box-shadow: none;
 }
+
+.task {
+  margin-bottom: 10px;
+}

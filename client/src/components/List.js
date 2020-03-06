@@ -1,6 +1,13 @@
 import React from 'react'
+import Card from './Card'
 
-const List = ({ cards, currentUser, id, deleteList, handleListNameChange }) => {
+const List = ({
+  currentUser,
+  id,
+  deleteList,
+  handleListNameChange,
+  handleCreateCard,
+}) => {
   let currentBoard = currentUser.boards.filter(board => {
     return board._id === currentUser.activeBoard
   })
@@ -8,8 +15,14 @@ const List = ({ cards, currentUser, id, deleteList, handleListNameChange }) => {
   let currentList = currentBoard[0].lists.filter(list => {
     return id === list._id
   })
-
+  let cardComponents
   let name = currentList[0].name
+  let cards = currentList[0].cards
+  if (cards) {
+    cardComponents = cards.map(card => {
+      return <Card content={card.content} key={card._id} />
+    })
+  }
 
   return (
     <div
@@ -26,8 +39,10 @@ const List = ({ cards, currentUser, id, deleteList, handleListNameChange }) => {
           onBlur={handleListNameChange}
         />
       </div>
-      {cards}
-      <button className="button is-primary is-light">Add Task</button>
+      {cardComponents}
+      <button className="button is-primary is-light" onClick={handleCreateCard}>
+        Add Task
+      </button>
       <button className="button is-danger is-light" onClick={deleteList}>
         Delete List
       </button>

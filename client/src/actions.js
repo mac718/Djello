@@ -233,3 +233,29 @@ export function changeName(e, route) {
       })
   }
 }
+
+export function createCard(e) {
+  return (dispatch, getState) => {
+    let state = getState()
+    let currentUser = state.currentUser
+    let listId = e.target.parentElement.id
+    fetch('/createCard', {
+      method: 'POST',
+      body: JSON.stringify({ listId, currentUser }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then(res => {
+        //console.log('butts ' + res)
+        return res.json()
+      })
+      .then(json => {
+        dispatch(updateCurrentUser(json))
+      })
+      .catch(err => {
+        console.log(err)
+        alert('hmmmm')
+      })
+  }
+}
