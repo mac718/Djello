@@ -9,6 +9,7 @@ export const UPDATE_CURRENT_USER = 'UPDATE_CURRENT_USER'
 export const CHANGE_BOARD_NAME = 'CHANGE_BOARD_NAME'
 export const CREATE_CARD_FORM = 'CREAT_CARD_FORM'
 export const HIDE_CARD_FORM = 'HIDE_CARD_FORM'
+export const CHANGE_TITLE = 'CHANGE_TITLE'
 
 export function getDataRequest() {
   return {
@@ -67,6 +68,13 @@ export function createCardForm() {
 export function hideCardForm() {
   return {
     type: HIDE_CARD_FORM,
+  }
+}
+
+export function changeTitle(title) {
+  return {
+    type: CHANGE_TITLE,
+    title,
   }
 }
 
@@ -252,10 +260,12 @@ export function saveCard(e) {
   return (dispatch, getState) => {
     let state = getState()
     let currentUser = state.currentUser
-    let listId = e.target.parentElement.id
+    let listId = e.target.parentElement.parentElement.id
+    console.log('listID ' + listId)
+    let title = state.title
     fetch('/createCard', {
       method: 'POST',
-      body: JSON.stringify({ listId, currentUser }),
+      body: JSON.stringify({ listId, currentUser, title }),
       headers: {
         'Content-type': 'application/json',
       },

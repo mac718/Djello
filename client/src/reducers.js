@@ -10,6 +10,7 @@ const initialState = {
   error: '',
   redirect: '',
   showCardForm: false,
+  title: '',
 }
 
 export function djello(state = initialState, action) {
@@ -66,6 +67,11 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         showCardForm: false,
+      }
+    case Actions.CHANGE_TITLE:
+      return {
+        ...state,
+        title: action.title,
       }
     default:
       return state

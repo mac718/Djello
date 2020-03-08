@@ -11,6 +11,7 @@ const List = ({
   handleShowCardForm,
   handleHideCardForm,
   showCardForm,
+  handleTitleChange,
 }) => {
   let currentBoard = currentUser.boards.filter(board => {
     return board._id === currentUser.activeBoard
@@ -25,7 +26,7 @@ const List = ({
   let cards = currentList[0].cards
   if (cards) {
     cardComponents = cards.map(card => {
-      return <Card content={card.content} key={card._id} />
+      return <Card title={card.title} key={card._id} />
     })
   }
 
@@ -34,6 +35,7 @@ const List = ({
       <CardForm
         handleSaveCard={handleSaveCard}
         handleHideCardForm={handleHideCardForm}
+        handleTitleChange={handleTitleChange}
       />
     )
   } else {

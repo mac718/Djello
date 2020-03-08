@@ -7,6 +7,7 @@ import {
   createCardForm,
   saveCard,
   hideCardForm,
+  changeTitle,
 } from '../actions'
 
 class ListContainer extends Component {
@@ -20,6 +21,7 @@ class ListContainer extends Component {
       handleShowCardForm,
       handleHideCardForm,
       showCardForm,
+      handleTitleChange,
     } = this.props
     return (
       <List
@@ -31,6 +33,7 @@ class ListContainer extends Component {
         handleShowCardForm={handleShowCardForm}
         handleHideCardForm={handleHideCardForm}
         showCardForm={showCardForm}
+        handleTitleChange={handleTitleChange}
       />
     )
   }
@@ -58,12 +61,18 @@ const mapDispatchToProps = dispatch => {
       dispatch(createCardForm())
     },
 
-    handleHideCardForm: () => {
+    handleHideCardForm: e => {
       dispatch(hideCardForm())
+      dispatch(saveCard(e))
     },
 
-    handleSaveCard: e => {
-      dispatch(saveCard(e))
+    // handleSaveCard: e => {
+    //   dispatch(saveCard(e))
+    // },
+    handleTitleChange: e => {
+      let title = e.target.value
+      console.log(title)
+      dispatch(changeTitle(title))
     },
   }
 }

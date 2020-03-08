@@ -331,59 +331,67 @@ router.post('/changeListName', (req, res, next) => {
   })
 })
 
-router.post('/saveCard', (req, res, next) => {
+router.post('/createCard', (req, res, next) => {
   let listId = req.body.listId
-  let card = new Card({ content: '' })
+  let title = req.body.title
+  let card = new Card({ title })
+  console.log(listId)
   let currentUser = req.body.currentUser
-  List.findById(listId, (err, list) => {
+  card.save((err, card) => {
     if (err) {
       console.error(err)
       next(err)
     }
-    console.log('cards ' + list)
-    list.cards = [...list.cards, card]
-    list.save((err, list) => {
+    List.findById(listId, (err, list) => {
       if (err) {
         console.error(err)
         next(err)
       }
-      Board.findById(currentUser.activeBoard, (err, board) => {
+      console.log('cards ' + list)
+      list.cards = [...list.cards, card]
+      list.save((err, list) => {
         if (err) {
           console.error(err)
           next(err)
         }
-        let modifiedListIndex
-        let modifiedList = board.lists.filter((boardList, index) => {
-          modifiedListIndex = index
-          return boardList._id === listId
-        })
-
-        board.lists.splice(modifiedListIndex, 1, list)
-
-        board.save((err, board) => {
+        Board.findById(currentUser.activeBoard, (err, board) => {
           if (err) {
             console.error(err)
             next(err)
           }
-          User.findById(currentUser._id, (err, user) => {
+          let modifiedListIndex
+          let modifiedList = board.lists.filter((boardList, index) => {
+            modifiedListIndex = index
+            return boardList._id === listId
+          })
+
+          board.lists.splice(modifiedListIndex, 1, list)
+
+          board.save((err, board) => {
             if (err) {
               console.error(err)
               next(err)
             }
-            let modifiedBoardIndex
-            user.boards.forEach((userBoard, index) => {
-              if (userBoard._id === board._id) {
-                modifiedBoardIndex = index
-              }
-            })
-            user.boards.splice(modifiedBoardIndex, 1, board)
-            user.save((err, user) => {
+            User.findById(currentUser._id, (err, user) => {
               if (err) {
                 console.error(err)
                 next(err)
               }
-              console.log('butts ' + user)
-              return res.json(user)
+              let modifiedBoardIndex
+              user.boards.forEach((userBoard, index) => {
+                if (userBoard._id === board._id) {
+                  modifiedBoardIndex = index
+                }
+              })
+              user.boards.splice(modifiedBoardIndex, 1, board)
+              user.save((err, user) => {
+                if (err) {
+                  console.error(err)
+                  next(err)
+                }
+                console.log('butts ' + user)
+                return res.json(user)
+              })
             })
           })
         })
