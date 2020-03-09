@@ -3,12 +3,12 @@ import React from 'react'
 const Card = ({ handleContentChange, title }) => {
   return (
     <div className="card control">
-      <textarea
+      <div
+        className="card-content"
         className="card-content textarea task is-hovered"
-        onChange={handleContentChange}
-        value={title}
-        readOnly
-      ></textarea>
+      >
+        {title}
+      </div>
     </div>
   )
 }
