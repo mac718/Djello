@@ -72,3 +72,9 @@
 .task {
   margin-bottom: 10px;
 }
+
+#cardForm-buttons {
+  justify-content: center;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}

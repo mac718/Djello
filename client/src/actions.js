@@ -10,6 +10,7 @@ export const CHANGE_BOARD_NAME = 'CHANGE_BOARD_NAME'
 export const CREATE_CARD_FORM = 'CREAT_CARD_FORM'
 export const HIDE_CARD_FORM = 'HIDE_CARD_FORM'
 export const CHANGE_TITLE = 'CHANGE_TITLE'
+export const CHANGE_CARD_MODAL_STATE = 'CHANGE_CARD_MODAL_STATE'
 
 export function getDataRequest() {
   return {
@@ -75,6 +76,12 @@ export function changeTitle(title) {
   return {
     type: CHANGE_TITLE,
     title,
+  }
+}
+
+export function changeCardModalState() {
+  return {
+    type: CHANGE_CARD_MODAL_STATE,
   }
 }
 
@@ -258,9 +265,11 @@ export function changeName(e, route) {
 
 export function saveCard(e) {
   return (dispatch, getState) => {
+    e.preventDefault()
     let state = getState()
     let currentUser = state.currentUser
-    let listId = e.target.parentElement.parentElement.id
+    let listId =
+      e.target.parentElement.parentElement.parentElement.parentElement.id
     console.log('listID ' + listId)
     let title = state.title
     fetch('/createCard', {

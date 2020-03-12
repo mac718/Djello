@@ -335,7 +335,7 @@ router.post('/createCard', (req, res, next) => {
   let listId = req.body.listId
   let title = req.body.title
   let card = new Card({ title })
-  console.log(listId)
+
   let currentUser = req.body.currentUser
   card.save((err, card) => {
     if (err) {
@@ -343,6 +343,7 @@ router.post('/createCard', (req, res, next) => {
       next(err)
     }
     List.findById(listId, (err, list) => {
+      console.log('list id ' + listId)
       if (err) {
         console.error(err)
         next(err)

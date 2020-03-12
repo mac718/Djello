@@ -8,18 +8,24 @@ const CardForm = ({
   return (
     <form onSubmit={handleSaveCard}>
       <textarea className="textarea" onChange={handleTitleChange}></textarea>
-      <button
-        className="button is-primary is-light"
-        onClick={handleHideCardForm}
-      >
-        save
-      </button>
-      <button
-        className="button is-danger is-light"
-        onClick={handleHideCardForm}
-      >
-        cancel
-      </button>
+      <div className="field is-grouped" id="cardForm-buttons">
+        <p className="control">
+          <button
+            className="button is-primary is-light"
+            onClick={handleHideCardForm}
+          >
+            save
+          </button>
+        </p>
+        <p className="control">
+          <button
+            className="button is-danger is-light"
+            onClick={handleHideCardForm}
+          >
+            cancel
+          </button>
+        </p>
+      </div>
     </form>
   )
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import Card from './Card'
+import CardContainer from '../containers/CardContainer'
 import CardForm from './CardForm'
 
 const List = ({
@@ -17,16 +17,20 @@ const List = ({
     return board._id === currentUser.activeBoard
   })
 
+  console.log(currentBoard)
+
   let currentList = currentBoard[0].lists.filter(list => {
     return id === list._id
   })
+
+  console.log(currentList)
   let cardComponents
   let cardForm
   let name = currentList[0].name
   let cards = currentList[0].cards
   if (cards) {
     cardComponents = cards.map(card => {
-      return <Card title={card.title} key={card._id} />
+      return <CardContainer title={card.title} key={card._id} />
     })
   }
 

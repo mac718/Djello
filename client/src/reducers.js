@@ -11,6 +11,7 @@ const initialState = {
   redirect: '',
   showCardForm: false,
   title: '',
+  cardModalState: false,
 }
 
 export function djello(state = initialState, action) {
@@ -72,6 +73,11 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         title: action.title,
+      }
+    case Actions.CHANGE_CARD_MODAL_STATE:
+      return {
+        ...state,
+        cardModalState: state.cardModalState ? false : true,
       }
     default:
       return state
