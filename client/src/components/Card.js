@@ -1,39 +1,36 @@
 import React from 'react'
+import CardModal from './CardModal'
 
 const Card = ({
   handleContentChange,
   title,
-  cardModalState,
-  handleCardModalState,
+  activeCardModal,
+  handleActiveCardModal,
+  id,
 }) => {
   let classes
-  cardModalState
-    ? (classes = 'modal is-active is clipped')
-    : (classes = 'modal')
+  if (activeCardModal === id) {
+    classes = `modal is-active is clipped ${id}`
+  } else {
+    classes = `modal ${id}`
+  }
   return (
     <div>
-      <div className="card" data-target="modal" aria-haspopup="true">
-        <div
-          className="card-content"
-          className="card-content textarea task is-hovered"
-          onClick={handleCardModalState}
-        >
-          {title}
-        </div>
+      <div
+        id={id}
+        className="card"
+        data-target={id}
+        aria-haspopup="true"
+        onClick={handleActiveCardModal}
+      >
+        <div className="card-content textarea task is-hovered">{title}</div>
       </div>
-      <div className={classes}>
-        <div className="modal-background"></div>
-        <div className="modal-content">
-          <div className="box">
-            <p>Hi</p>
-          </div>
-        </div>
-        <button
-          className="modal-close is-large"
-          aria-label="close"
-          onClick={handleCardModalState}
-        ></button>
-      </div>
+      <CardModal
+        id={id}
+        title={title}
+        classes={classes}
+        handleActiveCardModal={handleActiveCardModal}
+      />
     </div>
   )
 }

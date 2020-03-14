@@ -10,7 +10,7 @@ export const CHANGE_BOARD_NAME = 'CHANGE_BOARD_NAME'
 export const CREATE_CARD_FORM = 'CREAT_CARD_FORM'
 export const HIDE_CARD_FORM = 'HIDE_CARD_FORM'
 export const CHANGE_TITLE = 'CHANGE_TITLE'
-export const CHANGE_CARD_MODAL_STATE = 'CHANGE_CARD_MODAL_STATE'
+export const CHANGE_ACTIVE_CARD_MODAL = 'CHANGE_ACTIVE_CARD_MODAL'
 
 export function getDataRequest() {
   return {
@@ -79,9 +79,10 @@ export function changeTitle(title) {
   }
 }
 
-export function changeCardModalState() {
+export function changeActiveCardModal(id) {
   return {
-    type: CHANGE_CARD_MODAL_STATE,
+    type: CHANGE_ACTIVE_CARD_MODAL,
+    id,
   }
 }
 

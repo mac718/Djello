@@ -1,17 +1,18 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Card from '../components/Card'
-import { changeCardModalState } from '../actions'
+import { changeActiveCardModal } from '../actions'
 
 class CardContainer extends Component {
   render() {
-    const { title, cardModalState, handleCardModalState } = this.props
-    console.log(cardModalState)
+    const { title, activeCardModal, handleActiveCardModal, id } = this.props
+    console.log(activeCardModal)
     return (
       <Card
         title={title}
-        cardModalState={cardModalState}
-        handleCardModalState={handleCardModalState}
+        activeCardModal={activeCardModal}
+        handleActiveCardModal={handleActiveCardModal}
+        id={id}
       />
     )
   }
@@ -20,17 +21,19 @@ class CardContainer extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     title: ownProps.title,
-    cardModalState: state.cardModalState,
+    id: ownProps.id,
+    activeCardModal: state.activeCardModal,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleCardModalState: e => {
+    handleActiveCardModal: e => {
+      let id = e.target.parentElement.id
       // let modal
-      // state.cardModalState ? (modal = false) : (modal = true)
-      // console.log(cardModalState)
-      dispatch(changeCardModalState())
+      // state.ActiveCardModal ? (modal = false) : (modal = true)
+      // console.log(ActiveCardModal)
+      dispatch(changeActiveCardModal(id))
     },
   }
 }
