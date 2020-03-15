@@ -404,28 +404,64 @@ router.post('/createCard', (req, res, next) => {
 router.delete('/deleteCard', (req, res, next) => {
   let cardId = req.body.cardId
   let listId = req.body.listId
-  console.log('cardId ' + cardId)
+  let currentUser = req.body.currentUser
+  let boardId = console.log('cardId ' + cardId)
   console.log('listId ' + listId)
-  // Card.findById(cardId, (err, card) => {
-  //   if (err) {
-  //     console.error(err)
-  //     next(err)
-  //   }
-  //   card.delete(err => {
-  //     if (err) {
-  //       console.error(err)
-  //       next(err)
-  //     }
-  //     List.findById(listId, (err, list) => {
-  //       if (err) {
-  //         console.error(err)
-  //         next(err)
-  //       }
-  //       let deletedCardIndex = list.cards.indexOf(card)
-  //       list.cards.splice(deletedCardIndex, 1)
-  //     })
-  //   })
-  // })
+  Card.findById(cardId, (err, card) => {
+    if (err) {
+      console.error(err)
+      next(err)
+    }
+    card.delete(err => {
+      if (err) {
+        console.error(err)
+        next(err)
+      }
+      List.findById(listId, (err, list) => {
+        if (err) {
+          console.error(err)
+          next(err)
+        }
+        let deletedCardIndex = list.cards.indexOf(card)
+        list.cards.splice(deletedCardIndex, 1)
+        list.save((err, list) => {
+          if (err) {
+            console.error(err)
+            next(err)
+          }
+          Board.findById(currentUser.activeBoard, (err, board) => {
+            if (err) {
+              console.error(err)
+              next(err)
+            }
+            let modifiedListIndex = board.lists.indexOf(list)
+            board.lists.splice(modifiedListIndex, 1, list)
+            board.save((err, board) => {
+              if (err) {
+                console.error(err)
+                next(err)
+              }
+              User.findById(currentUser._id, (err, user) => {
+                if (err) {
+                  console.error(err)
+                  next(err)
+                }
+                let modifiedBoardIndex = user.boards.indexOf(board)
+                user.boards.splice(modifiedBoardIndex, 1, board)
+                user.save((err, user) => {
+                  if (err) {
+                    console.error(err)
+                    next(err)
+                  }
+                  return res.json(user)
+                })
+              })
+            })
+          })
+        })
+      })
+    })
+  })
 })
 
 module.exports = router

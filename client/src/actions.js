@@ -271,7 +271,6 @@ export function saveCard(e) {
     let currentUser = state.currentUser
     let listId =
       e.target.parentElement.parentElement.parentElement.parentElement.id
-    console.log('listID ' + listId)
     let title = state.title
     fetch('/createCard', {
       method: 'POST',
@@ -296,15 +295,24 @@ export function saveCard(e) {
 
 export function deleteCard(cardId, listId) {
   return (dispatch, getState) => {
+    let state = getState()
+    let currentUser = state.currentUser
     fetch('deleteCard', {
       method: 'DELETE',
-      body: JSON.stringify({ cardId, listId }),
+      body: JSON.stringify({ cardId, listId, currentUser }),
       headers: {
         'Content-type': 'application/json',
       },
-    }).catch(err => {
-      console.log(err)
-      alert('hmmmm')
     })
+      .then(res => {
+        return res.json()
+      })
+      .then(json => {
+        dispatch(updateCurrentUser(json))
+      })
+      .catch(err => {
+        console.log(err)
+        alert('hmmmm')
+      })
   }
 }
