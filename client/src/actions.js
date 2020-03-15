@@ -293,3 +293,18 @@ export function saveCard(e) {
       })
   }
 }
+
+export function deleteCard(cardId, listId) {
+  return (dispatch, getState) => {
+    fetch('deleteCard', {
+      method: 'DELETE',
+      body: JSON.stringify({ cardId, listId }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    }).catch(err => {
+      console.log(err)
+      alert('hmmmm')
+    })
+  }
+}

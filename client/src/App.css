@@ -73,7 +73,8 @@
   margin-bottom: 10px;
 }
 
-#cardForm-buttons {
+#cardForm-buttons,
+#card-modal-buttons {
   justify-content: center;
   margin-top: 8px;
   margin-bottom: 8px;

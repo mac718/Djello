@@ -401,4 +401,31 @@ router.post('/createCard', (req, res, next) => {
   })
 })
 
+router.delete('/deleteCard', (req, res, next) => {
+  let cardId = req.body.cardId
+  let listId = req.body.listId
+  console.log('cardId ' + cardId)
+  console.log('listId ' + listId)
+  // Card.findById(cardId, (err, card) => {
+  //   if (err) {
+  //     console.error(err)
+  //     next(err)
+  //   }
+  //   card.delete(err => {
+  //     if (err) {
+  //       console.error(err)
+  //       next(err)
+  //     }
+  //     List.findById(listId, (err, list) => {
+  //       if (err) {
+  //         console.error(err)
+  //         next(err)
+  //       }
+  //       let deletedCardIndex = list.cards.indexOf(card)
+  //       list.cards.splice(deletedCardIndex, 1)
+  //     })
+  //   })
+  // })
+})
+
 module.exports = router

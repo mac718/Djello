@@ -1,11 +1,18 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Card from '../components/Card'
-import { changeActiveCardModal } from '../actions'
+import { changeActiveCardModal, deleteCard } from '../actions'
 
 class CardContainer extends Component {
   render() {
-    const { title, activeCardModal, handleActiveCardModal, id } = this.props
+    const {
+      title,
+      activeCardModal,
+      handleActiveCardModal,
+      id,
+      handleDeleteCard,
+      listId,
+    } = this.props
     console.log(activeCardModal)
     return (
       <Card
@@ -13,6 +20,8 @@ class CardContainer extends Component {
         activeCardModal={activeCardModal}
         handleActiveCardModal={handleActiveCardModal}
         id={id}
+        handleDeleteCard={handleDeleteCard}
+        listId={listId}
       />
     )
   }
@@ -23,6 +32,7 @@ const mapStateToProps = (state, ownProps) => {
     title: ownProps.title,
     id: ownProps.id,
     activeCardModal: state.activeCardModal,
+    listId: ownProps.listId,
   }
 }
 
@@ -34,6 +44,13 @@ const mapDispatchToProps = dispatch => {
       // state.ActiveCardModal ? (modal = false) : (modal = true)
       // console.log(ActiveCardModal)
       dispatch(changeActiveCardModal(id))
+    },
+
+    handleDeleteCard: e => {
+      let cardId = e.target.parentElement.parentElement.parentElement.id
+      let listId =
+        e.target.parentElement.parentElement.parentElement.firstChild.id
+      dispatch(deleteCard(cardId, listId))
     },
   }
 }

@@ -30,7 +30,14 @@ const List = ({
   let cards = currentList[0].cards
   if (cards) {
     cardComponents = cards.map(card => {
-      return <CardContainer title={card.title} id={card._id} key={card._id} />
+      return (
+        <CardContainer
+          title={card.title}
+          id={card._id}
+          listId={id}
+          key={card._id}
+        />
+      )
     })
   }
 

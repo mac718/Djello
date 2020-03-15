@@ -7,6 +7,8 @@ const Card = ({
   activeCardModal,
   handleActiveCardModal,
   id,
+  handleDeleteCard,
+  listId,
 }) => {
   let classes
   if (activeCardModal === id) {
@@ -30,6 +32,8 @@ const Card = ({
         title={title}
         classes={classes}
         handleActiveCardModal={handleActiveCardModal}
+        handleDeleteCard={handleDeleteCard}
+        listId={listId}
       />
     </div>
   )
