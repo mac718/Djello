@@ -6,18 +6,21 @@ const CardModal = ({
   members,
   classes,
   handleActiveCardModal,
-  id,
+  cardId,
   handleDeleteCard,
   listId,
+  listName,
 }) => {
   console.log('listId ' + listId)
+  console.log('carId ' + cardId)
   return (
-    <div id={id} className={classes}>
+    <div id={cardId} className={classes}>
       <span id={listId}></span>
       <div className="modal-background"></div>
       <div className="modal-card">
         <div className="modal-card-head">
           <p className="modal-card-title">{title}</p>
+          <p>In list {listName}</p>
           <button
             className="delete"
             aria-label="close"
@@ -31,11 +34,17 @@ const CardModal = ({
           >
             Mark as Complete
           </button>
-          <div className="members">
-            <p className="is-size-3">Members</p>
-          </div>
           <form>
-            <textarea defaultValue={description}></textarea>
+            <textarea
+              className="textarea"
+              defaultValue={description}
+            ></textarea>
+            <div className="members">
+              <p className="is-size-4">Members</p>
+            </div>
+            <div className="modal-card-footer">
+              <p className="is-size-4">Activity</p>
+            </div>
             <div id="card-modal-buttons" className="field is-grouped">
               <p className="control">
                 <button className="button is-primary" type="submit">

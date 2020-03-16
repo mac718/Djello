@@ -10,7 +10,7 @@ const persistConfig = {
   key: 'root',
   storage,
   stateReconciler: autoMergeLevel2,
-  blacklist: ['redirect', 'loading', 'showCardForm'],
+  blacklist: ['redirect', 'loading', 'showCardForm', 'activeCardModal'],
 }
 
 const persistedReducer = persistReducer(persistConfig, djello)

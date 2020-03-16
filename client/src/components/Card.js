@@ -6,34 +6,38 @@ const Card = ({
   title,
   activeCardModal,
   handleActiveCardModal,
-  id,
+  cardId,
   handleDeleteCard,
   listId,
+  listName,
+  handleDescriptionChange,
 }) => {
   let classes
-  if (activeCardModal === id) {
-    classes = `modal is-active is clipped ${id}`
+  if (activeCardModal === cardId) {
+    classes = `modal is-active is clipped ${cardId}`
   } else {
-    classes = `modal ${id}`
+    classes = `modal ${cardId}`
   }
   return (
     <div>
       <div
-        id={id}
+        id={cardId}
         className="card"
-        data-target={id}
+        data-target={cardId}
         aria-haspopup="true"
         onClick={handleActiveCardModal}
       >
         <div className="card-content textarea task is-hovered">{title}</div>
       </div>
       <CardModal
-        id={id}
+        cardId={cardId}
         title={title}
         classes={classes}
         handleActiveCardModal={handleActiveCardModal}
         handleDeleteCard={handleDeleteCard}
         listId={listId}
+        listName={listName}
+        handleDescriptionChange={handleDescriptionChange}
       />
     </div>
   )

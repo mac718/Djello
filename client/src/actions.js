@@ -11,6 +11,7 @@ export const CREATE_CARD_FORM = 'CREAT_CARD_FORM'
 export const HIDE_CARD_FORM = 'HIDE_CARD_FORM'
 export const CHANGE_TITLE = 'CHANGE_TITLE'
 export const CHANGE_ACTIVE_CARD_MODAL = 'CHANGE_ACTIVE_CARD_MODAL'
+export const CHANGE_CARD_DESCRIPTION = 'CHANGE_CARD_DESCRIPTION'
 
 export function getDataRequest() {
   return {
@@ -83,6 +84,13 @@ export function changeActiveCardModal(id) {
   return {
     type: CHANGE_ACTIVE_CARD_MODAL,
     id,
+  }
+}
+
+export function changeCardDescription(description) {
+  return {
+    type: CHANGE_CARD_DESCRIPTION,
+    description,
   }
 }
 
@@ -280,7 +288,6 @@ export function saveCard(e) {
       },
     })
       .then(res => {
-        //console.log('butts ' + res)
         return res.json()
       })
       .then(json => {
@@ -316,3 +323,5 @@ export function deleteCard(cardId, listId) {
       })
   }
 }
+
+export function updateCard() {}

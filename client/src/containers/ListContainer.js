@@ -66,9 +66,6 @@ const mapDispatchToProps = dispatch => {
       dispatch(saveCard(e))
     },
 
-    // handleSaveCard: e => {
-    //   dispatch(saveCard(e))
-    // },
     handleTitleChange: e => {
       let title = e.target.value
       console.log(title)

@@ -9,10 +9,19 @@ const Show = ({
   handleDeleteBoard,
 }) => {
   console.log('active ' + JSON.stringify(currentUser))
-  var boards = []
+  let boards = []
+  let boardNames = []
+  let dropdownItems
   if (currentUser.boards) {
     boards = currentUser.boards.map(board => {
+      boardNames.push(board.name)
       return <BoardContainer />
+    })
+  }
+
+  if (boardNames.length > 0) {
+    dropdownItems = boardNames.map(name => {
+      return <a className="navbar-item">{name}</a>
     })
   }
 
@@ -61,13 +70,7 @@ const Show = ({
         <div className="navbar-item has-dropdown is-hoverable">
           <a className="navbar-link">Boards</a>
 
-          <div className="navbar-dropdown">
-            <a className="navbar-item">Overview</a>
-            <a className="navbar-item">Elements</a>
-            <a className="navbar-item">Components</a>
-            <hr className="navbar-divider" />
-            <div className="navbar-item">Version 0.8.0</div>
-          </div>
+          <div className="navbar-dropdown">{dropdownItems}</div>
         </div>
         <button
           className="button is-danger is-light"

@@ -33,8 +33,9 @@ const List = ({
       return (
         <CardContainer
           title={card.title}
-          id={card._id}
+          cardId={card._id}
           listId={id}
+          listName={currentList[0].name}
           key={card._id}
         />
       )
