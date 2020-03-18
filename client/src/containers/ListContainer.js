@@ -57,13 +57,12 @@ const mapDispatchToProps = dispatch => {
       dispatch(changeName(e, '/changeListName'))
     },
 
-    handleShowCardForm: () => {
-      dispatch(createCardForm())
+    handleShowCardForm: listId => {
+      dispatch(createCardForm(listId))
     },
 
     handleHideCardForm: e => {
-      dispatch(hideCardForm())
-      dispatch(saveCard(e))
+      Promise.resolve(dispatch(hideCardForm())).then(dispatch(saveCard(e)))
     },
 
     handleTitleChange: e => {

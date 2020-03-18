@@ -3,7 +3,6 @@ import List from './List'
 import ListContainer from '../containers/ListContainer'
 
 const Board = ({ handleClick, name, lists, handleBoardNameChange }) => {
-  console.log('name ' + lists)
   let boardLists = 'hello'
   if (lists) {
     boardLists = lists.map(list => {

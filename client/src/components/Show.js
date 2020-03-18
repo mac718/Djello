@@ -7,6 +7,7 @@ const Show = ({
   handleCreateBoard,
   currentUser,
   handleDeleteBoard,
+  handleActiveBoardSwitch,
 }) => {
   console.log('active ' + JSON.stringify(currentUser))
   let boards = []
@@ -17,11 +18,21 @@ const Show = ({
       boardNames.push(board.name)
       return <BoardContainer />
     })
-  }
-
-  if (boardNames.length > 0) {
-    dropdownItems = boardNames.map(name => {
-      return <a className="navbar-item">{name}</a>
+    //id is the same for all boards
+    //need to fix board name input
+    console.log(JSON.stringify(currentUser.boards))
+    dropdownItems = currentUser.boards.map((board, i) => {
+      console.log(i + ' ' + board._id)
+      return (
+        <a
+          className="navbar-item"
+          id={board._id}
+          onClick={handleActiveBoardSwitch}
+          key={board._id + '1'}
+        >
+          {board.name}
+        </a>
+      )
     })
   }
 
@@ -33,7 +44,7 @@ const Show = ({
   }
 
   activeBoard = <BoardContainer currentBoard={activeBoard} />
-  console.log(activeBoard)
+  console.log(currentUser.activeBoard)
 
   return (
     <div className="show">
@@ -86,14 +97,6 @@ const Show = ({
         </button>
       </nav>
       <div className="current-board">{activeBoard}</div>
-      {/* <div className="create-board">
-        <button
-          className="button is-success is-large"
-          onClick={handleCreateBoard}
-        >
-          Create a new board!
-        </button>
-  </div> */}
     </div>
   )
 }

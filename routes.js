@@ -75,21 +75,23 @@ router.post('/logout', (req, res) => {
 
 router.post('/createBoard', (req, res, next) => {
   let board = new Board({ name: 'New Board', lists: [] })
+  console.log('new board ' + board)
+  let currentUser = req.body.currentUser
 
   board.save((err, board) => {
     if (err) {
       console.error(err)
       return next(err)
     }
-    let username = req.cookies.user
-    let user = User.find({ username }, (err, user) => {
+    //let username = req.cookies.user
+    User.findById(currentUser._id, (err, user) => {
       if (err) {
         console.log(err)
         res.json({ error: 'Error saving board' })
       }
-      user[0].boards.push(board)
-      user[0].activeBoard = board._id
-      user[0].save((err, user) => {
+      user.boards.push(board)
+      user.activeBoard = board._id
+      user.save((err, user) => {
         if (err) {
           console.log(err)
           res.json({ error: 'Error saving board' })
@@ -361,10 +363,12 @@ router.post('/createCard', (req, res, next) => {
             next(err)
           }
           let modifiedListIndex
-          let modifiedList = board.lists.filter((boardList, index) => {
-            modifiedListIndex = index
-            return boardList._id === listId
+          board.lists.forEach((boardList, index) => {
+            if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
+              modifiedListIndex = index
+            }
           })
+          console.log('modifiedLisIndex ' + modifiedListIndex)
 
           board.lists.splice(modifiedListIndex, 1, list)
 
@@ -380,7 +384,9 @@ router.post('/createCard', (req, res, next) => {
               }
               let modifiedBoardIndex
               user.boards.forEach((userBoard, index) => {
-                if (userBoard._id === board._id) {
+                if (
+                  JSON.stringify(userBoard._id) === JSON.stringify(board._id)
+                ) {
                   modifiedBoardIndex = index
                 }
               })
@@ -390,7 +396,7 @@ router.post('/createCard', (req, res, next) => {
                   console.error(err)
                   next(err)
                 }
-                console.log('butts ' + user)
+                console.log('butts ' + JSON.stringify(user.boards))
                 return res.json(user)
               })
             })
@@ -460,6 +466,26 @@ router.delete('/deleteCard', (req, res, next) => {
           })
         })
       })
+    })
+  })
+})
+
+router.patch('/switchActiveBoard', (req, res, next) => {
+  let boardId = req.body.boardId
+  let currentUser = req.body.currentUser
+
+  User.findById(currentUser._id, (err, user) => {
+    if (err) {
+      console.error(err)
+      next(err)
+    }
+    user.activeBoard = boardId
+    user.save((err, user) => {
+      if (err) {
+        console.error(err)
+        next(err)
+      }
+      return res.json(user)
     })
   })
 })

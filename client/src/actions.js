@@ -142,9 +142,15 @@ export function handleLogOut(e) {
 }
 
 export function createBoard(e) {
-  return dispatch => {
+  return (dispatch, getState) => {
+    let state = getState()
+    let currentUser = state.currentUser
     fetch('/createBoard', {
       method: 'POST',
+      body: JSON.stringify({ currentUser }),
+      headers: {
+        'Content-type': 'application/json',
+      },
     })
       .then(res => {
         console.log(res)
@@ -279,6 +285,7 @@ export function saveCard(e) {
     let currentUser = state.currentUser
     let listId =
       e.target.parentElement.parentElement.parentElement.parentElement.id
+    console.log('list yo ' + listId)
     let title = state.title
     fetch('/createCard', {
       method: 'POST',
@@ -307,6 +314,32 @@ export function deleteCard(cardId, listId) {
     fetch('deleteCard', {
       method: 'DELETE',
       body: JSON.stringify({ cardId, listId, currentUser }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then(res => {
+        return res.json()
+      })
+      .then(json => {
+        dispatch(updateCurrentUser(json))
+      })
+      .catch(err => {
+        console.log(err)
+        alert('hmmmm')
+      })
+  }
+}
+
+export function switchActiveBoard(e) {
+  return (dispatch, getState) => {
+    let state = getState()
+    let currentUser = state.currentUser
+    let boardId = e.target.id
+    console.log('boardId ' + boardId)
+    fetch('switchActiveBoard', {
+      method: 'PATCH',
+      body: JSON.stringify({ boardId, currentUser }),
       headers: {
         'Content-type': 'application/json',
       },
