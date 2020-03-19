@@ -60,6 +60,7 @@ const mapDispatchToProps = dispatch => {
       let listId =
         e.target.parentElement.parentElement.parentElement.firstChild.id
       dispatch(deleteCard(cardId, listId))
+      dispatch(changeActiveCardModal())
     },
 
     handleDescriptionChange: e => {
