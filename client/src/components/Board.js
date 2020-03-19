@@ -28,9 +28,9 @@ const Board = ({
           id="board-name"
           className="input is-large"
           type="text"
+          defaultValue={activeBoard[0].name}
           onBlur={handleBoardNameChange}
         />
-        {activeBoard[0].name}
       </div>
       {boardLists}
       <button

@@ -49,9 +49,6 @@ const mapDispatchToProps = dispatch => {
   return {
     handleActiveCardModal: e => {
       let id = e.target.parentElement.id
-      // let modal
-      // state.ActiveCardModal ? (modal = false) : (modal = true)
-      // console.log(ActiveCardModal)
       dispatch(changeActiveCardModal(id))
     },
 

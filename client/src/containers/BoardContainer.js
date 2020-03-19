@@ -52,7 +52,7 @@ const mapDispatchToProps = dispatch => {
     },
 
     handleBoardNameChange: e => {
-      dispatch(changeName(e, 'changeBoardName'))
+      dispatch(changeName(e, '/changeBoardName'))
     },
   }
 }

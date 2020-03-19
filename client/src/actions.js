@@ -255,7 +255,7 @@ export function changeName(e, route) {
     let state = getState()
     let currentUser = state.currentUser
     let componentName = e.target.value
-
+    console.log('route ' + route)
     fetch(route, {
       method: 'POST',
       body: JSON.stringify({ componentName, currentUser, listId }),
