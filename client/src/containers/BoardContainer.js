@@ -26,6 +26,7 @@ class BoardContainer extends Component {
           lists={lists}
           currentBoard={currentBoard}
           handleBoardNameChange={handleBoardNameChange}
+          currentUser={currentUser}
         />
       )
     } else {

@@ -33,7 +33,7 @@ router.post(
 
 router.post('/register', (req, res, next) => {
   let { username, password } = req.body
-  let activeBoard = new Board({ name: 'New Board', lists: [] })
+  let activeBoard = new Board({ name: '', lists: [] })
   let boards = [activeBoard]
   let activeBoardId = activeBoard.id
   activeBoard.save((err, board) => {
@@ -74,7 +74,7 @@ router.post('/logout', (req, res) => {
 })
 
 router.post('/createBoard', (req, res, next) => {
-  let board = new Board({ name: 'New Board', lists: [] })
+  let board = new Board({ name: '', lists: [] })
   console.log('new board ' + board)
   let currentUser = req.body.currentUser
 
@@ -266,10 +266,12 @@ router.post('/changeBoardName', (req, res, next) => {
           next(err)
         }
         let modifiedBoardIndex
-        let modifiedBoard = user.boards.filter((board, index) => {
-          modifiedBoardIndex = index
-          return board._id === activeBoardId
+        user.boards.forEach((userBoard, index) => {
+          if (JSON.stringify(userBoard._id) === JSON.stringify(activeBoardId)) {
+            modifiedBoardIndex = index
+          }
         })
+        console.log(modifiedBoardIndex)
         user.boards.splice(modifiedBoardIndex, 1, board)
         user.save((err, user) => {
           if (err) {
@@ -428,7 +430,14 @@ router.delete('/deleteCard', (req, res, next) => {
           console.error(err)
           next(err)
         }
-        let deletedCardIndex = list.cards.indexOf(card)
+        console.log('cards' + list.cards)
+        let deletedCardIndex
+        list.cards.forEach((listCard, index) => {
+          if (JSON.stringify(listCard._id) === JSON.stringify(card._id)) {
+            deletedCardIndex = index
+          }
+        })
+        console.log('deleted card ' + deletedCardIndex)
         list.cards.splice(deletedCardIndex, 1)
         list.save((err, list) => {
           if (err) {
@@ -440,7 +449,13 @@ router.delete('/deleteCard', (req, res, next) => {
               console.error(err)
               next(err)
             }
-            let modifiedListIndex = board.lists.indexOf(list)
+
+            let modifiedListIndex
+            board.lists.forEach((boardList, index) => {
+              if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
+                modifiedListIndex = index
+              }
+            })
             board.lists.splice(modifiedListIndex, 1, list)
             board.save((err, board) => {
               if (err) {
@@ -452,7 +467,15 @@ router.delete('/deleteCard', (req, res, next) => {
                   console.error(err)
                   next(err)
                 }
-                let modifiedBoardIndex = user.boards.indexOf(board)
+                let modifiedBoardIndex
+                user.boards.forEach((userBoard, index) => {
+                  if (
+                    JSON.stringify(userBoard._id) === JSON.stringify(board._id)
+                  ) {
+                    modifiedBoardIndex = index
+                  }
+                })
+                console.log(modifiedBoardIndex)
                 user.boards.splice(modifiedBoardIndex, 1, board)
                 user.save((err, user) => {
                   if (err) {
