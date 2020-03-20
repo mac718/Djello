@@ -23,7 +23,7 @@ const Board = ({
   console.log('active board ' + JSON.stringify(activeBoard[0].name))
   return (
     <div className="board">
-      <div className="is-size-4">
+      <div className="is-size-4 board-name">
         <input
           id="board-name"
           className="input is-large"
@@ -31,7 +31,9 @@ const Board = ({
           defaultValue={activeBoard[0].name}
           onBlur={handleBoardNameChange}
         />
+        <div className="board-name-display">{activeBoard[0].name}</div>
       </div>
+
       {boardLists}
       <button
         className="button add-list is-light is-medium"
