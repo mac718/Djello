@@ -8,6 +8,8 @@ const Board = ({
   lists,
   handleBoardNameChange,
   currentUser,
+  showBoardNameDisplay,
+  handleHideBoardNameDisplay,
 }) => {
   let boardLists = 'hello'
   if (lists) {
@@ -20,6 +22,12 @@ const Board = ({
     return JSON.stringify(board._id) === JSON.stringify(currentUser.activeBoard)
   })
 
+  console.log('name display ' + showBoardNameDisplay)
+
+  let boardNameDisplayClasses = showBoardNameDisplay
+    ? 'board-name-display'
+    : 'board-name-display hidden'
+
   console.log('active board ' + JSON.stringify(activeBoard[0].name))
   return (
     <div className="board">
@@ -30,8 +38,9 @@ const Board = ({
           type="text"
           defaultValue={activeBoard[0].name}
           onBlur={handleBoardNameChange}
+          onFocus={handleHideBoardNameDisplay}
         />
-        <div className="board-name-display">{activeBoard[0].name}</div>
+        <div className={boardNameDisplayClasses}>{activeBoard[0].name}</div>
       </div>
 
       {boardLists}

@@ -12,6 +12,7 @@ export const HIDE_CARD_FORM = 'HIDE_CARD_FORM'
 export const CHANGE_TITLE = 'CHANGE_TITLE'
 export const CHANGE_ACTIVE_CARD_MODAL = 'CHANGE_ACTIVE_CARD_MODAL'
 export const CHANGE_CARD_DESCRIPTION = 'CHANGE_CARD_DESCRIPTION'
+export const CHANGE_SHOW_BOARD_NAME_DISPLAY = 'SHOW_BOARD_NAME_DISPLAY'
 
 export function getDataRequest() {
   return {
@@ -91,6 +92,12 @@ export function changeCardDescription(description) {
   return {
     type: CHANGE_CARD_DESCRIPTION,
     description,
+  }
+}
+
+export function changeShowBoardNameDisplay() {
+  return {
+    type: CHANGE_SHOW_BOARD_NAME_DISPLAY,
   }
 }
 

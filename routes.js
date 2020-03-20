@@ -306,10 +306,15 @@ router.post('/changeListName', (req, res, next) => {
           next(err)
         }
         let modifiedListIndex
-        let modifiedList = board.lists.filter((list, index) => {
-          modifiedBoardIndex = index
-          return listId === list._id
+        board.lists.forEach((boardList, index) => {
+          if (JSON.stringify(boardList._id) === JSON.stringify(listId)) {
+            modifiedListIndex = index
+          }
         })
+        // let modifiedList = board.lists.filter((list, index) => {
+        //   modifiedBoardIndex = index
+        //   return listId === list._id
+        // })
         board.lists.splice(modifiedListIndex, 1, list)
         User.findById(currentUser._id, (err, user) => {
           if (err) {
@@ -317,10 +322,15 @@ router.post('/changeListName', (req, res, next) => {
             next(err)
           }
           let modifiedBoardIndex
-          let modifiedBoard = user.boards.filter((userBoard, index) => {
-            modifiedBoardIndex = index
-            return userBoard._id === board._id
+          user.boards.forEach((userBoard, index) => {
+            if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
+              modifiedBoardIndex = index
+            }
           })
+          // let modifiedBoard = user.boards.filter((userBoard, index) => {
+          //   modifiedBoardIndex = index
+          //   return userBoard._id === board._id
+          // })
           user.boards.splice(modifiedBoardIndex, 1, board)
           user.save((err, user) => {
             if (err) {

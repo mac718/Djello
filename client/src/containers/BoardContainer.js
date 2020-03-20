@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Board from '../components/Board'
 import { connect } from 'react-redux'
-import { createList, changeName } from '../actions'
+import { createList, changeName, changeShowBoardNameDisplay } from '../actions'
 
 class BoardContainer extends Component {
   render() {
@@ -10,6 +10,8 @@ class BoardContainer extends Component {
       currentUser,
       currentBoard,
       handleBoardNameChange,
+      showBoardNameDisplay,
+      handleHideBoardNameDisplay,
     } = this.props
     let name
     let lists
@@ -27,6 +29,8 @@ class BoardContainer extends Component {
           currentBoard={currentBoard}
           handleBoardNameChange={handleBoardNameChange}
           currentUser={currentUser}
+          showBoardNameDisplay={showBoardNameDisplay}
+          handleHideBoardNameDisplay={handleHideBoardNameDisplay}
         />
       )
     } else {
@@ -43,6 +47,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     currentUser: state.currentUser,
     currentBoard: ownProps.currentBoard,
+    showBoardNameDisplay: state.showBoardNameDisplay,
   }
 }
 const mapDispatchToProps = dispatch => {
@@ -53,6 +58,11 @@ const mapDispatchToProps = dispatch => {
 
     handleBoardNameChange: e => {
       dispatch(changeName(e, '/changeBoardName'))
+      dispatch(changeShowBoardNameDisplay())
+    },
+
+    handleHideBoardNameDisplay: () => {
+      dispatch(changeShowBoardNameDisplay())
     },
   }
 }
