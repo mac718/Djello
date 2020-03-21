@@ -57,7 +57,10 @@ const mapDispatchToProps = dispatch => {
     },
 
     handleBoardNameChange: e => {
-      dispatch(changeName(e, '/changeBoardName'))
+      let componentName = e.target.value
+      e.target.value = ''
+
+      dispatch(changeName(e, componentName, '/changeBoardName'))
       dispatch(changeShowBoardNameDisplay())
     },
 

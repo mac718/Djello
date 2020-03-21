@@ -253,7 +253,7 @@ export function deleteBoard(e) {
   }
 }
 
-export function changeName(e, route) {
+export function changeName(e, componentName, route) {
   return (dispatch, getState) => {
     let listId
     if (route === '/changeListName') {
@@ -261,7 +261,6 @@ export function changeName(e, route) {
     }
     let state = getState()
     let currentUser = state.currentUser
-    let componentName = e.target.value
     console.log('route ' + route)
     fetch(route, {
       method: 'POST',
