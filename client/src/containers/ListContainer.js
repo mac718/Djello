@@ -62,7 +62,12 @@ const mapDispatchToProps = dispatch => {
     },
 
     handleHideCardForm: e => {
-      Promise.resolve(dispatch(hideCardForm())).then(dispatch(saveCard(e)))
+      dispatch(hideCardForm())
+      // .then(dispatch(saveCard(e)))
+    },
+
+    handleSaveCard: e => {
+      dispatch(saveCard(e))
     },
 
     handleTitleChange: e => {

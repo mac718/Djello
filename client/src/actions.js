@@ -289,8 +289,7 @@ export function saveCard(e) {
     e.preventDefault()
     let state = getState()
     let currentUser = state.currentUser
-    let listId =
-      e.target.parentElement.parentElement.parentElement.parentElement.id
+    let listId = e.target.parentElement.id //.parentElement.parentElement.parentElement.id
     console.log('list yo ' + listId)
     let title = state.title
     fetch('/createCard', {

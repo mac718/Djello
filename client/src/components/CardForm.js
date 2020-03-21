@@ -12,7 +12,8 @@ const CardForm = ({
         <p className="control">
           <button
             className="button is-primary is-light"
-            onClick={handleHideCardForm}
+            type="submit"
+            //onClick={handleHideCardForm}
           >
             save
           </button>
