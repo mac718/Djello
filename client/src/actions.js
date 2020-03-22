@@ -11,7 +11,7 @@ export const CREATE_CARD_FORM = 'CREAT_CARD_FORM'
 export const HIDE_CARD_FORM = 'HIDE_CARD_FORM'
 export const CHANGE_TITLE = 'CHANGE_TITLE'
 export const CHANGE_ACTIVE_CARD_MODAL = 'CHANGE_ACTIVE_CARD_MODAL'
-export const CHANGE_CARD_DESCRIPTION = 'CHANGE_CARD_DESCRIPTION'
+export const EDIT_CARD_DESCRIPTION = 'EDIT_CARD_DESCRIPTION'
 export const CHANGE_SHOW_BOARD_NAME_DISPLAY = 'SHOW_BOARD_NAME_DISPLAY'
 
 export function getDataRequest() {
@@ -88,9 +88,9 @@ export function changeActiveCardModal(id) {
   }
 }
 
-export function changeCardDescription(description) {
+export function editCardDescription(description) {
   return {
-    type: CHANGE_CARD_DESCRIPTION,
+    type: EDIT_CARD_DESCRIPTION,
     description,
   }
 }
@@ -362,4 +362,4 @@ export function switchActiveBoard(e) {
   }
 }
 
-export function updateCard() {}
+export function updateCardDescription() {}

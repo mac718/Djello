@@ -81,7 +81,8 @@ export function djello(state = initialState, action) {
         ...state,
         activeCardModal: state.activeCardModal ? null : action.id,
       }
-    case Actions.CHANGE_CARD_DESCRIPTION:
+    case Actions.EDIT_CARD_DESCRIPTION:
+      console.log('decription ' + action.description)
       return {
         ...state,
         cardDescription: action.description,

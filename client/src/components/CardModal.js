@@ -1,4 +1,5 @@
 import React from 'react'
+import CardDescriptionForm from './CardDescriptionForm'
 
 const CardModal = ({
   title,
@@ -10,9 +11,22 @@ const CardModal = ({
   handleDeleteCard,
   listId,
   listName,
+  handleCardDescriptionEdit,
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
+  let descriptionForm = (
+    <CardDescriptionForm
+      description={description}
+      handleCardDescriptionEdit={handleCardDescriptionEdit}
+    />
+  )
+
+  let descriptionCard = (
+    <div className="card">
+      <div className="card-content">{description}</div>
+    </div>
+  )
   return (
     <div id={cardId} className={classes}>
       <span id={listId}></span>
@@ -34,17 +48,15 @@ const CardModal = ({
           >
             Mark as Complete
           </button>
-          <form>
+          {descriptionForm}
+          {/* <div className="card">
+            <div className="card-content">Lorem ipsum</div>
+          </div> */}
+          {/* <form>
             <textarea
               className="textarea"
               defaultValue={description}
             ></textarea>
-            <div className="members">
-              <p className="is-size-4">Members</p>
-            </div>
-            <div className="modal-card-footer">
-              <p className="is-size-4">Activity</p>
-            </div>
             <div id="card-modal-buttons" className="field is-grouped">
               <p className="control">
                 <button className="button is-primary" type="submit">
@@ -53,7 +65,13 @@ const CardModal = ({
                 <button className="button is-danger">Cancel</button>
               </p>
             </div>
-          </form>
+          </form> */}
+          <div className="members">
+            <p className="is-size-4">Members</p>
+          </div>
+          <div className="modal-card-footer">
+            <p className="is-size-4">Activity</p>
+          </div>
         </div>
       </div>
     </div>

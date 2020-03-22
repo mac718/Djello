@@ -4,7 +4,8 @@ import Card from '../components/Card'
 import {
   changeActiveCardModal,
   deleteCard,
-  changeCardDescription,
+  editCardDescription,
+  updateCardDescription,
 } from '../actions'
 
 class CardContainer extends Component {
@@ -17,7 +18,8 @@ class CardContainer extends Component {
       handleDeleteCard,
       listId,
       listName,
-      handleDescriptionChange,
+      handleCardDescriptionEdit,
+      handleCardDescriptionUpdate,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -29,7 +31,8 @@ class CardContainer extends Component {
         handleDeleteCard={handleDeleteCard}
         listId={listId}
         listName={listName}
-        handleDescriptionChange={handleDescriptionChange}
+        handleCardDescriptionEdit={handleCardDescriptionEdit}
+        handleCardDescriptionUpdate={handleCardDescriptionUpdate}
       />
     )
   }
@@ -60,9 +63,13 @@ const mapDispatchToProps = dispatch => {
       dispatch(changeActiveCardModal())
     },
 
-    handleDescriptionChange: e => {
+    handleCardDescriptionEdit: e => {
       let description = e.target.value
-      dispatch(changeCardDescription(description))
+      dispatch(editCardDescription(description))
+    },
+
+    handleCardDescriptionUpdate: e => {
+      dispatch(updateCardDescription())
     },
   }
 }

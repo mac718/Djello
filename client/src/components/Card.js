@@ -10,7 +10,7 @@ const Card = ({
   handleDeleteCard,
   listId,
   listName,
-  handleDescriptionChange,
+  handleCardDescriptionEdit,
 }) => {
   let classes
   if (activeCardModal === cardId) {
@@ -37,7 +37,7 @@ const Card = ({
         handleDeleteCard={handleDeleteCard}
         listId={listId}
         listName={listName}
-        handleDescriptionChange={handleDescriptionChange}
+        handleCardDescriptionEdit={handleCardDescriptionEdit}
       />
     </div>
   )

@@ -64,7 +64,6 @@ const mapDispatchToProps = dispatch => {
 
     handleHideCardForm: e => {
       dispatch(hideCardForm())
-      // .then(dispatch(saveCard(e)))
     },
 
     handleSaveCard: e => {
