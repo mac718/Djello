@@ -54,7 +54,8 @@ const mapDispatchToProps = dispatch => {
     },
 
     handleListNameChange: e => {
-      dispatch(changeName(e, '/changeListName'))
+      let componentName = e.target.value
+      dispatch(changeName(e, componentName, '/changeListName'))
     },
 
     handleShowCardForm: listId => {
