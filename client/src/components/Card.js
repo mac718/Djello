@@ -31,7 +31,7 @@ const Card = ({
         aria-haspopup="true"
         onClick={handleActiveCardModal}
       >
-        <div className="card-content textarea task is-hovered">{title}</div>
+        <div className="card-content task is-hovered">{title}</div>
       </div>
       <CardModal
         cardId={cardId}
