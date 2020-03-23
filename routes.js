@@ -327,10 +327,6 @@ router.post('/changeListName', (req, res, next) => {
               modifiedBoardIndex = index
             }
           })
-          // let modifiedBoard = user.boards.filter((userBoard, index) => {
-          //   modifiedBoardIndex = index
-          //   return userBoard._id === board._id
-          // })
           user.boards.splice(modifiedBoardIndex, 1, board)
           user.save((err, user) => {
             if (err) {
@@ -349,8 +345,8 @@ router.post('/createCard', (req, res, next) => {
   let listId = req.body.listId
   let title = req.body.title
   let card = new Card({ title })
-
   let currentUser = req.body.currentUser
+
   card.save((err, card) => {
     if (err) {
       console.error(err)
@@ -519,6 +515,95 @@ router.patch('/switchActiveBoard', (req, res, next) => {
         next(err)
       }
       return res.json(user)
+    })
+  })
+})
+
+router.post('/updateCardDescription', (req, res, next) => {
+  let listId = req.body.listId
+  let cardId = req.body.cardId
+  let description = req.body.description
+  let currentUser = req.body.currentUser
+
+  console.log('list id ' + listId)
+  console.log('card id ' + cardId)
+  console.log('description ' + description)
+  Card.findById(cardId, (err, card) => {
+    if (err) {
+      console.error(err)
+      next(err)
+    }
+    card.description = description
+    card.save((err, card) => {
+      if (err) {
+        console.error(err)
+        next(err)
+      }
+      List.findById(listId, (err, list) => {
+        console.log('list id ' + listId)
+        if (err) {
+          console.error(err)
+          next(err)
+        }
+        let modifiedCardIndex
+        list.cards.forEach((listCard, index) => {
+          if (JSON.stringify(listCard._id) === JSON.stringify(list._id)) {
+            modifiedCardIndex = index
+          }
+        })
+        list.cards.splice(modifiedCardIndex, 1, card)
+        list.save((err, list) => {
+          if (err) {
+            console.error(err)
+            next(err)
+          }
+          Board.findById(currentUser.activeBoard, (err, board) => {
+            if (err) {
+              console.error(err)
+              next(err)
+            }
+            let modifiedListIndex
+            board.lists.forEach((boardList, index) => {
+              if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
+                modifiedListIndex = index
+              }
+            })
+            console.log('modifiedLisIndex ' + modifiedListIndex)
+
+            board.lists.splice(modifiedListIndex, 1, list)
+
+            board.save((err, board) => {
+              if (err) {
+                console.error(err)
+                next(err)
+              }
+              User.findById(currentUser._id, (err, user) => {
+                if (err) {
+                  console.error(err)
+                  next(err)
+                }
+                let modifiedBoardIndex
+                user.boards.forEach((userBoard, index) => {
+                  if (
+                    JSON.stringify(userBoard._id) === JSON.stringify(board._id)
+                  ) {
+                    modifiedBoardIndex = index
+                  }
+                })
+                user.boards.splice(modifiedBoardIndex, 1, board)
+                user.save((err, user) => {
+                  if (err) {
+                    console.error(err)
+                    next(err)
+                  }
+                  console.log('butts ' + JSON.stringify(user.boards))
+                  return res.json(user)
+                })
+              })
+            })
+          })
+        })
+      })
     })
   })
 })

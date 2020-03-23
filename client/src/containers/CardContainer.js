@@ -6,6 +6,8 @@ import {
   deleteCard,
   editCardDescription,
   updateCardDescription,
+  switchToCardDescriptionForm,
+  switchToCardDescriptionDisplay,
 } from '../actions'
 
 class CardContainer extends Component {
@@ -20,6 +22,9 @@ class CardContainer extends Component {
       listName,
       handleCardDescriptionEdit,
       handleCardDescriptionUpdate,
+      handleSwitchToCardDescriptionForm,
+      handleSwitchToCardDescriptionDisplay,
+      showCardDescriptionForm,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -33,6 +38,11 @@ class CardContainer extends Component {
         listName={listName}
         handleCardDescriptionEdit={handleCardDescriptionEdit}
         handleCardDescriptionUpdate={handleCardDescriptionUpdate}
+        handleSwitchToCardDescriptionForm={handleSwitchToCardDescriptionForm}
+        handleSwitchToCardDescriptionDisplay={
+          handleSwitchToCardDescriptionDisplay
+        }
+        showCardDescriptionForm={showCardDescriptionForm}
       />
     )
   }
@@ -45,6 +55,7 @@ const mapStateToProps = (state, ownProps) => {
     activeCardModal: state.activeCardModal,
     listId: ownProps.listId,
     listName: ownProps.listName,
+    showCardDescriptionForm: state.showCardDescriptionForm,
   }
 }
 
@@ -69,7 +80,20 @@ const mapDispatchToProps = dispatch => {
     },
 
     handleCardDescriptionUpdate: e => {
-      dispatch(updateCardDescription())
+      e.preventDefault()
+      let cardId = e.target.parentElement.parentElement.parentElement.id
+      let listId =
+        e.target.parentElement.parentElement.parentElement.firstChild.id
+      console.log(e.target.parentElement.parentElement.parentElement.id)
+      dispatch(updateCardDescription(listId, cardId))
+    },
+
+    handleSwitchToCardDescriptionForm: () => {
+      dispatch(switchToCardDescriptionForm())
+    },
+
+    handleSwitchToCardDescriptionDisplay: () => {
+      dispatch(switchToCardDescriptionDisplay())
     },
   }
 }

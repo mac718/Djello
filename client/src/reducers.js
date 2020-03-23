@@ -14,6 +14,7 @@ const initialState = {
   activeCardModal: null,
   cardDescription: '',
   showBoardNameDisplay: true,
+  showCardDescriptionForm: false,
 }
 
 export function djello(state = initialState, action) {
@@ -91,6 +92,16 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         showBoardNameDisplay: state.showBoardNameDisplay ? false : true,
+      }
+    case Actions.SWITCH_TO_CARD_DESCRIPTION_FORM:
+      return {
+        ...state,
+        showCardDescriptionForm: true,
+      }
+    case Actions.SWITCH_TO_CARD_DESCRIPTION_DISPLAY:
+      return {
+        ...state,
+        showCardDescriptionForm: false,
       }
     default:
       return state

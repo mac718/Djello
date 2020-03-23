@@ -1,5 +1,6 @@
 import React from 'react'
 import CardDescriptionForm from './CardDescriptionForm'
+import CardDescriptionDisplay from './CardDescriptionDisplay'
 
 const CardModal = ({
   title,
@@ -12,6 +13,10 @@ const CardModal = ({
   listId,
   listName,
   handleCardDescriptionEdit,
+  handleCardDescriptionUpdate,
+  handleSwitchToCardDescriptionForm,
+  handleSwitchToCardDescriptionDisplay,
+  showCardDescriptionForm,
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
@@ -19,14 +24,26 @@ const CardModal = ({
     <CardDescriptionForm
       description={description}
       handleCardDescriptionEdit={handleCardDescriptionEdit}
+      handleCardDescriptionUpdate={handleCardDescriptionUpdate}
+      handleSwitchToCardDescriptionDisplay={
+        handleSwitchToCardDescriptionDisplay
+      }
+      listName={listId}
+      cardId={cardId}
     />
   )
 
-  let descriptionCard = (
-    <div className="card">
-      <div className="card-content">{description}</div>
-    </div>
+  let descriptionDisplay = (
+    <CardDescriptionDisplay
+      description={description}
+      handleSwitchToCardDescriptionForm={handleSwitchToCardDescriptionForm}
+    />
   )
+
+  let descriptionComponent = showCardDescriptionForm
+    ? descriptionForm
+    : descriptionDisplay
+
   return (
     <div id={cardId} className={classes}>
       <span id={listId}></span>
@@ -48,7 +65,7 @@ const CardModal = ({
           >
             Mark as Complete
           </button>
-          {descriptionForm}
+          {descriptionComponent}
           {/* <div className="card">
             <div className="card-content">Lorem ipsum</div>
           </div> */}

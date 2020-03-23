@@ -4,6 +4,9 @@ const CardDescriptionForm = ({
   description,
   handleCardDescriptionEdit,
   handleCardDescriptionUpdate,
+  handleSwitchToCardDescriptionDisplay,
+  listId,
+  cardId,
 }) => {
   return (
     <form onSubmit={handleCardDescriptionUpdate}>
@@ -16,7 +19,12 @@ const CardDescriptionForm = ({
           <button className="button is-primary" type="submit">
             Save
           </button>
-          <button className="button is-danger">Cancel</button>
+          <button
+            className="button is-danger"
+            onClick={handleSwitchToCardDescriptionDisplay}
+          >
+            Cancel
+          </button>
         </p>
       </div>
     </form>

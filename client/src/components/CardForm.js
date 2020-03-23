@@ -10,11 +10,7 @@ const CardForm = ({
       <textarea className="textarea" onChange={handleTitleChange}></textarea>
       <div className="field is-grouped" id="cardForm-buttons">
         <p className="control">
-          <button
-            className="button is-primary is-light"
-            type="submit"
-            //onClick={handleHideCardForm}
-          >
+          <button className="button is-primary is-light" type="submit">
             save
           </button>
         </p>

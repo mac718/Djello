@@ -13,6 +13,9 @@ export const CHANGE_TITLE = 'CHANGE_TITLE'
 export const CHANGE_ACTIVE_CARD_MODAL = 'CHANGE_ACTIVE_CARD_MODAL'
 export const EDIT_CARD_DESCRIPTION = 'EDIT_CARD_DESCRIPTION'
 export const CHANGE_SHOW_BOARD_NAME_DISPLAY = 'SHOW_BOARD_NAME_DISPLAY'
+export const SWITCH_TO_CARD_DESCRIPTION_FORM = 'SWITCH_TO_CARD_DESCRIPTION_FORM'
+export const SWITCH_TO_CARD_DESCRIPTION_DISPLAY =
+  'SWITCH_TO_CARD_DESCRIPTION_DISPLAY'
 
 export function getDataRequest() {
   return {
@@ -98,6 +101,18 @@ export function editCardDescription(description) {
 export function changeShowBoardNameDisplay() {
   return {
     type: CHANGE_SHOW_BOARD_NAME_DISPLAY,
+  }
+}
+
+export function switchToCardDescriptionForm() {
+  return {
+    type: SWITCH_TO_CARD_DESCRIPTION_FORM,
+  }
+}
+
+export function switchToCardDescriptionDisplay() {
+  return {
+    type: SWITCH_TO_CARD_DESCRIPTION_DISPLAY,
   }
 }
 
@@ -362,4 +377,28 @@ export function switchActiveBoard(e) {
   }
 }
 
-export function updateCardDescription() {}
+export function updateCardDescription(listId, cardId) {
+  return (dispatch, getState) => {
+    let state = getState()
+    let description = state.cardDescription
+    let currentUser = state.currentUser
+
+    fetch('/updateCardDescription', {
+      method: 'POST',
+      body: JSON.stringify({ description, currentUser, listId, cardId }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then(res => {
+        return res.json()
+      })
+      .then(json => {
+        dispatch(updateCurrentUser(json))
+      })
+      .catch(err => {
+        console.log(err)
+        alert('hmmmm')
+      })
+  }
+}
