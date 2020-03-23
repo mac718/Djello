@@ -13,6 +13,7 @@ import {
 class CardContainer extends Component {
   render() {
     const {
+      currentUser,
       title,
       activeCardModal,
       handleActiveCardModal,
@@ -29,6 +30,7 @@ class CardContainer extends Component {
     console.log(activeCardModal)
     return (
       <Card
+        currentUser={currentUser}
         title={title}
         activeCardModal={activeCardModal}
         handleActiveCardModal={handleActiveCardModal}
@@ -50,6 +52,7 @@ class CardContainer extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    currentUser: state.currentUser,
     title: ownProps.title,
     cardId: ownProps.cardId,
     activeCardModal: state.activeCardModal,

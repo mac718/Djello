@@ -3,6 +3,7 @@ import CardDescriptionForm from './CardDescriptionForm'
 import CardDescriptionDisplay from './CardDescriptionDisplay'
 
 const CardModal = ({
+  currentUser,
   title,
   description,
   members,
@@ -20,6 +21,20 @@ const CardModal = ({
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
+  let currentBoard = currentUser.boards.filter(board => {
+    return JSON.stringify(board._id) === JSON.stringify(currentUser.activeBoard)
+  })[0]
+
+  console.log('currentBoard ' + JSON.stringify(currentBoard))
+
+  let currentList = currentBoard.lists.filter(boardList => {
+    return JSON.stringify(boardList._id) === JSON.stringify(listId)
+  })[0]
+
+  let currentCard = currentList.cards.filter(listCard => {
+    return JSON.stringify(listCard._id) === JSON.stringify(cardId)
+  })[0]
+
   let descriptionForm = (
     <CardDescriptionForm
       description={description}
@@ -35,7 +50,7 @@ const CardModal = ({
 
   let descriptionDisplay = (
     <CardDescriptionDisplay
-      description={description}
+      description={currentCard.description}
       handleSwitchToCardDescriptionForm={handleSwitchToCardDescriptionForm}
     />
   )
@@ -66,23 +81,6 @@ const CardModal = ({
             Mark as Complete
           </button>
           {descriptionComponent}
-          {/* <div className="card">
-            <div className="card-content">Lorem ipsum</div>
-          </div> */}
-          {/* <form>
-            <textarea
-              className="textarea"
-              defaultValue={description}
-            ></textarea>
-            <div id="card-modal-buttons" className="field is-grouped">
-              <p className="control">
-                <button className="button is-primary" type="submit">
-                  Save
-                </button>
-                <button className="button is-danger">Cancel</button>
-              </p>
-            </div>
-          </form> */}
           <div className="members">
             <p className="is-size-4">Members</p>
           </div>

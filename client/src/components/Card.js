@@ -2,7 +2,7 @@ import React from 'react'
 import CardModal from './CardModal'
 
 const Card = ({
-  handleContentChange,
+  currentUser,
   title,
   activeCardModal,
   handleActiveCardModal,
@@ -34,6 +34,7 @@ const Card = ({
         <div className="card-content task is-hovered">{title}</div>
       </div>
       <CardModal
+        currentUser={currentUser}
         cardId={cardId}
         title={title}
         classes={classes}
