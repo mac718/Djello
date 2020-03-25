@@ -316,6 +316,7 @@ export function changeName(e, componentName, route) {
 export function saveCard(e) {
   return (dispatch, getState) => {
     e.preventDefault()
+    dispatch(hideCardForm())
     let state = getState()
     let currentUser = state.currentUser
     let listId = e.target.parentElement.id //.parentElement.parentElement.parentElement.id
