@@ -16,6 +16,8 @@ export const CHANGE_SHOW_BOARD_NAME_DISPLAY = 'SHOW_BOARD_NAME_DISPLAY'
 export const SWITCH_TO_CARD_DESCRIPTION_FORM = 'SWITCH_TO_CARD_DESCRIPTION_FORM'
 export const SWITCH_TO_CARD_DESCRIPTION_DISPLAY =
   'SWITCH_TO_CARD_DESCRIPTION_DISPLAY'
+export const SWITCH_TO_CARD_TITLE_FORM = 'SWITCH_TO_CARD_TITLE_FORM'
+export const SWITCH_TO_CARD_TITLE_DISPLAY = 'SWITCH_TO_CARD_TITLE_DISPLAY'
 
 export function getDataRequest() {
   return {
@@ -113,6 +115,18 @@ export function switchToCardDescriptionForm() {
 export function switchToCardDescriptionDisplay() {
   return {
     type: SWITCH_TO_CARD_DESCRIPTION_DISPLAY,
+  }
+}
+
+export function switchToCardDTitleForm() {
+  return {
+    type: SWITCH_TO_CARD_TITLE_FORM,
+  }
+}
+
+export function switchToCardTItleDisplay() {
+  return {
+    type: SWITCH_TO_CARD_TITLE_DISPLAY,
   }
 }
 

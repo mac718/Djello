@@ -14,7 +14,10 @@ const Card = ({
   handleCardAttributeUpdate,
   handleSwitchToCardDescriptionForm,
   handleSwitchToCardDescriptionDisplay,
+  handleSwitchToCardTitleForm,
+  handleSwitchToCardTitleDisplay,
   showCardDescriptionForm,
+  showCardTitleForm,
 }) => {
   let classes
   if (activeCardModal === cardId) {
@@ -49,6 +52,9 @@ const Card = ({
         handleSwitchToCardDescriptionDisplay={
           handleSwitchToCardDescriptionDisplay
         }
+        handleSwitchToCardTitleForm={handleSwitchToCardTitleForm}
+        handleSwitchToCardTitleDisplay={handleSwitchToCardTitleDisplay}
+        showCardTitleForm={showCardTitleForm}
       />
     </div>
   )

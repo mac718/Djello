@@ -106,6 +106,17 @@ export function djello(state = initialState, action) {
         ...state,
         showCardDescriptionForm: false,
       }
+    case Actions.SWITCH_TO_CARD_TITLE_FORM:
+      return {
+        ...state,
+        showCardTitleForm: true,
+        attributeType: 'title',
+      }
+    case Actions.SWITCH_TO_CARD_TITLE_DISPLAY:
+      return {
+        ...state,
+        showCardTitleForm: false,
+      }
     default:
       return state
   }

@@ -18,6 +18,8 @@ const CardModal = ({
   handleCardAttributeUpdate,
   handleSwitchToCardDescriptionForm,
   handleSwitchToCardDescriptionDisplay,
+  handleSwitchToCardTitleForm,
+  handleSwitchToCardTitleDisplay,
   showCardDescriptionForm,
   showCardTitleForm,
 }) => {
@@ -61,15 +63,15 @@ const CardModal = ({
     <CardTitleForm
       title={title}
       handleCardAttributeEdit={handleCardAttributeEdit}
-      // handleCardTitleUpdate={handleCardTitleUpdate}
-      // handleSwitchToCardTitleDisplay={handleSwitchToCardTitleDisplay}
+      handleCardAttributeUpdate={handleCardAttributeUpdate}
+      handleSwitchToCardTitleDisplay={handleSwitchToCardTitleDisplay}
     />
   )
 
   let titleDisplay = (
     <CardTitleDisplay
       title={title}
-      // handleSwitchToCardTitleForm={handleSwitchToCardTitleForm}
+      handleSwitchToCardTitleForm={handleSwitchToCardTitleForm}
     />
   )
 

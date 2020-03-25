@@ -8,6 +8,8 @@ import {
   updateCardAttribute,
   switchToCardDescriptionForm,
   switchToCardDescriptionDisplay,
+  switchToCardDTitleForm,
+  switchToCardTItleDisplay,
 } from '../actions'
 
 class CardContainer extends Component {
@@ -26,6 +28,8 @@ class CardContainer extends Component {
       handleSwitchToCardDescriptionForm,
       handleSwitchToCardDescriptionDisplay,
       showCardDescriptionForm,
+      handleSwitchToCardTitleForm,
+      handleSwitchToCardTitleDisplay,
       showCardTitleForm,
     } = this.props
     console.log(activeCardModal)
@@ -45,6 +49,8 @@ class CardContainer extends Component {
         handleSwitchToCardDescriptionDisplay={
           handleSwitchToCardDescriptionDisplay
         }
+        handleSwitchToCardTitleForm={handleSwitchToCardTitleForm}
+        handleSwitchToCardTitleDisplay={handleSwitchToCardTitleDisplay}
         showCardDescriptionForm={showCardDescriptionForm}
         showCardTitleForm={showCardTitleForm}
       />
@@ -80,11 +86,6 @@ const mapDispatchToProps = dispatch => {
       dispatch(changeActiveCardModal())
     },
 
-    // handleCardDescriptionEdit: e => {
-    //   let description = e.target.value
-    //   dispatch(editCardDescription(description))
-    // },
-
     handleCardAttributeUpdate: e => {
       e.preventDefault()
       let cardId = e.target.parentElement.parentElement.parentElement.id
@@ -105,6 +106,14 @@ const mapDispatchToProps = dispatch => {
     handleCardAttributeEdit: e => {
       let attribute = e.target.value
       dispatch(editCardAttribute(attribute))
+    },
+
+    handleSwitchToCardTitleForm: () => {
+      dispatch(switchToCardDTitleForm())
+    },
+
+    handleSwitchToCardTitleDisplay: () => {
+      dispatch(switchToCardTItleDisplay())
     },
   }
 }
