@@ -12,9 +12,11 @@ const initialState = {
   showCardForm: false,
   title: '',
   activeCardModal: null,
-  cardDescription: '',
+  cardAttributeContent: '',
   showBoardNameDisplay: true,
   showCardDescriptionForm: false,
+  showCardTitleForm: false,
+  attributeType: '',
 }
 
 export function djello(state = initialState, action) {
@@ -82,11 +84,11 @@ export function djello(state = initialState, action) {
         ...state,
         activeCardModal: state.activeCardModal ? null : action.id,
       }
-    case Actions.EDIT_CARD_DESCRIPTION:
-      console.log('decription ' + action.description)
+    case Actions.EDIT_CARD_ATTRIBUTE:
+      console.log('decription ' + action.attribute)
       return {
         ...state,
-        cardDescription: action.description,
+        cardAttributeContent: action.attribute,
       }
     case Actions.CHANGE_SHOW_BOARD_NAME_DISPLAY:
       return {
@@ -97,6 +99,7 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         showCardDescriptionForm: true,
+        attributeType: 'description',
       }
     case Actions.SWITCH_TO_CARD_DESCRIPTION_DISPLAY:
       return {

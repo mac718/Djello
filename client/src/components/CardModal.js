@@ -1,11 +1,12 @@
 import React from 'react'
 import CardDescriptionForm from './CardDescriptionForm'
 import CardDescriptionDisplay from './CardDescriptionDisplay'
+import CardTitleForm from './CardTitleForm'
+import CardTitleDisplay from './CardTitleDisplay'
 
 const CardModal = ({
   currentUser,
   title,
-  description,
   members,
   classes,
   handleActiveCardModal,
@@ -13,11 +14,12 @@ const CardModal = ({
   handleDeleteCard,
   listId,
   listName,
-  handleCardDescriptionEdit,
-  handleCardDescriptionUpdate,
+  handleCardAttributeEdit,
+  handleCardAttributeUpdate,
   handleSwitchToCardDescriptionForm,
   handleSwitchToCardDescriptionDisplay,
   showCardDescriptionForm,
+  showCardTitleForm,
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
@@ -37,9 +39,9 @@ const CardModal = ({
 
   let descriptionForm = (
     <CardDescriptionForm
-      description={description}
-      handleCardDescriptionEdit={handleCardDescriptionEdit}
-      handleCardDescriptionUpdate={handleCardDescriptionUpdate}
+      description={currentCard.description}
+      handleCardAttributeEdit={handleCardAttributeEdit}
+      handleCardAttributeUpdate={handleCardAttributeUpdate}
       handleSwitchToCardDescriptionDisplay={
         handleSwitchToCardDescriptionDisplay
       }
@@ -55,9 +57,27 @@ const CardModal = ({
     />
   )
 
+  let titleForm = (
+    <CardTitleForm
+      title={title}
+      handleCardAttributeEdit={handleCardAttributeEdit}
+      // handleCardTitleUpdate={handleCardTitleUpdate}
+      // handleSwitchToCardTitleDisplay={handleSwitchToCardTitleDisplay}
+    />
+  )
+
+  let titleDisplay = (
+    <CardTitleDisplay
+      title={title}
+      // handleSwitchToCardTitleForm={handleSwitchToCardTitleForm}
+    />
+  )
+
   let descriptionComponent = showCardDescriptionForm
     ? descriptionForm
     : descriptionDisplay
+
+  let titleComponent = showCardTitleForm ? titleForm : titleDisplay
 
   return (
     <div id={cardId} className={classes}>
@@ -65,7 +85,7 @@ const CardModal = ({
       <div className="modal-background"></div>
       <div className="modal-card">
         <div className="modal-card-head">
-          <p className="modal-card-title">{title}</p>
+          <div className="modal-card-title">{titleComponent}</div>
           <p>In list {listName}</p>
           <button
             className="delete"

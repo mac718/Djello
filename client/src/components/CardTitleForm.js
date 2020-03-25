@@ -1,19 +1,19 @@
 import React from 'react'
 
-const CardDescriptionForm = ({
-  description,
-  handleCardAttributeEdit,
-  handleCardAttributeUpdate,
-  handleSwitchToCardDescriptionDisplay,
+const CardTitleForm = ({
+  title,
+  handleCardTitleEdit,
+  handleCardTitleUpdate,
+  handleSwitchToCardTitleDisplay,
   listId,
   cardId,
 }) => {
   return (
-    <form onSubmit={handleCardAttributeUpdate}>
+    <form onSubmit={handleCardTitleUpdate}>
       <textarea
         className="textarea"
-        onChange={handleCardAttributeEdit}
-        defaultValue={description}
+        onChange={handleCardTitleEdit}
+        defaultValue={title}
       ></textarea>
       <div id="card-modal-buttons" className="field is-grouped">
         <p className="control">
@@ -22,7 +22,7 @@ const CardDescriptionForm = ({
           </button>
           <button
             className="button is-danger"
-            onClick={handleSwitchToCardDescriptionDisplay}
+            onClick={handleSwitchToCardTitleDisplay}
           >
             Cancel
           </button>
@@ -32,4 +32,4 @@ const CardDescriptionForm = ({
   )
 }
 
-export default CardDescriptionForm
+export default CardTitleForm

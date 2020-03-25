@@ -11,7 +11,7 @@ export const CREATE_CARD_FORM = 'CREAT_CARD_FORM'
 export const HIDE_CARD_FORM = 'HIDE_CARD_FORM'
 export const CHANGE_TITLE = 'CHANGE_TITLE'
 export const CHANGE_ACTIVE_CARD_MODAL = 'CHANGE_ACTIVE_CARD_MODAL'
-export const EDIT_CARD_DESCRIPTION = 'EDIT_CARD_DESCRIPTION'
+export const EDIT_CARD_ATTRIBUTE = 'EDIT_CARD_ATTRIBUTE'
 export const CHANGE_SHOW_BOARD_NAME_DISPLAY = 'SHOW_BOARD_NAME_DISPLAY'
 export const SWITCH_TO_CARD_DESCRIPTION_FORM = 'SWITCH_TO_CARD_DESCRIPTION_FORM'
 export const SWITCH_TO_CARD_DESCRIPTION_DISPLAY =
@@ -91,10 +91,10 @@ export function changeActiveCardModal(id) {
   }
 }
 
-export function editCardDescription(description) {
+export function editCardAttribute(attribute) {
   return {
-    type: EDIT_CARD_DESCRIPTION,
-    description,
+    type: EDIT_CARD_ATTRIBUTE,
+    attribute,
   }
 }
 
@@ -377,15 +377,24 @@ export function switchActiveBoard(e) {
   }
 }
 
-export function updateCardDescription(listId, cardId) {
+export function updateCardAttribute(listId, cardId) {
   return (dispatch, getState) => {
     let state = getState()
-    let description = state.cardDescription
+    let attributeType = state.attributeType
+    let attributeContent = state.cardAttributeContent
     let currentUser = state.currentUser
 
-    fetch('/updateCardDescription', {
+    console.log('hello')
+
+    fetch('/updateCardAttribute', {
       method: 'POST',
-      body: JSON.stringify({ description, currentUser, listId, cardId }),
+      body: JSON.stringify({
+        attributeType,
+        attributeContent,
+        currentUser,
+        listId,
+        cardId,
+      }),
       headers: {
         'Content-type': 'application/json',
       },

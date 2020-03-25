@@ -10,8 +10,8 @@ const Card = ({
   handleDeleteCard,
   listId,
   listName,
-  handleCardDescriptionEdit,
-  handleCardDescriptionUpdate,
+  handleCardAttributeEdit,
+  handleCardAttributeUpdate,
   handleSwitchToCardDescriptionForm,
   handleSwitchToCardDescriptionDisplay,
   showCardDescriptionForm,
@@ -42,8 +42,8 @@ const Card = ({
         handleDeleteCard={handleDeleteCard}
         listId={listId}
         listName={listName}
-        handleCardDescriptionEdit={handleCardDescriptionEdit}
-        handleCardDescriptionUpdate={handleCardDescriptionUpdate}
+        handleCardAttributeEdit={handleCardAttributeEdit}
+        handleCardAttributeUpdate={handleCardAttributeUpdate}
         handleSwitchToCardDescriptionForm={handleSwitchToCardDescriptionForm}
         showCardDescriptionForm={showCardDescriptionForm}
         handleSwitchToCardDescriptionDisplay={

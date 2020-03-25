@@ -519,21 +519,25 @@ router.patch('/switchActiveBoard', (req, res, next) => {
   })
 })
 
-router.post('/updateCardDescription', (req, res, next) => {
+router.post('/updateCardAttribute', (req, res, next) => {
   let listId = req.body.listId
   let cardId = req.body.cardId
-  let description = req.body.description
+  let attributeType = req.body.attributeType
+  let attributeContent = req.body.attributeContent
   let currentUser = req.body.currentUser
 
   console.log('list id ' + listId)
   console.log('card id ' + cardId)
-  console.log('description ' + description)
   Card.findById(cardId, (err, card) => {
     if (err) {
       console.error(err)
       next(err)
     }
-    card.description = description
+    if (attributeType === 'title') {
+      card.title = attributeContent
+    } else {
+      card.description = attributeContent
+    }
     card.save((err, card) => {
       if (err) {
         console.error(err)
@@ -547,10 +551,11 @@ router.post('/updateCardDescription', (req, res, next) => {
         }
         let modifiedCardIndex
         list.cards.forEach((listCard, index) => {
-          if (JSON.stringify(listCard._id) === JSON.stringify(list._id)) {
+          if (JSON.stringify(listCard._id) === JSON.stringify(card._id)) {
             modifiedCardIndex = index
           }
         })
+        console.log('modifiedCardIndex ' + modifiedCardIndex)
         list.cards.splice(modifiedCardIndex, 1, card)
         list.save((err, list) => {
           if (err) {
