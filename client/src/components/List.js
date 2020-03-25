@@ -61,7 +61,7 @@ const List = ({
     >
       <div className="list-name is-size-5">
         <input
-          id="board-name"
+          id="list-name"
           className="input"
           type="text"
           placeholder="Enter List Name"

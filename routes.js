@@ -519,6 +519,7 @@ router.patch('/switchActiveBoard', (req, res, next) => {
   })
 })
 
+//handles updates of both card title and card description
 router.post('/updateCardAttribute', (req, res, next) => {
   let listId = req.body.listId
   let cardId = req.body.cardId

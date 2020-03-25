@@ -48,9 +48,9 @@ const Show = ({
 
   return (
     <div className="show">
-      <div className="section">
+      <div>
         <nav
-          className="navbar has-background-grey-light is-fixed-top"
+          className="navbar has-background-grey-light"
           role="navigation"
           aria-label="main navigation"
         >

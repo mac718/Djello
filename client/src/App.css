@@ -47,6 +47,8 @@
 
 .list {
   height: max-content;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .list-name {
@@ -64,14 +66,21 @@
   margin-top: 50px;
 }
 
-#board-name {
+#board-name,
+#list-name {
   border: none;
   box-shadow: none;
   padding-left: 0;
+  font-size: 2.5rem;
+}
+
+#list-name {
+  font-size: 1.25rem;
 }
 
 .board-name {
   position: relative;
+  width: 100%;
 }
 
 .board-name-display {
@@ -80,6 +89,7 @@
   display: flex;
   align-items: center;
   height: 2.5em;
+  font-size: 2.5rem;
 }
 
 .task {

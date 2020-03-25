@@ -34,7 +34,7 @@ const Board = ({
       <div className="is-size-4 board-name">
         <input
           id="board-name"
-          className="input is-large"
+          className="input is-large has-text-dark"
           type="text"
           defaultValue={activeBoard[0].name}
           onBlur={handleBoardNameChange}
