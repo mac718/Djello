@@ -393,9 +393,6 @@ export function switchActiveBoard(e) {
 
 export function updateCardAttribute(e) {
   return (dispatch, getState) => {
-    console.log(
-      e.target.parentElement.parentElement.parentElement.parentElement.id,
-    )
     let state = getState()
     let attributeType = state.attributeType
     let attributeContent = state.cardAttributeContent
@@ -404,12 +401,14 @@ export function updateCardAttribute(e) {
     let cardId
 
     if (attributeType === 'title') {
+      dispatch(switchToCardTItleDisplay())
       cardId =
         e.target.parentElement.parentElement.parentElement.parentElement.id
       listId =
         e.target.parentElement.parentElement.parentElement.parentElement
           .firstChild.id
     } else {
+      dispatch(switchToCardDescriptionDisplay())
       cardId = e.target.parentElement.parentElement.parentElement.id
       listId = e.target.parentElement.parentElement.parentElement.firstChild.id
     }
