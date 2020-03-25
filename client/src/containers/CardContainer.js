@@ -88,11 +88,7 @@ const mapDispatchToProps = dispatch => {
 
     handleCardAttributeUpdate: e => {
       e.preventDefault()
-      let cardId = e.target.parentElement.parentElement.parentElement.id
-      let listId =
-        e.target.parentElement.parentElement.parentElement.firstChild.id
-      console.log(e.target.parentElement.parentElement.parentElement.id)
-      dispatch(updateCardAttribute(listId, cardId))
+      dispatch(updateCardAttribute(e))
     },
 
     handleSwitchToCardDescriptionForm: () => {
