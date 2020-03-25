@@ -10,11 +10,12 @@ const CardTitleForm = ({
 }) => {
   return (
     <form onSubmit={handleCardTitleUpdate}>
-      <textarea
-        className="textarea"
+      <input
+        className="input"
+        type="text"
         onChange={handleCardTitleEdit}
         defaultValue={title}
-      ></textarea>
+      ></input>
       <div id="card-modal-buttons" className="field is-grouped">
         <p className="control">
           <button className="button is-primary" type="submit">
