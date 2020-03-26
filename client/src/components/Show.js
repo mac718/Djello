@@ -1,7 +1,5 @@
 import React from 'react'
-import Board from './Board'
 import BoardContainer from '../containers/BoardContainer'
-import { redirectAfterLogout } from '../actions'
 import { Redirect } from 'react-router-dom'
 
 const Show = ({
@@ -21,8 +19,6 @@ const Show = ({
       boardNames.push(board.name)
       return <BoardContainer />
     })
-    //id is the same for all boards
-    //need to fix board name input
     console.log(JSON.stringify(currentUser.boards))
     dropdownItems = currentUser.boards.map((board, i) => {
       console.log(i + ' ' + board._id)

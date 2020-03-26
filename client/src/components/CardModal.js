@@ -3,6 +3,7 @@ import CardDescriptionForm from './CardDescriptionForm'
 import CardDescriptionDisplay from './CardDescriptionDisplay'
 import CardTitleForm from './CardTitleForm'
 import CardTitleDisplay from './CardTitleDisplay'
+import MemberDropdown from './MemberDropdown'
 
 const CardModal = ({
   currentUser,
@@ -109,6 +110,7 @@ const CardModal = ({
           </div>
           <div className="modal-card-footer">
             <p className="is-size-4">Activity</p>
+            <MemberDropdown />
           </div>
         </div>
       </div>

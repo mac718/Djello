@@ -311,10 +311,6 @@ router.post('/changeListName', (req, res, next) => {
             modifiedListIndex = index
           }
         })
-        // let modifiedList = board.lists.filter((list, index) => {
-        //   modifiedBoardIndex = index
-        //   return listId === list._id
-        // })
         board.lists.splice(modifiedListIndex, 1, list)
         User.findById(currentUser._id, (err, user) => {
           if (err) {

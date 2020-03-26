@@ -1,4 +1,5 @@
 import React from 'react'
+import '@fortawesome/fontawesome-free/css/all.css'
 import 'bulma/css/bulma.css'
 import './App.css'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
