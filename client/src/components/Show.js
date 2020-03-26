@@ -1,6 +1,8 @@
 import React from 'react'
 import Board from './Board'
 import BoardContainer from '../containers/BoardContainer'
+import { redirectAfterLogout } from '../actions'
+import { Redirect } from 'react-router-dom'
 
 const Show = ({
   handleLogoutClick,
@@ -8,6 +10,7 @@ const Show = ({
   currentUser,
   handleDeleteBoard,
   handleActiveBoardSwitch,
+  redirect,
 }) => {
   console.log('active ' + JSON.stringify(currentUser))
   let boards = []
@@ -46,6 +49,9 @@ const Show = ({
   activeBoard = <BoardContainer currentBoard={activeBoard} />
   console.log(currentUser.activeBoard)
 
+  if (redirect === '/login') {
+    return <Redirect to={redirect} />
+  }
   return (
     <div className="show has-background-white-bis">
       <div>

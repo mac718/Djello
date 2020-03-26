@@ -6,6 +6,7 @@ import {
   createBoard,
   deleteBoard,
   switchActiveBoard,
+  redirectAfterLogout,
 } from '../actions'
 
 class ShowContainer extends Component {
@@ -16,6 +17,7 @@ class ShowContainer extends Component {
       currentUser,
       handleDeleteBoard,
       handleActiveBoardSwitch,
+      redirect,
     } = this.props
     return (
       <Show
@@ -24,6 +26,7 @@ class ShowContainer extends Component {
         handleDeleteBoard={handleDeleteBoard}
         currentUser={currentUser}
         handleActiveBoardSwitch={handleActiveBoardSwitch}
+        redirect={redirect}
       />
     )
   }
@@ -32,6 +35,7 @@ class ShowContainer extends Component {
 const mapStateToProps = state => {
   return {
     currentUser: state.currentUser,
+    redirect: state.redirect,
   }
 }
 const mapDispatchToProps = dispatch => {

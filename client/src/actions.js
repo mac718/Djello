@@ -19,6 +19,7 @@ export const SWITCH_TO_CARD_DESCRIPTION_DISPLAY =
 export const SWITCH_TO_CARD_TITLE_FORM = 'SWITCH_TO_CARD_TITLE_FORM'
 export const SWITCH_TO_CARD_TITLE_DISPLAY = 'SWITCH_TO_CARD_TITLE_DISPLAY'
 export const TOGGLE_IS_LOADING = 'TOGGLE_IS_LOADING'
+export const REDIRECT_AFTER_LOGOUT = 'REDIRECT_AFTER_LOGOUT'
 
 export function getDataRequest() {
   return {
@@ -137,6 +138,12 @@ export function toggleIsLoading() {
   }
 }
 
+export function redirectAfterLogout() {
+  return {
+    type: REDIRECT_AFTER_LOGOUT,
+  }
+}
+
 //handles register and login
 export function handleSubmit(e, route) {
   return (dispatch, getState) => {
@@ -177,10 +184,16 @@ export function handleSubmit(e, route) {
 }
 
 export function handleLogOut(e) {
-  return () => {
+  return dispatch => {
     fetch('/logout', {
       method: 'POST',
-    }).then(res => console.log(res))
+    })
+      .then(() => dispatch(redirectAfterLogout()))
+      .catch(err => {
+        console.log(err)
+        dispatch(getDataFailure(err))
+        alert('Error logging out')
+      })
   }
 }
 

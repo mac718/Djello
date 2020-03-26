@@ -124,6 +124,11 @@ export function djello(state = initialState, action) {
         ...state,
         isLoading: true,
       }
+    case Actions.REDIRECT_AFTER_LOGOUT:
+      return {
+        ...state,
+        redirect: '/login',
+      }
     default:
       return state
   }
