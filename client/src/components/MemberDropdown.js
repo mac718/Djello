@@ -1,6 +1,16 @@
 import React from 'react'
 
-const MemberDropdown = ({ members }) => {
+const MemberDropdown = ({ members, handleAddMemberToCard }) => {
+  let memberList
+  if (members) {
+    memberList = members.map(member => {
+      return (
+        <a href="#" className="dropdown-item" onClick={handleAddMemberToCard}>
+          {member.username}
+        </a>
+      )
+    })
+  }
   return (
     <div className="dropdown is-hoverable is-up">
       <div className="dropdown-trigger">
@@ -9,29 +19,14 @@ const MemberDropdown = ({ members }) => {
           aria-haspopup="true"
           aria-controls="dropdown-menu"
         >
-          <span>Dropdown button</span>
+          <span>Members</span>
           <span className="icon is-small">
             <i className="fas fa-angle-down" aria-hidden="true"></i>
           </span>
         </button>
       </div>
       <div className="dropdown-menu" id="dropdown-menu" role="menu">
-        <div className="dropdown-content">
-          <a href="#" className="dropdown-item">
-            Dropdown item
-          </a>
-          <a className="dropdown-item">Other dropdown item</a>
-          <a href="#" className="dropdown-item is-active">
-            Active dropdown item
-          </a>
-          <a href="#" className="dropdown-item">
-            Other dropdown item
-          </a>
-          <hr className="dropdown-divider" />
-          <a href="#" className="dropdown-item">
-            With a divider
-          </a>
-        </div>
+        <div className="dropdown-content">{memberList}</div>
       </div>
     </div>
   )

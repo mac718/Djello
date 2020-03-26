@@ -10,10 +10,14 @@ import {
   switchToCardDescriptionDisplay,
   switchToCardDTitleForm,
   switchToCardTItleDisplay,
+  getAllUsers,
 } from '../actions'
 import { is } from 'bluebird'
 
 class CardContainer extends Component {
+  // componentDidMount() {
+  //   this.props.dispatch(getAllUsers())
+  // }
   render() {
     const {
       currentUser,
@@ -34,6 +38,7 @@ class CardContainer extends Component {
       showCardTitleForm,
       isLoading,
       title,
+      userList,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -58,6 +63,7 @@ class CardContainer extends Component {
         showCardTitleForm={showCardTitleForm}
         isLoading={isLoading}
         title={title}
+        userList={userList}
       />
     )
   }
@@ -75,6 +81,7 @@ const mapStateToProps = (state, ownProps) => {
     showCardTitleForm: state.showCardTitleForm,
     attributeContent: state.attributeContent,
     isLoading: state.isLoading,
+    userList: state.userList,
   }
 }
 
@@ -83,6 +90,7 @@ const mapDispatchToProps = dispatch => {
     handleActiveCardModal: e => {
       let id = e.target.parentElement.id
       dispatch(changeActiveCardModal(id))
+      dispatch(getAllUsers())
     },
 
     handleDeleteCard: e => {
@@ -118,6 +126,8 @@ const mapDispatchToProps = dispatch => {
     handleSwitchToCardTitleDisplay: () => {
       dispatch(switchToCardTItleDisplay())
     },
+
+    dispatch,
   }
 }
 

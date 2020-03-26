@@ -107,10 +107,10 @@ const CardModal = ({
           {descriptionComponent}
           <div className="members">
             <p className="is-size-4">Members</p>
+            <MemberDropdown members={members} />
           </div>
           <div className="modal-card-footer">
             <p className="is-size-4">Activity</p>
-            <MemberDropdown />
           </div>
         </div>
       </div>

@@ -18,6 +18,7 @@ const initialState = {
   showCardTitleForm: false,
   attributeType: '',
   isLoading: false,
+  userList: [],
 }
 
 export function djello(state = initialState, action) {
@@ -128,6 +129,11 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         redirect: '/login',
+      }
+    case Actions.UPDATE_USER_LIST:
+      return {
+        ...state,
+        userList: action.users,
       }
     default:
       return state

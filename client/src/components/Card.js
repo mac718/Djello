@@ -21,6 +21,7 @@ const Card = ({
   showCardTitleForm,
   isLoading,
   title,
+  userList,
 }) => {
   let classes
   if (activeCardModal === cardId) {
@@ -59,6 +60,7 @@ const Card = ({
         handleSwitchToCardTitleDisplay={handleSwitchToCardTitleDisplay}
         showCardTitleForm={showCardTitleForm}
         isLoading={isLoading}
+        members={userList}
       />
     </div>
   )

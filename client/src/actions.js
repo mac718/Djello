@@ -20,6 +20,7 @@ export const SWITCH_TO_CARD_TITLE_FORM = 'SWITCH_TO_CARD_TITLE_FORM'
 export const SWITCH_TO_CARD_TITLE_DISPLAY = 'SWITCH_TO_CARD_TITLE_DISPLAY'
 export const TOGGLE_IS_LOADING = 'TOGGLE_IS_LOADING'
 export const REDIRECT_AFTER_LOGOUT = 'REDIRECT_AFTER_LOGOUT'
+export const UPDATE_USER_LIST = 'UPDATE_USER_LIST'
 
 export function getDataRequest() {
   return {
@@ -141,6 +142,13 @@ export function toggleIsLoading() {
 export function redirectAfterLogout() {
   return {
     type: REDIRECT_AFTER_LOGOUT,
+  }
+}
+
+export function updateUserList(users) {
+  return {
+    type: UPDATE_USER_LIST,
+    users,
   }
 }
 
@@ -452,6 +460,46 @@ export function updateCardAttribute(e) {
     })
       .then(res => {
         return res.json()
+      })
+      .then(json => {
+        dispatch(updateCurrentUser(json))
+      })
+      .catch(err => {
+        console.log(err)
+        alert('hmmmm')
+      })
+  }
+}
+
+export function getAllUsers() {
+  return dispatch => {
+    fetch('/getAllUsers')
+      .then(res => {
+        return res.json()
+      })
+      .then(json => {
+        dispatch(updateUserList(json))
+      })
+      .catch(err => {
+        console.log(err)
+        alert('hmmmm')
+      })
+  }
+}
+
+export function addMemberToCard() {
+  return (dispatch, getState) => {
+    let username = req.body.username
+
+    fetch('/addMemberToCard', {
+      method: 'POST',
+      body: JSON.stringify({ username }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then(res => {
+        return res.json
       })
       .then(json => {
         dispatch(updateCurrentUser(json))

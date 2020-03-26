@@ -610,4 +610,14 @@ router.post('/updateCardAttribute', (req, res, next) => {
   })
 })
 
+router.get('/getAllUsers', (req, res, next) => {
+  User.find((err, users) => {
+    if (err) {
+      console.error(err)
+      next(err)
+    }
+    return res.json(users)
+  })
+})
+
 module.exports = router
