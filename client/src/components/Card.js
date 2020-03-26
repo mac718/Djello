@@ -1,9 +1,10 @@
 import React from 'react'
 import CardModal from './CardModal'
+import { is } from 'bluebird'
 
 const Card = ({
   currentUser,
-  title,
+  attributeContent,
   activeCardModal,
   handleActiveCardModal,
   cardId,
@@ -18,6 +19,8 @@ const Card = ({
   handleSwitchToCardTitleDisplay,
   showCardDescriptionForm,
   showCardTitleForm,
+  isLoading,
+  title,
 }) => {
   let classes
   if (activeCardModal === cardId) {
@@ -39,7 +42,7 @@ const Card = ({
       <CardModal
         currentUser={currentUser}
         cardId={cardId}
-        title={title}
+        attributeContent={attributeContent}
         classes={classes}
         handleActiveCardModal={handleActiveCardModal}
         handleDeleteCard={handleDeleteCard}
@@ -55,6 +58,7 @@ const Card = ({
         handleSwitchToCardTitleForm={handleSwitchToCardTitleForm}
         handleSwitchToCardTitleDisplay={handleSwitchToCardTitleDisplay}
         showCardTitleForm={showCardTitleForm}
+        isLoading={isLoading}
       />
     </div>
   )

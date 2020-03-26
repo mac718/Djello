@@ -17,6 +17,7 @@ const initialState = {
   showCardDescriptionForm: false,
   showCardTitleForm: false,
   attributeType: '',
+  isLoading: false,
 }
 
 export function djello(state = initialState, action) {
@@ -63,6 +64,7 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         currentUser: action.data,
+        isLoading: false,
       }
     case Actions.CREATE_CARD_FORM:
       return {
@@ -116,6 +118,11 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         showCardTitleForm: false,
+      }
+    case Actions.TOGGLE_IS_LOADING:
+      return {
+        ...state,
+        isLoading: true,
       }
     default:
       return state

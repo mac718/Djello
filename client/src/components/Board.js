@@ -45,7 +45,7 @@ const Board = ({
 
       {boardLists}
       <button
-        className="button add-list is-light is-medium"
+        className="button add-list is-light is-medium is-outlined is-primary"
         onClick={handleClick}
       >
         Add A List...

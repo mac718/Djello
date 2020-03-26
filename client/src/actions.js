@@ -18,6 +18,7 @@ export const SWITCH_TO_CARD_DESCRIPTION_DISPLAY =
   'SWITCH_TO_CARD_DESCRIPTION_DISPLAY'
 export const SWITCH_TO_CARD_TITLE_FORM = 'SWITCH_TO_CARD_TITLE_FORM'
 export const SWITCH_TO_CARD_TITLE_DISPLAY = 'SWITCH_TO_CARD_TITLE_DISPLAY'
+export const TOGGLE_IS_LOADING = 'TOGGLE_IS_LOADING'
 
 export function getDataRequest() {
   return {
@@ -127,6 +128,12 @@ export function switchToCardDTitleForm() {
 export function switchToCardTItleDisplay() {
   return {
     type: SWITCH_TO_CARD_TITLE_DISPLAY,
+  }
+}
+
+export function toggleIsLoading() {
+  return {
+    type: TOGGLE_IS_LOADING,
   }
 }
 
@@ -394,6 +401,7 @@ export function switchActiveBoard(e) {
 
 export function updateCardAttribute(e) {
   return (dispatch, getState) => {
+    dispatch(toggleIsLoading())
     let state = getState()
     let attributeType = state.attributeType
     let attributeContent = state.cardAttributeContent

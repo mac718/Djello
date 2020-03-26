@@ -11,12 +11,13 @@ import {
   switchToCardDTitleForm,
   switchToCardTItleDisplay,
 } from '../actions'
+import { is } from 'bluebird'
 
 class CardContainer extends Component {
   render() {
     const {
       currentUser,
-      title,
+      attributeContent,
       activeCardModal,
       handleActiveCardModal,
       cardId,
@@ -31,12 +32,14 @@ class CardContainer extends Component {
       handleSwitchToCardTitleForm,
       handleSwitchToCardTitleDisplay,
       showCardTitleForm,
+      isLoading,
+      title,
     } = this.props
     console.log(activeCardModal)
     return (
       <Card
         currentUser={currentUser}
-        title={title}
+        attributeContent={attributeContent}
         activeCardModal={activeCardModal}
         handleActiveCardModal={handleActiveCardModal}
         cardId={cardId}
@@ -53,6 +56,8 @@ class CardContainer extends Component {
         handleSwitchToCardTitleDisplay={handleSwitchToCardTitleDisplay}
         showCardDescriptionForm={showCardDescriptionForm}
         showCardTitleForm={showCardTitleForm}
+        isLoading={isLoading}
+        title={title}
       />
     )
   }
@@ -68,6 +73,8 @@ const mapStateToProps = (state, ownProps) => {
     listName: ownProps.listName,
     showCardDescriptionForm: state.showCardDescriptionForm,
     showCardTitleForm: state.showCardTitleForm,
+    attributeContent: state.attributeContent,
+    isLoading: state.isLoading,
   }
 }
 

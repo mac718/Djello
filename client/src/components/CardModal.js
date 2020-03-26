@@ -6,7 +6,7 @@ import CardTitleDisplay from './CardTitleDisplay'
 
 const CardModal = ({
   currentUser,
-  title,
+  attributeContent,
   members,
   classes,
   handleActiveCardModal,
@@ -22,6 +22,7 @@ const CardModal = ({
   handleSwitchToCardTitleDisplay,
   showCardDescriptionForm,
   showCardTitleForm,
+  isLoading,
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
@@ -54,14 +55,14 @@ const CardModal = ({
 
   let descriptionDisplay = (
     <CardDescriptionDisplay
-      description={currentCard.description}
+      description={isLoading ? attributeContent : currentCard.description}
       handleSwitchToCardDescriptionForm={handleSwitchToCardDescriptionForm}
     />
   )
 
   let titleForm = (
     <CardTitleForm
-      title={title}
+      title={currentCard.title}
       handleCardAttributeEdit={handleCardAttributeEdit}
       handleCardAttributeUpdate={handleCardAttributeUpdate}
       handleSwitchToCardTitleDisplay={handleSwitchToCardTitleDisplay}
@@ -70,7 +71,7 @@ const CardModal = ({
 
   let titleDisplay = (
     <CardTitleDisplay
-      title={title}
+      title={isLoading ? attributeContent : currentCard.title}
       handleSwitchToCardTitleForm={handleSwitchToCardTitleForm}
     />
   )
