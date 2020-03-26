@@ -47,7 +47,7 @@ const Show = ({
   console.log(currentUser.activeBoard)
 
   return (
-    <div className="show">
+    <div className="show has-background-white-bis">
       <div>
         <nav
           className="navbar has-background-grey-light"
@@ -74,26 +74,25 @@ const Show = ({
         </nav>
       </div>
       <nav
-        className="navbar board-dropdown"
+        className="navbar board-dropdown has-background-white-bis"
         role="navigation"
         aria-label="dropdown navigation"
       >
-        <div className="navbar-item has-dropdown is-hoverable">
+        <div className="navbar-item has-dropdown is-hoverable boards-dropdown">
           <a className="navbar-link">Boards</a>
-
           <div className="navbar-dropdown">{dropdownItems}</div>
         </div>
         <button
-          className="button is-danger is-light"
+          className="button is-primary is-light is-large create-board-button"
+          onClick={handleCreateBoard}
+        >
+          + Create New Board
+        </button>
+        <button
+          className="button is-danger is-light is-small delete-board-button"
           onClick={handleDeleteBoard}
         >
           Delete Current Board
-        </button>
-        <button
-          className="button is-primary is-light"
-          onClick={handleCreateBoard}
-        >
-          Create New Board
         </button>
       </nav>
       <div className="current-board">{activeBoard}</div>

@@ -73,7 +73,7 @@ const List = ({
         className="button is-primary is-light"
         onClick={handleShowCardForm}
       >
-        Add Task
+        + Add Card
       </button>
     </div>
   )

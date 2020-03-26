@@ -30,11 +30,11 @@ const Board = ({
 
   console.log('active board ' + JSON.stringify(activeBoard[0].name))
   return (
-    <div className="board">
+    <div className="board has-background-white-bis">
       <div className="is-size-4 board-name">
         <input
           id="board-name"
-          className="input is-large has-text-dark"
+          className="input is-large has-text-dark has-background-white-bis"
           type="text"
           defaultValue={activeBoard[0].name}
           onBlur={handleBoardNameChange}

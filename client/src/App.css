@@ -112,3 +112,12 @@
   top: -0.75rem !important;
   right: -0.75rem !important;
 }
+
+.boards-dropdown {
+  margin-bottom: 20px;
+}
+
+.delete-board-button {
+  width: 66%;
+  margin: 10px auto;
+}
