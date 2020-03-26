@@ -49,6 +49,7 @@
   height: max-content;
   margin-left: 10px;
   margin-right: 10px;
+  position: relative;
 }
 
 .list-name {
@@ -105,4 +106,9 @@
 
 .hidden {
   display: none;
+}
+
+.delete-list {
+  top: -0.75rem !important;
+  right: -0.75rem !important;
 }
