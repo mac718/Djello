@@ -24,6 +24,7 @@ const CardModal = ({
   showCardDescriptionForm,
   showCardTitleForm,
   isLoading,
+  handleSelectMemberFromDropdown,
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
@@ -83,6 +84,14 @@ const CardModal = ({
 
   let titleComponent = showCardTitleForm ? titleForm : titleDisplay
 
+  let membersList = currentCard.members.map(member => {
+    return (
+      <li className="member" key={member}>
+        {member}
+      </li>
+    )
+  })
+
   return (
     <div id={cardId} className={classes}>
       <span id={listId}></span>
@@ -107,7 +116,14 @@ const CardModal = ({
           {descriptionComponent}
           <div className="members">
             <p className="is-size-4">Members</p>
-            <MemberDropdown members={members} />
+            <MemberDropdown
+              members={members}
+              handleSelectMemberFromDropdown={handleSelectMemberFromDropdown}
+              handleCardAttributeUpdate={handleCardAttributeUpdate}
+            />
+          </div>
+          <div className="content">
+            <ul>{membersList}</ul>
           </div>
           <div className="modal-card-footer">
             <p className="is-size-4">Activity</p>

@@ -135,6 +135,12 @@ export function djello(state = initialState, action) {
         ...state,
         userList: action.users,
       }
+    case Actions.SELECT_MEMBER_FROM_DROPDOWN:
+      return {
+        ...state,
+        attributeType: 'member',
+        cardAttributeContent: action.member,
+      }
     default:
       return state
   }

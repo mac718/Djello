@@ -1,3 +1,5 @@
+import { get } from 'mongoose'
+
 export const GET_DATA_REQUEST = 'GET_DATA_REQUEST'
 export const GET_DATA_SUCCESS = 'GET_DATA_SUCCESS'
 export const GET_DATA_FAILURE = 'GET_DATA_FAILURE'
@@ -21,6 +23,7 @@ export const SWITCH_TO_CARD_TITLE_DISPLAY = 'SWITCH_TO_CARD_TITLE_DISPLAY'
 export const TOGGLE_IS_LOADING = 'TOGGLE_IS_LOADING'
 export const REDIRECT_AFTER_LOGOUT = 'REDIRECT_AFTER_LOGOUT'
 export const UPDATE_USER_LIST = 'UPDATE_USER_LIST'
+export const SELECT_MEMBER_FROM_DROPDOWN = 'SELECT_MEMBER_FROM_DROPDOWN'
 
 export function getDataRequest() {
   return {
@@ -149,6 +152,13 @@ export function updateUserList(users) {
   return {
     type: UPDATE_USER_LIST,
     users,
+  }
+}
+
+export function selectMemberFromDropdown(member) {
+  return {
+    type: SELECT_MEMBER_FROM_DROPDOWN,
+    member,
   }
 }
 
@@ -437,10 +447,16 @@ export function updateCardAttribute(e) {
       listId =
         e.target.parentElement.parentElement.parentElement.parentElement
           .firstChild.id
-    } else {
+    } else if (attributeType === 'description') {
       dispatch(switchToCardDescriptionDisplay())
       cardId = e.target.parentElement.parentElement.parentElement.id
       listId = e.target.parentElement.parentElement.parentElement.firstChild.id
+    } else if (attributeType === 'member') {
+      cardId =
+        e.target.parentElement.parentElement.parentElement.parentElement.id
+      listId =
+        e.target.parentElement.parentElement.parentElement.parentElement
+          .firstChild.id
     }
 
     console.log('hello')
@@ -487,13 +503,19 @@ export function getAllUsers() {
   }
 }
 
-export function addMemberToCard() {
+export function addMemberToCard(e) {
   return (dispatch, getState) => {
-    let username = req.body.username
+    let cardId =
+      e.parentElement.parentElement.parentElement.parentElement.parentElement
+        .parentElement.id
+    let listId =
+      e.parentElement.parentElement.parentElement.parentElement.parentElement
+        .parentElement.firstChild.id
+    let username = e.target.innerHtml
 
     fetch('/addMemberToCard', {
       method: 'POST',
-      body: JSON.stringify({ username }),
+      body: JSON.stringify({ username, cardId, listId }),
       headers: {
         'Content-type': 'application/json',
       },

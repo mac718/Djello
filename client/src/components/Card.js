@@ -22,6 +22,7 @@ const Card = ({
   isLoading,
   title,
   userList,
+  handleSelectMemberFromDropdown,
 }) => {
   let classes
   if (activeCardModal === cardId) {
@@ -61,6 +62,7 @@ const Card = ({
         showCardTitleForm={showCardTitleForm}
         isLoading={isLoading}
         members={userList}
+        handleSelectMemberFromDropdown={handleSelectMemberFromDropdown}
       />
     </div>
   )

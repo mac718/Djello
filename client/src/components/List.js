@@ -56,7 +56,7 @@ const List = ({
 
   return (
     <div id={id} className="list tile is-2 is-vertical is-parent notification">
-      <a class="delete-list delete is-medium" onClick={deleteList}></a>
+      <a className="delete-list delete is-medium" onClick={deleteList}></a>
       <div className="list-name is-size-5">
         <input
           id="list-name"

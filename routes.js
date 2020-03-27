@@ -532,8 +532,10 @@ router.post('/updateCardAttribute', (req, res, next) => {
     }
     if (attributeType === 'title') {
       card.title = attributeContent
-    } else {
+    } else if (attributeType === 'description') {
       card.description = attributeContent
+    } else if (attributeType === 'member') {
+      card.members = [...card.members, attributeContent]
     }
     card.save((err, card) => {
       if (err) {
@@ -617,6 +619,23 @@ router.get('/getAllUsers', (req, res, next) => {
       next(err)
     }
     return res.json(users)
+  })
+})
+
+router.post('/addMemberToCard', (req, res, next) => {
+  let username = req.body.username
+  let cardId = req.body.cardId
+  let listId = req.body.listId
+
+  Card.findById(cardId, (err, card) => {
+    if (err) {
+      console.error(err)
+      next(err)
+    }
+    card.members = [...card.members, username]
+    card.save((err, card) => {
+      List.findById(listId, (err, list) => {})
+    })
   })
 })
 

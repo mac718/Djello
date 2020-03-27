@@ -11,6 +11,8 @@ import {
   switchToCardDTitleForm,
   switchToCardTItleDisplay,
   getAllUsers,
+  addMemberToCard,
+  selectMemberFromDropdown,
 } from '../actions'
 import { is } from 'bluebird'
 
@@ -39,6 +41,7 @@ class CardContainer extends Component {
       isLoading,
       title,
       userList,
+      handleSelectMemberFromDropdown,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -64,6 +67,7 @@ class CardContainer extends Component {
         isLoading={isLoading}
         title={title}
         userList={userList}
+        handleSelectMemberFromDropdown={handleSelectMemberFromDropdown}
       />
     )
   }
@@ -103,6 +107,10 @@ const mapDispatchToProps = dispatch => {
 
     handleCardAttributeUpdate: e => {
       e.preventDefault()
+      console.log(
+        e.target.parentElement.parentElement.parentElement.parentElement
+          .firstChild.id,
+      )
       dispatch(updateCardAttribute(e))
     },
 
@@ -127,7 +135,15 @@ const mapDispatchToProps = dispatch => {
       dispatch(switchToCardTItleDisplay())
     },
 
-    dispatch,
+    handleAddMemberToCard: e => {
+      dispatch(addMemberToCard(e))
+    },
+
+    handleSelectMemberFromDropdown: e => {
+      let member = e.target.innerHTML
+      console.log(member)
+      dispatch(selectMemberFromDropdown(member))
+    },
   }
 }
 
