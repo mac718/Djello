@@ -479,6 +479,9 @@ export function updateCardAttribute(e) {
       })
       .then(json => {
         dispatch(updateCurrentUser(json))
+        if (attributeType === 'member') {
+          dispatch(addBoardToMember())
+        }
       })
       .catch(err => {
         console.log(err)
@@ -503,32 +506,21 @@ export function getAllUsers() {
   }
 }
 
-export function addMemberToCard(e) {
+export function addBoardToMember() {
   return (dispatch, getState) => {
-    let cardId =
-      e.parentElement.parentElement.parentElement.parentElement.parentElement
-        .parentElement.id
-    let listId =
-      e.parentElement.parentElement.parentElement.parentElement.parentElement
-        .parentElement.firstChild.id
-    let username = e.target.innerHtml
-
-    fetch('/addMemberToCard', {
+    let state = getState()
+    console.log('state' + JSON.stringify(state))
+    let username = state.cardAttributeContent
+    let boardId = state.currentUser.activeBoard
+    fetch('/addBoardToMember', {
       method: 'POST',
-      body: JSON.stringify({ username, cardId, listId }),
+      body: JSON.stringify({ username, boardId }),
       headers: {
         'Content-type': 'application/json',
       },
+    }).catch(err => {
+      console.log(err)
+      alert('hmmmm')
     })
-      .then(res => {
-        return res.json
-      })
-      .then(json => {
-        dispatch(updateCurrentUser(json))
-      })
-      .catch(err => {
-        console.log(err)
-        alert('hmmmm')
-      })
   }
 }

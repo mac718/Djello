@@ -11,8 +11,8 @@ import {
   switchToCardDTitleForm,
   switchToCardTItleDisplay,
   getAllUsers,
-  addMemberToCard,
   selectMemberFromDropdown,
+  addBoardToMember,
 } from '../actions'
 import { is } from 'bluebird'
 
@@ -135,13 +135,9 @@ const mapDispatchToProps = dispatch => {
       dispatch(switchToCardTItleDisplay())
     },
 
-    handleAddMemberToCard: e => {
-      dispatch(addMemberToCard(e))
-    },
-
     handleSelectMemberFromDropdown: e => {
       let member = e.target.innerHTML
-      console.log(member)
+      document.getElementById('dropdown-selection').innerHTML = member
       dispatch(selectMemberFromDropdown(member))
     },
   }

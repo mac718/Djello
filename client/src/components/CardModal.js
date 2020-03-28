@@ -108,10 +108,13 @@ const CardModal = ({
         </div>
         <div className="modal-card-body">
           <button
-            className="button is-primary is-light"
+            className="button is-link is-light is-outlined mark-as-complete"
             onClick={handleDeleteCard}
           >
-            Mark as Complete
+            <span class="icon is-small">
+              <i class="fas fa-check"></i>
+            </span>
+            <span>Mark as Complete</span>
           </button>
           {descriptionComponent}
           <div className="members">

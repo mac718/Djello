@@ -121,3 +121,11 @@
   width: 66%;
   margin: 10px auto;
 }
+
+.add-member-button {
+  margin-left: 10px;
+}
+
+.mark-as-complete {
+  margin-bottom: 15px;
+}

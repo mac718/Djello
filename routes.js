@@ -515,7 +515,7 @@ router.patch('/switchActiveBoard', (req, res, next) => {
   })
 })
 
-//handles updates of both card title and card description
+//handles updates card title, card description, and card members list
 router.post('/updateCardAttribute', (req, res, next) => {
   let listId = req.body.listId
   let cardId = req.body.cardId
@@ -622,19 +622,40 @@ router.get('/getAllUsers', (req, res, next) => {
   })
 })
 
-router.post('/addMemberToCard', (req, res, next) => {
+router.post('/addBoardToMember', (req, res, next) => {
   let username = req.body.username
-  let cardId = req.body.cardId
-  let listId = req.body.listId
+  let boardId = req.body.boardId
 
-  Card.findById(cardId, (err, card) => {
+  console.log('username ' + username)
+
+  User.find({ username }, (err, user) => {
     if (err) {
       console.error(err)
       next(err)
     }
-    card.members = [...card.members, username]
-    card.save((err, card) => {
-      List.findById(listId, (err, list) => {})
+    Board.findById(boardId, (err, board) => {
+      if (err) {
+        console.error(err)
+        next(err)
+      }
+      let repeat = false
+      console.log(user)
+      user[0].boards.forEach(userBoard => {
+        if (userBoard._id === board._id) {
+          repeat = true
+        }
+      })
+      if (!repeat) {
+        user[0].boards = [...user[0].boards, board]
+      }
+
+      user[0].save(err => {
+        if (err) {
+          console.error(err)
+          next(err)
+        }
+        res.status(200).send()
+      })
     })
   })
 })

@@ -85,16 +85,19 @@ const Show = ({
           <div className="navbar-dropdown">{dropdownItems}</div>
         </div>
         <button
-          className="button is-primary is-light is-large create-board-button"
+          className="button is-primary is-light is-large is-outlined create-board-button"
           onClick={handleCreateBoard}
         >
           + Create New Board
         </button>
         <button
-          className="button is-danger is-light is-small delete-board-button"
+          className="button is-danger is-light is-small is-outlined delete-board-button"
           onClick={handleDeleteBoard}
         >
-          Delete Current Board
+          <span class="icon is-small">
+            <i class="fas fa-minus-circle"></i>
+          </span>
+          <span>Delete Current Board</span>
         </button>
       </nav>
       <div className="current-board">{activeBoard}</div>
