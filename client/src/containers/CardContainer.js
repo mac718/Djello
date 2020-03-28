@@ -13,6 +13,7 @@ import {
   getAllUsers,
   selectMemberFromDropdown,
   addBoardToMember,
+  closeDuplicateMemberWarning,
 } from '../actions'
 import { is } from 'bluebird'
 
@@ -42,6 +43,8 @@ class CardContainer extends Component {
       title,
       userList,
       handleSelectMemberFromDropdown,
+      displayDuplicateMemberWarning,
+      handleCloseDuplicateMemberWarning,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -68,6 +71,8 @@ class CardContainer extends Component {
         title={title}
         userList={userList}
         handleSelectMemberFromDropdown={handleSelectMemberFromDropdown}
+        displayDuplicateMemberWarning={displayDuplicateMemberWarning}
+        handleCloseDuplicateMemberWarning={handleCloseDuplicateMemberWarning}
       />
     )
   }
@@ -86,6 +91,7 @@ const mapStateToProps = (state, ownProps) => {
     attributeContent: state.attributeContent,
     isLoading: state.isLoading,
     userList: state.userList,
+    displayDuplicateMemberWarning: state.displayDuplicateMemberWarning,
   }
 }
 
@@ -139,6 +145,10 @@ const mapDispatchToProps = dispatch => {
       let member = e.target.innerHTML
       document.getElementById('dropdown-selection').innerHTML = member
       dispatch(selectMemberFromDropdown(member))
+    },
+
+    handleCloseDuplicateMemberWarning: () => {
+      dispatch(closeDuplicateMemberWarning())
     },
   }
 }

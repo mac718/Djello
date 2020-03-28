@@ -19,6 +19,7 @@ const initialState = {
   attributeType: '',
   isLoading: false,
   userList: [],
+  displayDuplicateMemberWarning: false,
 }
 
 export function djello(state = initialState, action) {
@@ -140,6 +141,16 @@ export function djello(state = initialState, action) {
         ...state,
         attributeType: 'member',
         cardAttributeContent: action.member,
+      }
+    case Actions.DISPLAY_DUPLICATE_MEMBER_WARNING:
+      return {
+        ...state,
+        displayDuplicateMemberWarning: true,
+      }
+    case Actions.CLOSE_DUPLICATE_MEMBER_WARNING:
+      return {
+        ...state,
+        displayDuplicateMemberWarning: false,
       }
     default:
       return state

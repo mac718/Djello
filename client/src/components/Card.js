@@ -23,6 +23,8 @@ const Card = ({
   title,
   userList,
   handleSelectMemberFromDropdown,
+  displayDuplicateMemberWarning,
+  handleCloseDuplicateMemberWarning,
 }) => {
   let classes
   if (activeCardModal === cardId) {
@@ -63,6 +65,8 @@ const Card = ({
         isLoading={isLoading}
         members={userList}
         handleSelectMemberFromDropdown={handleSelectMemberFromDropdown}
+        displayDuplicateMemberWarning={displayDuplicateMemberWarning}
+        handleCloseDuplicateMemberWarning={handleCloseDuplicateMemberWarning}
       />
     </div>
   )

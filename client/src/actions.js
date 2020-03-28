@@ -24,6 +24,9 @@ export const TOGGLE_IS_LOADING = 'TOGGLE_IS_LOADING'
 export const REDIRECT_AFTER_LOGOUT = 'REDIRECT_AFTER_LOGOUT'
 export const UPDATE_USER_LIST = 'UPDATE_USER_LIST'
 export const SELECT_MEMBER_FROM_DROPDOWN = 'SELECT_MEMBER_FROM_DROPDOWN'
+export const DISPLAY_DUPLICATE_MEMBER_WARNING =
+  'DISPLAY_DUPLICATE_MEMBER_WARNING'
+export const CLOSE_DUPLICATE_MEMBER_WARNING = 'CLOSE_DUPLICATE_MEMBER_WARNING'
 
 export function getDataRequest() {
   return {
@@ -159,6 +162,18 @@ export function selectMemberFromDropdown(member) {
   return {
     type: SELECT_MEMBER_FROM_DROPDOWN,
     member,
+  }
+}
+
+export function displayDuplicateMemberWarning() {
+  return {
+    type: DISPLAY_DUPLICATE_MEMBER_WARNING,
+  }
+}
+
+export function closeDuplicateMemberWarning() {
+  return {
+    type: CLOSE_DUPLICATE_MEMBER_WARNING,
   }
 }
 
@@ -475,12 +490,21 @@ export function updateCardAttribute(e) {
       },
     })
       .then(res => {
-        return res.json()
+        console.log('res ' + JSON.stringify(res))
+        if (res.status === 500) {
+          return res
+        } else {
+          return res.json()
+        }
       })
       .then(json => {
-        dispatch(updateCurrentUser(json))
-        if (attributeType === 'member') {
+        if (json.status === 500) {
+          dispatch(displayDuplicateMemberWarning())
+        } else if (attributeType === 'member') {
           dispatch(addBoardToMember())
+          dispatch(updateCurrentUser(json))
+        } else {
+          dispatch(updateCurrentUser(json))
         }
       })
       .catch(err => {

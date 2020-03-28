@@ -541,10 +541,11 @@ router.post('/updateCardAttribute', (req, res, next) => {
       card.description = attributeContent
     } else if (attributeType === 'member') {
       if (!card.members.includes(attributeContent)) {
+        console.log('yayayya!!!!')
         card.members = [...card.members, attributeContent]
       } else {
-        console.log('nope!')
-        return
+        console.log('nonnnoono!!!!')
+        return res.status(500).send()
       }
     }
     card.save((err, card) => {

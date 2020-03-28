@@ -4,6 +4,7 @@ import CardDescriptionDisplay from './CardDescriptionDisplay'
 import CardTitleForm from './CardTitleForm'
 import CardTitleDisplay from './CardTitleDisplay'
 import MemberDropdown from './MemberDropdown'
+import { displayDuplicateMemberWarning } from '../actions'
 
 const CardModal = ({
   currentUser,
@@ -25,6 +26,8 @@ const CardModal = ({
   showCardTitleForm,
   isLoading,
   handleSelectMemberFromDropdown,
+  displayDuplicateMemberWarning,
+  handleCloseDuplicateMemberWarning,
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
@@ -132,6 +135,12 @@ const CardModal = ({
   //   )
   // })
 
+  let notificationClasses = displayDuplicateMemberWarning
+    ? 'notification is-danger is-light'
+    : 'notification is-danger is-light hidden'
+
+  console.log('notification classes ' + notificationClasses)
+
   return (
     <div id={cardId} className={classes}>
       <span id={listId}></span>
@@ -159,6 +168,13 @@ const CardModal = ({
           {descriptionComponent}
           <div className="members">
             <p className="is-size-4">Members</p>
+            <div className={notificationClasses}>
+              <button
+                className="delete"
+                onClick={handleCloseDuplicateMemberWarning}
+              ></button>
+              Member already added to card!
+            </div>
             <MemberDropdown
               members={members}
               handleSelectMemberFromDropdown={handleSelectMemberFromDropdown}
