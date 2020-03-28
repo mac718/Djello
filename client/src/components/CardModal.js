@@ -84,6 +84,19 @@ const CardModal = ({
 
   let titleComponent = showCardTitleForm ? titleForm : titleDisplay
 
+  // let repeat = false
+  // let membersArr = []
+
+  // console.log('members ' + JSON.stringify(currentCard.members))
+
+  // currentCard.members.forEach(member => {
+  //   if (!membersArr.includes(member)) {
+  //     membersArr = [...membersArr, member]
+  //   } else {
+  //     repeat = true
+  //   }
+  // })
+
   let membersList = currentCard.members.map(member => {
     return (
       <li className="member" key={member}>
@@ -91,6 +104,33 @@ const CardModal = ({
       </li>
     )
   })
+
+  // let repeat = false
+  // let membersArr = []
+  // let membersList = []
+
+  // currentCard.members.forEach(member => {
+  //   if (membersArr.includes(member)) {
+  //     repeat = true
+  //   } else {
+  //     membersArr.push(member)
+  //     membersList.push(
+  //       <li className="member" key={member}>
+  //         {member}
+  //       </li>,
+  //     )
+  //   }
+  // })
+
+  //let repeatNotification = repeat ? <p>Member Already Added to Card!</p> : null
+
+  // let membersList = currentCard.members.map(member => {
+  //   return (
+  //     <li className="member" key={member}>
+  //       {member}
+  //     </li>
+  //   )
+  // })
 
   return (
     <div id={cardId} className={classes}>
@@ -111,8 +151,8 @@ const CardModal = ({
             className="button is-link is-light is-outlined mark-as-complete"
             onClick={handleDeleteCard}
           >
-            <span class="icon is-small">
-              <i class="fas fa-check"></i>
+            <span className="icon is-small">
+              <i className="fas fa-check"></i>
             </span>
             <span>Mark as Complete</span>
           </button>
@@ -125,8 +165,8 @@ const CardModal = ({
               handleCardAttributeUpdate={handleCardAttributeUpdate}
             />
           </div>
-          <div className="content">
-            <ul>{membersList}</ul>
+          <div className="content membersList-container">
+            <ul className="membersList">{membersList}</ul>
           </div>
           <div className="modal-card-footer">
             <p className="is-size-4">Activity</p>

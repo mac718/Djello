@@ -33,7 +33,10 @@ router.post(
 
 router.post('/register', (req, res, next) => {
   let { username, password } = req.body
-  let activeBoard = new Board({ name: '', lists: [] })
+  let activeBoard = new Board({
+    name: 'My Board (click here to change name',
+    lists: [],
+  })
   let boards = [activeBoard]
   let activeBoardId = activeBoard.id
   activeBoard.save((err, board) => {
@@ -74,7 +77,10 @@ router.post('/logout', (req, res) => {
 })
 
 router.post('/createBoard', (req, res, next) => {
-  let board = new Board({ name: '', lists: [] })
+  let board = new Board({
+    name: 'My Board (click here to change name)',
+    lists: [],
+  })
   console.log('new board ' + board)
   let currentUser = req.body.currentUser
 
@@ -83,7 +89,6 @@ router.post('/createBoard', (req, res, next) => {
       console.error(err)
       return next(err)
     }
-    //let username = req.cookies.user
     User.findById(currentUser._id, (err, user) => {
       if (err) {
         console.log(err)
@@ -271,7 +276,7 @@ router.post('/changeBoardName', (req, res, next) => {
             modifiedBoardIndex = index
           }
         })
-        console.log(modifiedBoardIndex)
+        console.log('modifiedBoardIndex ' + modifiedBoardIndex)
         user.boards.splice(modifiedBoardIndex, 1, board)
         user.save((err, user) => {
           if (err) {
@@ -535,7 +540,12 @@ router.post('/updateCardAttribute', (req, res, next) => {
     } else if (attributeType === 'description') {
       card.description = attributeContent
     } else if (attributeType === 'member') {
-      card.members = [...card.members, attributeContent]
+      if (!card.members.includes(attributeContent)) {
+        card.members = [...card.members, attributeContent]
+      } else {
+        console.log('nope!')
+        return
+      }
     }
     card.save((err, card) => {
       if (err) {

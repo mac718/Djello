@@ -6,8 +6,27 @@ const MemberDropdown = ({
   handleSelectMemberFromDropdown,
   handleCardAttributeUpdate,
 }) => {
-  let memberList
+  let repeat = false
+  let memberArr = []
+  let memberList = []
   if (members) {
+    // members.forEach(member => {
+    //   if (memberArr.includes(member.username)) {
+    //     repeat = true
+    //   } else {
+    //     memberArr.push(member.username)
+    //     memberList.push(
+    //       <a
+    //         href="#"
+    //         className="dropdown-item"
+    //         onClick={handleSelectMemberFromDropdown}
+    //         key={member._id}
+    //       >
+    //         {member.username}
+    //       </a>,
+    //     )
+    //   }
+    // })
     memberList = members.map(member => {
       return (
         <a
@@ -21,6 +40,8 @@ const MemberDropdown = ({
       )
     })
   }
+
+  let repeatNotification = repeat ? <p>Member already added!</p> : null
   return (
     <form onSubmit={handleCardAttributeUpdate}>
       <div className="dropdown is-hoverable is-up">
@@ -45,6 +66,7 @@ const MemberDropdown = ({
         >
           + Add Member
         </button>
+        {repeatNotification}
       </div>
     </form>
   )

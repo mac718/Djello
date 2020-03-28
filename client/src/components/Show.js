@@ -94,8 +94,8 @@ const Show = ({
           className="button is-danger is-light is-small is-outlined delete-board-button"
           onClick={handleDeleteBoard}
         >
-          <span class="icon is-small">
-            <i class="fas fa-minus-circle"></i>
+          <span className="icon is-small">
+            <i className="fas fa-minus-circle"></i>
           </span>
           <span>Delete Current Board</span>
         </button>
