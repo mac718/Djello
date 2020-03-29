@@ -501,8 +501,8 @@ export function updateCardAttribute(e) {
         if (json.status === 500) {
           dispatch(displayDuplicateMemberWarning())
         } else if (attributeType === 'member') {
-          dispatch(addBoardToMember())
           dispatch(updateCurrentUser(json))
+          dispatch(addBoardToMember())
         } else {
           dispatch(updateCurrentUser(json))
         }

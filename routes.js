@@ -34,7 +34,7 @@ router.post(
 router.post('/register', (req, res, next) => {
   let { username, password } = req.body
   let activeBoard = new Board({
-    name: 'My Board (click here to change name',
+    name: 'My Board (click here to change name)',
     lists: [],
   })
   let boards = [activeBoard]
@@ -652,7 +652,7 @@ router.post('/addBoardToMember', (req, res, next) => {
       let repeat = false
       console.log(user)
       user[0].boards.forEach(userBoard => {
-        if (userBoard._id === board._id) {
+        if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
           repeat = true
         }
       })
