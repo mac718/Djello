@@ -26,7 +26,7 @@ const CardModal = ({
   showCardTitleForm,
   isLoading,
   handleSelectMemberFromDropdown,
-  displayDuplicateMemberWarning,
+  showDuplicateMemberWarning,
   handleCloseDuplicateMemberWarning,
 }) => {
   console.log('listId ' + listId)
@@ -135,7 +135,7 @@ const CardModal = ({
   //   )
   // })
 
-  let notificationClasses = displayDuplicateMemberWarning
+  let notificationClasses = showDuplicateMemberWarning
     ? 'notification is-danger is-light'
     : 'notification is-danger is-light hidden'
 

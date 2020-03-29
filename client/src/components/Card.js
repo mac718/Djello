@@ -23,7 +23,7 @@ const Card = ({
   title,
   userList,
   handleSelectMemberFromDropdown,
-  displayDuplicateMemberWarning,
+  showDuplicateMemberWarning,
   handleCloseDuplicateMemberWarning,
 }) => {
   let classes
@@ -65,7 +65,7 @@ const Card = ({
         isLoading={isLoading}
         members={userList}
         handleSelectMemberFromDropdown={handleSelectMemberFromDropdown}
-        displayDuplicateMemberWarning={displayDuplicateMemberWarning}
+        showDuplicateMemberWarning={showDuplicateMemberWarning}
         handleCloseDuplicateMemberWarning={handleCloseDuplicateMemberWarning}
       />
     </div>

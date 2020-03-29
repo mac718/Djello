@@ -19,7 +19,7 @@ const initialState = {
   attributeType: '',
   isLoading: false,
   userList: [],
-  displayDuplicateMemberWarning: false,
+  showDuplicateMemberWarning: false,
 }
 
 export function djello(state = initialState, action) {
@@ -145,12 +145,12 @@ export function djello(state = initialState, action) {
     case Actions.DISPLAY_DUPLICATE_MEMBER_WARNING:
       return {
         ...state,
-        displayDuplicateMemberWarning: true,
+        showDuplicateMemberWarning: true,
       }
     case Actions.CLOSE_DUPLICATE_MEMBER_WARNING:
       return {
         ...state,
-        displayDuplicateMemberWarning: false,
+        showDuplicateMemberWarning: false,
       }
     default:
       return state
