@@ -341,6 +341,9 @@ export function changeName(e, componentName, route) {
     if (route === '/changeListName') {
       listId = e.target.parentElement.parentElement.id
     }
+    if (route === '/changeBoardName') {
+      e.target.value = ''
+    }
     let state = getState()
     let currentUser = state.currentUser
     console.log('route ' + route)

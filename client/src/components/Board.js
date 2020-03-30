@@ -32,14 +32,16 @@ const Board = ({
   return (
     <div className="board has-background-white-bis">
       <div className="is-size-4 board-name">
-        <input
-          id="board-name"
-          className="input is-large has-text-dark has-background-white-bis"
-          type="text"
-          defaultValue={activeBoard[0].name}
-          onBlur={handleBoardNameChange}
-          onFocus={handleHideBoardNameDisplay}
-        />
+        <div>
+          <input
+            id="board-name"
+            className="input is-large has-text-dark has-background-white-bis"
+            type="text"
+            defaultValue={activeBoard[0].name}
+            onBlur={handleBoardNameChange}
+            onFocus={handleHideBoardNameDisplay}
+          />
+        </div>
         <div className={boardNameDisplayClasses}>{activeBoard[0].name}</div>
       </div>
 

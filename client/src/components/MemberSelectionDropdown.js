@@ -1,6 +1,6 @@
 import React from 'react'
 
-const MemberDropdown = ({
+const MemberSelectionDropdown = ({
   members,
   handleAddMemberToCard,
   handleSelectMemberFromDropdown,
@@ -72,4 +72,4 @@ const MemberDropdown = ({
   )
 }
 
-export default MemberDropdown
+export default MemberSelectionDropdown
