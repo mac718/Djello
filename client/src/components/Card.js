@@ -1,6 +1,6 @@
 import React from 'react'
 import CardModal from './CardModal'
-import { is } from 'bluebird'
+import CardMemberList from './CardMemberList'
 
 const Card = ({
   currentUser,
@@ -32,6 +32,29 @@ const Card = ({
   } else {
     classes = `modal ${cardId}`
   }
+
+  let currentBoard = currentUser.boards.filter(board => {
+    return JSON.stringify(board._id) === JSON.stringify(currentUser.activeBoard)
+  })[0]
+
+  console.log('currentBoard ' + JSON.stringify(currentBoard))
+
+  let currentList = currentBoard.lists.filter(boardList => {
+    return JSON.stringify(boardList._id) === JSON.stringify(listId)
+  })[0]
+
+  let currentCard = currentList.cards.filter(listCard => {
+    return JSON.stringify(listCard._id) === JSON.stringify(cardId)
+  })[0]
+
+  let membersList = currentCard.members.map(member => {
+    return (
+      <li className="member" key={member}>
+        {member}
+      </li>
+    )
+  })
+
   return (
     <div>
       <div
@@ -41,6 +64,7 @@ const Card = ({
         aria-haspopup="true"
         onClick={handleActiveCardModal}
       >
+        <CardMemberList members={membersList} />
         <div className="card-content task is-hovered">{title}</div>
       </div>
       <CardModal

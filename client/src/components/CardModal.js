@@ -3,7 +3,7 @@ import CardDescriptionForm from './CardDescriptionForm'
 import CardDescriptionDisplay from './CardDescriptionDisplay'
 import CardTitleForm from './CardTitleForm'
 import CardTitleDisplay from './CardTitleDisplay'
-import MemberDropdown from './MemberDropdown'
+import MemberSelectionDropdown from './MemberSelectionDropdown'
 import { displayDuplicateMemberWarning } from '../actions'
 
 const CardModal = ({
@@ -175,7 +175,7 @@ const CardModal = ({
               ></button>
               Member already added to card!
             </div>
-            <MemberDropdown
+            <MemberSelectionDropdown
               members={members}
               handleSelectMemberFromDropdown={handleSelectMemberFromDropdown}
               handleCardAttributeUpdate={handleCardAttributeUpdate}
