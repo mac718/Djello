@@ -538,25 +538,28 @@ router.post('/updateCardAttribute', (req, res, next) => {
     }
     if (attributeType === 'title') {
       card.title = attributeContent
+      let date = new Date()
       card.activity = [
         ...card.activity,
-        `${currentUser.username} edited the title at ${Date.now()}`,
+        `${currentUser.username} edited the title at ${date.toString()}`,
       ]
     } else if (attributeType === 'description') {
       card.description = attributeContent
+      let date = new Date()
       card.activity = [
         ...card.activity,
-        `${currentUser.username} edited the description at ${Date.now()}`,
+        `${currentUser.username} edited the description at ${date.toString()}`,
       ]
     } else if (attributeType === 'member') {
       if (!card.members.includes(attributeContent)) {
         console.log('yayayya!!!!')
         card.members = [...card.members, attributeContent]
+        let date = new Date()
         card.activity = [
           ...card.activity,
           `${
             currentUser.username
-          } added ${attributeContent} to the card at ${Date.now()}`,
+          } added ${attributeContent} to the card at ${date.toString()}`,
         ]
       } else {
         console.log('nonnnoono!!!!')
