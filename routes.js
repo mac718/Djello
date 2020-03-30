@@ -345,8 +345,9 @@ router.post('/changeListName', (req, res, next) => {
 router.post('/createCard', (req, res, next) => {
   let listId = req.body.listId
   let title = req.body.title
-  let card = new Card({ title })
   let currentUser = req.body.currentUser
+  let activity = [`${currentUser.username} creaated card at ${Date.now()}`]
+  let card = new Card({ title, activity })
 
   card.save((err, card) => {
     if (err) {
@@ -537,12 +538,26 @@ router.post('/updateCardAttribute', (req, res, next) => {
     }
     if (attributeType === 'title') {
       card.title = attributeContent
+      card.activity = [
+        ...card.activity,
+        `${currentUser.username} edited the title at ${Date.now()}`,
+      ]
     } else if (attributeType === 'description') {
       card.description = attributeContent
+      card.activity = [
+        ...card.activity,
+        `${currentUser.username} edited the description at ${Date.now()}`,
+      ]
     } else if (attributeType === 'member') {
       if (!card.members.includes(attributeContent)) {
         console.log('yayayya!!!!')
         card.members = [...card.members, attributeContent]
+        card.activity = [
+          ...card.activity,
+          `${
+            currentUser.username
+          } added ${attributeContent} to the card at ${Date.now()}`,
+        ]
       } else {
         console.log('nonnnoono!!!!')
         return res.status(500).send()

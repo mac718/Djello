@@ -49,9 +49,9 @@ const Card = ({
 
   let membersList = currentCard.members.map(member => {
     return (
-      <li className="member" key={member}>
+      <div className="member" key={member}>
         {member}
-      </li>
+      </div>
     )
   })
 

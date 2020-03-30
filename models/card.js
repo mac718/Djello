@@ -5,6 +5,7 @@ const CardSchema = new Schema({
   title: { type: String, required: true },
   description: { type: String },
   members: { type: Array },
+  activity: { type: Array },
 })
 
 const Card = mongoose.model('Card', CardSchema)

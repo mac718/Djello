@@ -45,6 +45,13 @@ const CardModal = ({
     return JSON.stringify(listCard._id) === JSON.stringify(cardId)
   })[0]
 
+  let cardActivity
+  if (currentCard.activity) {
+    cardActivity = currentCard.activity.map(action => {
+      return <div>{action}</div>
+    })
+  }
+
   let descriptionForm = (
     <CardDescriptionForm
       description={currentCard.description}
@@ -186,6 +193,7 @@ const CardModal = ({
           </div>
           <div className="modal-card-footer">
             <p className="is-size-4">Activity</p>
+            {cardActivity}
           </div>
         </div>
       </div>
