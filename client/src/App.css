@@ -129,3 +129,12 @@
 .mark-as-complete {
   margin-bottom: 15px;
 }
+
+.remove-link {
+  float: right;
+  margin-right: 12rem;
+}
+
+.member-username {
+  display: inline-block;
+}

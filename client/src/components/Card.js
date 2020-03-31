@@ -25,6 +25,7 @@ const Card = ({
   handleSelectMemberFromDropdown,
   showDuplicateMemberWarning,
   handleCloseDuplicateMemberWarning,
+  handleDeleteMemberFromCard,
 }) => {
   let classes
   if (activeCardModal === cardId) {
@@ -91,6 +92,7 @@ const Card = ({
         handleSelectMemberFromDropdown={handleSelectMemberFromDropdown}
         showDuplicateMemberWarning={showDuplicateMemberWarning}
         handleCloseDuplicateMemberWarning={handleCloseDuplicateMemberWarning}
+        handleDeleteMemberFromCard={handleDeleteMemberFromCard}
       />
     </div>
   )

@@ -28,6 +28,7 @@ const CardModal = ({
   handleSelectMemberFromDropdown,
   showDuplicateMemberWarning,
   handleCloseDuplicateMemberWarning,
+  handleDeleteMemberFromCard,
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
@@ -110,7 +111,10 @@ const CardModal = ({
   let membersList = currentCard.members.map(member => {
     return (
       <li className="member" key={member}>
-        {member}
+        <div className="member-username">{member}</div>
+        <a className="remove-link" onClick={handleDeleteMemberFromCard}>
+          remove
+        </a>
       </li>
     )
   })

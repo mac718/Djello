@@ -13,8 +13,8 @@ import {
   getAllUsers,
   selectMemberFromDropdown,
   closeDuplicateMemberWarning,
+  deleteMemberFromCard,
 } from '../actions'
-import { is } from 'bluebird'
 
 class CardContainer extends Component {
   // componentDidMount() {
@@ -44,6 +44,7 @@ class CardContainer extends Component {
       handleSelectMemberFromDropdown,
       showDuplicateMemberWarning,
       handleCloseDuplicateMemberWarning,
+      handleDeleteMemberFromCard,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -72,6 +73,7 @@ class CardContainer extends Component {
         handleSelectMemberFromDropdown={handleSelectMemberFromDropdown}
         showDuplicateMemberWarning={showDuplicateMemberWarning}
         handleCloseDuplicateMemberWarning={handleCloseDuplicateMemberWarning}
+        handleDeleteMemberFromCard={handleDeleteMemberFromCard}
       />
     )
   }
@@ -148,6 +150,11 @@ const mapDispatchToProps = dispatch => {
 
     handleCloseDuplicateMemberWarning: () => {
       dispatch(closeDuplicateMemberWarning())
+    },
+
+    handleDeleteMemberFromCard: e => {
+      console.log('target ' + e)
+      dispatch(deleteMemberFromCard(e))
     },
   }
 }

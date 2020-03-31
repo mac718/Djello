@@ -551,3 +551,37 @@ export function addBoardToMember() {
     })
   }
 }
+
+export function deleteMemberFromCard(e) {
+  return (dispatch, getState) => {
+    let state = getState()
+    let currentUser = state.currentUser
+    let cardId =
+      e.target.parentElement.parentElement.parentElement.parentElement
+        .parentElement.parentElement.id
+    let listId =
+      e.target.parentElement.parentElement.parentElement.parentElement
+        .parentElement.parentElement.firstChild.id
+    let username = e.target.previousSibling.innerHTML
+
+    console.log('username ' + username)
+
+    fetch('/deleteMemberFromCard', {
+      method: 'DELETE',
+      body: JSON.stringify({ username, cardId, listId, currentUser }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then(res => {
+        return res.json()
+      })
+      .then(json => {
+        dispatch(updateCurrentUser(json))
+      })
+      .catch(err => {
+        console.log(err)
+        alert('hmmmm')
+      })
+  }
+}
