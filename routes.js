@@ -800,11 +800,63 @@ router.post('/updateListAfterDnd', (req, res, next) => {
   let cardId = req.body.draggableId
 
   if (source.droppableId === destination.droppableId) {
-    List.findById(source.droppableId, (err, list) => {
+    Card.findById(cardId, (err, card) => {
       if (err) {
         console.error(err)
         next(err)
       }
+      List.findById(source.droppableId, (err, list) => {
+        if (err) {
+          console.error(err)
+          next(err)
+        }
+        list.cards.splice(source.index, 1)
+        list.cards.splice(destination.index, 0, card)
+
+        list.save((err, list) => {
+          if (err) {
+            console.error(err)
+            next(err)
+          }
+          Board.findById(currentUser.activeBoard, (err, board) => {
+            let modifiedLisIndex
+            board.lists.forEach((boardList, index) => {
+              if (JSON.stringify(list._id) === JSON.stringify(boardList._id)) {
+                modifiedLisIndex = index
+              }
+            })
+            board.lists.splice(modifiedLisIndex, 1, list)
+            board.save((err, board) => {
+              if (err) {
+                console.error(err)
+                next(err)
+              }
+              User.findById(currentUser._id, (err, user) => {
+                if (err) {
+                  console.error(err)
+                  next(err)
+                }
+                let modifiedBoardIndex
+                user.boards.forEach((userBoard, index) => {
+                  if (
+                    JSON.stringify(board._id) === JSON.stringify(userBoard._id)
+                  ) {
+                    modifiedBoardIndex = index
+                  }
+                })
+                user.boards.splice(modifiedBoardIndex, 1, board)
+                user.save((err, user) => {
+                  if (err) {
+                    console.error(err)
+                    next(err)
+                  }
+                  return res.json(user)
+                })
+              })
+            })
+          })
+        })
+      })
     })
   }
 })
