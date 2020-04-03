@@ -17,9 +17,6 @@ import {
 } from '../actions'
 
 class CardContainer extends Component {
-  // componentDidMount() {
-  //   this.props.dispatch(getAllUsers())
-  // }
   render() {
     const {
       currentUser,
@@ -45,6 +42,7 @@ class CardContainer extends Component {
       showDuplicateMemberWarning,
       handleCloseDuplicateMemberWarning,
       handleDeleteMemberFromCard,
+      index,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -74,6 +72,7 @@ class CardContainer extends Component {
         showDuplicateMemberWarning={showDuplicateMemberWarning}
         handleCloseDuplicateMemberWarning={handleCloseDuplicateMemberWarning}
         handleDeleteMemberFromCard={handleDeleteMemberFromCard}
+        index={index}
       />
     )
   }
@@ -93,6 +92,7 @@ const mapStateToProps = (state, ownProps) => {
     isLoading: state.isLoading,
     userList: state.userList,
     showDuplicateMemberWarning: state.showDuplicateMemberWarning,
+    index: ownProps.index,
   }
 }
 
@@ -153,7 +153,6 @@ const mapDispatchToProps = dispatch => {
     },
 
     handleDeleteMemberFromCard: e => {
-      console.log('target ' + e)
       dispatch(deleteMemberFromCard(e))
     },
   }

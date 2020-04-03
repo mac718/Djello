@@ -793,4 +793,20 @@ router.delete('/deleteMemberFromCard', (req, res, next) => {
   })
 })
 
+router.post('/updateListAfterDnd', (req, res, next) => {
+  let currentUser = req.body.currentUser
+  let source = req.body.source
+  let destination = req.body.destination
+  let cardId = req.body.draggableId
+
+  if (source.droppableId === destination.droppableId) {
+    List.findById(source.droppableId, (err, list) => {
+      if (err) {
+        console.error(err)
+        next(err)
+      }
+    })
+  }
+})
+
 module.exports = router

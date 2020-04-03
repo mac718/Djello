@@ -43,7 +43,7 @@ const MemberSelectionDropdown = ({
 
   let repeatNotification = repeat ? <p>Member already added!</p> : null
   return (
-    <form onSubmit={handleCardAttributeUpdate}>
+    <form className="member-selection" onSubmit={handleCardAttributeUpdate}>
       <div className="dropdown is-hoverable is-up">
         <div className="dropdown-trigger">
           <button
@@ -60,14 +60,14 @@ const MemberSelectionDropdown = ({
         <div className="dropdown-menu" id="dropdown-menu" role="menu">
           <div className="dropdown-content">{memberList}</div>
         </div>
-        <button
-          type="submit"
-          className="button is-light is-primary is-small is-outlined add-member-button"
-        >
-          + Add Member
-        </button>
-        {repeatNotification}
       </div>
+      <button
+        type="submit"
+        className="button is-light is-primary is-small is-outlined add-member-button"
+      >
+        + Add Member
+      </button>
+      {repeatNotification}
     </form>
   )
 }

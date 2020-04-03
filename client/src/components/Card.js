@@ -1,6 +1,7 @@
 import React from 'react'
 import CardModal from './CardModal'
 import CardMemberList from './CardMemberList'
+import { Draggable } from 'react-beautiful-dnd'
 
 const Card = ({
   currentUser,
@@ -26,6 +27,7 @@ const Card = ({
   showDuplicateMemberWarning,
   handleCloseDuplicateMemberWarning,
   handleDeleteMemberFromCard,
+  index,
 }) => {
   let classes
   if (activeCardModal === cardId) {
@@ -56,45 +58,60 @@ const Card = ({
     )
   })
 
+  console.log('index ' + index)
+
   return (
-    <div>
-      <div
-        id={cardId}
-        className="card"
-        data-target={cardId}
-        aria-haspopup="true"
-        onClick={handleActiveCardModal}
-      >
-        <CardMemberList members={membersList} />
-        <div className="card-content task is-hovered">{title}</div>
-      </div>
-      <CardModal
-        currentUser={currentUser}
-        cardId={cardId}
-        attributeContent={attributeContent}
-        classes={classes}
-        handleActiveCardModal={handleActiveCardModal}
-        handleDeleteCard={handleDeleteCard}
-        listId={listId}
-        listName={listName}
-        handleCardAttributeEdit={handleCardAttributeEdit}
-        handleCardAttributeUpdate={handleCardAttributeUpdate}
-        handleSwitchToCardDescriptionForm={handleSwitchToCardDescriptionForm}
-        showCardDescriptionForm={showCardDescriptionForm}
-        handleSwitchToCardDescriptionDisplay={
-          handleSwitchToCardDescriptionDisplay
-        }
-        handleSwitchToCardTitleForm={handleSwitchToCardTitleForm}
-        handleSwitchToCardTitleDisplay={handleSwitchToCardTitleDisplay}
-        showCardTitleForm={showCardTitleForm}
-        isLoading={isLoading}
-        members={userList}
-        handleSelectMemberFromDropdown={handleSelectMemberFromDropdown}
-        showDuplicateMemberWarning={showDuplicateMemberWarning}
-        handleCloseDuplicateMemberWarning={handleCloseDuplicateMemberWarning}
-        handleDeleteMemberFromCard={handleDeleteMemberFromCard}
-      />
-    </div>
+    <Draggable draggableId={cardId} index={index}>
+      {provided => (
+        <div
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          provided={provided}
+          ref={provided.innerRef}
+        >
+          <div
+            id={cardId}
+            className="card"
+            data-target={cardId}
+            aria-haspopup="true"
+            onClick={handleActiveCardModal}
+          >
+            <CardMemberList members={membersList} />
+            <div className="card-content task is-hovered">{title}</div>
+          </div>
+          <CardModal
+            currentUser={currentUser}
+            cardId={cardId}
+            attributeContent={attributeContent}
+            classes={classes}
+            handleActiveCardModal={handleActiveCardModal}
+            handleDeleteCard={handleDeleteCard}
+            listId={listId}
+            listName={listName}
+            handleCardAttributeEdit={handleCardAttributeEdit}
+            handleCardAttributeUpdate={handleCardAttributeUpdate}
+            handleSwitchToCardDescriptionForm={
+              handleSwitchToCardDescriptionForm
+            }
+            showCardDescriptionForm={showCardDescriptionForm}
+            handleSwitchToCardDescriptionDisplay={
+              handleSwitchToCardDescriptionDisplay
+            }
+            handleSwitchToCardTitleForm={handleSwitchToCardTitleForm}
+            handleSwitchToCardTitleDisplay={handleSwitchToCardTitleDisplay}
+            showCardTitleForm={showCardTitleForm}
+            isLoading={isLoading}
+            members={userList}
+            handleSelectMemberFromDropdown={handleSelectMemberFromDropdown}
+            showDuplicateMemberWarning={showDuplicateMemberWarning}
+            handleCloseDuplicateMemberWarning={
+              handleCloseDuplicateMemberWarning
+            }
+            handleDeleteMemberFromCard={handleDeleteMemberFromCard}
+          />
+        </div>
+      )}
+    </Draggable>
   )
 }
 

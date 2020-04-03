@@ -1,6 +1,7 @@
 import React from 'react'
 import CardContainer from '../containers/CardContainer'
 import CardForm from './CardForm'
+import { Droppable } from 'react-beautiful-dnd'
 
 const List = ({
   currentUser,
@@ -29,7 +30,7 @@ const List = ({
   let name = currentList[0].name
   let cards = currentList[0].cards
   if (cards) {
-    cardComponents = cards.map(card => {
+    cardComponents = cards.map((card, index) => {
       return (
         <CardContainer
           title={card.title}
@@ -37,6 +38,7 @@ const List = ({
           listId={id}
           listName={currentList[0].name}
           key={card._id}
+          index={index}
         />
       )
     })
@@ -67,7 +69,18 @@ const List = ({
           onBlur={handleListNameChange}
         />
       </div>
-      {cardComponents}
+      <Droppable droppableId={id}>
+        {provided => (
+          <div
+            provided={provided}
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            {cardComponents}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
       {cardForm}
       <button
         className="button is-primary is-light"

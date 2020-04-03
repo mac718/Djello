@@ -585,3 +585,45 @@ export function deleteMemberFromCard(e) {
       })
   }
 }
+
+export function onDragEnd(result) {
+  return (dispatch, getState) => {
+    let state = getState()
+    let currentUser = state.currentUser
+
+    const { destination, source, draggableId } = result
+    console.log(draggableId)
+    console.log('source ' + JSON.stringify(source))
+    console.log('destination ' + JSON.stringify(destination))
+
+    if (!destination) {
+      console.log("it's working")
+      return
+    }
+
+    if (
+      destination.draoppableId === source.draoppableId &&
+      destination.index === source.index
+    ) {
+      return
+    }
+
+    fetch('/updateListAfterDnD', {
+      method: 'POST',
+      body: JSON.stringify({ currentUser, destination, source, draggableId }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then(res => {
+        return res.json()
+      })
+      .then(json => {
+        dispatch(updateCurrentUser(json))
+      })
+      .catch(err => {
+        console.log(err)
+        alert('hmmmm')
+      })
+  }
+}

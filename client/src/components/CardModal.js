@@ -49,7 +49,7 @@ const CardModal = ({
   let cardActivity
   if (currentCard.activity) {
     cardActivity = currentCard.activity.map(action => {
-      return <div>{action}</div>
+      return <li>{action}</li>
     })
   }
 
@@ -95,19 +95,6 @@ const CardModal = ({
 
   let titleComponent = showCardTitleForm ? titleForm : titleDisplay
 
-  // let repeat = false
-  // let membersArr = []
-
-  // console.log('members ' + JSON.stringify(currentCard.members))
-
-  // currentCard.members.forEach(member => {
-  //   if (!membersArr.includes(member)) {
-  //     membersArr = [...membersArr, member]
-  //   } else {
-  //     repeat = true
-  //   }
-  // })
-
   let membersList = currentCard.members.map(member => {
     return (
       <li className="member" key={member}>
@@ -118,33 +105,6 @@ const CardModal = ({
       </li>
     )
   })
-
-  // let repeat = false
-  // let membersArr = []
-  // let membersList = []
-
-  // currentCard.members.forEach(member => {
-  //   if (membersArr.includes(member)) {
-  //     repeat = true
-  //   } else {
-  //     membersArr.push(member)
-  //     membersList.push(
-  //       <li className="member" key={member}>
-  //         {member}
-  //       </li>,
-  //     )
-  //   }
-  // })
-
-  //let repeatNotification = repeat ? <p>Member Already Added to Card!</p> : null
-
-  // let membersList = currentCard.members.map(member => {
-  //   return (
-  //     <li className="member" key={member}>
-  //       {member}
-  //     </li>
-  //   )
-  // })
 
   let notificationClasses = showDuplicateMemberWarning
     ? 'notification is-danger is-light'
@@ -197,7 +157,9 @@ const CardModal = ({
           </div>
           <div className="modal-card-footer">
             <p className="is-size-4">Activity</p>
-            {cardActivity}
+            <div className="content">
+              <ul>{cardActivity}</ul>
+            </div>
           </div>
         </div>
       </div>

@@ -82,6 +82,7 @@
 .board-name {
   position: relative;
   width: 100%;
+  margin-left: 25px;
 }
 
 .board-name-display {
@@ -137,4 +138,9 @@
 
 .member-username {
   display: inline-block;
+}
+
+.member-selection {
+  display: flex;
+  align-items: center;
 }

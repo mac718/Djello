@@ -1,7 +1,13 @@
 import React, { Component } from 'react'
 import Board from '../components/Board'
 import { connect } from 'react-redux'
-import { createList, changeName, changeShowBoardNameDisplay } from '../actions'
+import {
+  createList,
+  changeName,
+  changeShowBoardNameDisplay,
+  onDragEnd,
+} from '../actions'
+import { DragDropContext } from 'react-beautiful-dnd'
 
 class BoardContainer extends Component {
   render() {
@@ -12,6 +18,7 @@ class BoardContainer extends Component {
       handleBoardNameChange,
       showBoardNameDisplay,
       handleHideBoardNameDisplay,
+      handleOnDragEnd,
     } = this.props
     let name
     let lists
@@ -22,16 +29,18 @@ class BoardContainer extends Component {
 
       console.log('BoardContainer ' + JSON.stringify(currentBoard))
       return (
-        <Board
-          handleClick={handleClick}
-          name={name}
-          lists={lists}
-          currentBoard={currentBoard}
-          handleBoardNameChange={handleBoardNameChange}
-          currentUser={currentUser}
-          showBoardNameDisplay={showBoardNameDisplay}
-          handleHideBoardNameDisplay={handleHideBoardNameDisplay}
-        />
+        <DragDropContext onDragEnd={handleOnDragEnd}>
+          <Board
+            handleClick={handleClick}
+            name={name}
+            lists={lists}
+            currentBoard={currentBoard}
+            handleBoardNameChange={handleBoardNameChange}
+            currentUser={currentUser}
+            showBoardNameDisplay={showBoardNameDisplay}
+            handleHideBoardNameDisplay={handleHideBoardNameDisplay}
+          />
+        </DragDropContext>
       )
     } else {
       return (
@@ -66,6 +75,10 @@ const mapDispatchToProps = dispatch => {
 
     handleHideBoardNameDisplay: () => {
       dispatch(changeShowBoardNameDisplay())
+    },
+
+    handleOnDragEnd: result => {
+      dispatch(onDragEnd(result))
     },
   }
 }
