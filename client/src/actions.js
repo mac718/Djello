@@ -613,19 +613,19 @@ export function changeActiveBoardLists(source, destination, draggableId) {
     let state = getState()
     let lists = state.activeBoardLists
     let sourceList = lists.filter(list => {
-      return JSON.stringify(source.draoppableId) === JSON.stringify(list._id)
-    })
+      return JSON.stringify(source.droppableId) === JSON.stringify(list._id)
+    })[0]
     let destinationList = lists.filter(list => {
       return (
-        JSON.stringify(destination.draoppableId) === JSON.stringify(list._id)
+        JSON.stringify(destination.droppableId) === JSON.stringify(list._id)
       )
-    })
-    let draggedCard = sourceList.filter(card => {
+    })[0]
+    let draggedCard = sourceList.cards.filter(card => {
       return JSON.stringify(card._id) === JSON.stringify(draggableId)
-    })
+    })[0]
 
-    sourceList.splice(source.index, 1)
-    destinationList.splice(destination.index, 0, draggedCard)
+    sourceList.cards.splice(source.index, 1)
+    destinationList.cards.splice(destination.index, 0, draggedCard)
 
     let sourceListIndex
     let destinationListIndex

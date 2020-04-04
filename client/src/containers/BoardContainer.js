@@ -19,13 +19,14 @@ class BoardContainer extends Component {
       showBoardNameDisplay,
       handleHideBoardNameDisplay,
       handleOnDragEnd,
+      lists,
     } = this.props
     let name
-    let lists
+    //let lists
     console.log(currentBoard)
     if (currentBoard && currentBoard[0]) {
       name = currentBoard[0].name
-      lists = currentBoard[0].lists
+      //lists = currentBoard[0].lists
 
       console.log('BoardContainer ' + JSON.stringify(currentBoard))
       return (
@@ -53,10 +54,12 @@ class BoardContainer extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+  console.log('lists ' + state.lists)
   return {
     currentUser: state.currentUser,
     currentBoard: ownProps.currentBoard,
     showBoardNameDisplay: state.showBoardNameDisplay,
+    lists: state.lists,
   }
 }
 const mapDispatchToProps = dispatch => {

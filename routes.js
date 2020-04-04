@@ -22,10 +22,14 @@ router.post(
   (req, res) => {
     console.log('logged in', req.user)
     res.cookie('user', req.user.username)
+    let activeBoard = req.user.boards.filter(board => {
+      return JSON.stringify(board._id) === JSON.stringify(req.user.activeBoard)
+    })[0]
     var info = {
       user: req.user,
       redirect: `/${req.user.username}`,
       boards: req.user.boards,
+      lists: activeBoard.lists,
     }
     res.json(info)
   },
@@ -645,7 +649,8 @@ router.post('/updateCardAttribute', (req, res, next) => {
                   }
                   console.log('butts ' + JSON.stringify(user.boards))
 
-                  return res.json(user)
+                  let userAndLists = { user: user, lists: board.lists }
+                  return res.json(userAndLists)
                 })
               })
             })
@@ -796,7 +801,8 @@ router.delete('/deleteMemberFromCard', (req, res, next) => {
                     next(err)
                   }
                   console.log('butts ' + JSON.stringify(user.boards))
-                  return res.json(user)
+                  let userAndLists = { user: user, lists: board.lists }
+                  return res.json(userAndLists)
                 })
               })
             })
