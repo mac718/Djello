@@ -523,10 +523,12 @@ export function updateCardAttribute(e) {
         if (json.status === 500) {
           dispatch(displayDuplicateMemberWarning())
         } else if (attributeType === 'member') {
-          dispatch(updateCurrentUser(json))
+          dispatch(updateActiveBoardLists(json.lists))
+          dispatch(updateCurrentUser(json.user))
           dispatch(addBoardToMember())
         } else {
-          dispatch(updateCurrentUser(json))
+          dispatch(updateActiveBoardLists(json.lists))
+          dispatch(updateCurrentUser(json.user))
         }
       })
       .catch(err => {
@@ -596,12 +598,50 @@ export function deleteMemberFromCard(e) {
         return res.json()
       })
       .then(json => {
-        dispatch(updateCurrentUser(json))
+        dispatch(updateActiveBoardLists(json.lists))
+        dispatch(updateCurrentUser(json.user))
       })
       .catch(err => {
         console.log(err)
         alert('hmmmm')
       })
+  }
+}
+
+export function changeActiveBoardLists(source, destination, draggableId) {
+  return (dispatch, getState) => {
+    let state = getState()
+    let lists = state.activeBoardLists
+    let sourceList = lists.filter(list => {
+      return JSON.stringify(source.draoppableId) === JSON.stringify(list._id)
+    })
+    let destinationList = lists.filter(list => {
+      return (
+        JSON.stringify(destination.draoppableId) === JSON.stringify(list._id)
+      )
+    })
+    let draggedCard = sourceList.filter(card => {
+      return JSON.stringify(card._id) === JSON.stringify(draggableId)
+    })
+
+    sourceList.splice(source.index, 1)
+    destinationList.splice(destination.index, 0, draggedCard)
+
+    let sourceListIndex
+    let destinationListIndex
+    lists.forEach((list, index) => {
+      if (JSON.stringify(list._id) === sourceList._id) {
+        sourceListIndex = index
+      } else if (
+        JSON.stringify(list._id) === JSON.stringify(destinationList._id)
+      ) {
+        destinationListIndex = index
+      }
+    })
+    lists.splice(sourceListIndex, 1, sourceList)
+    lists.splice(destinationListIndex, 1, destinationList)
+
+    dispatch(updateActiveBoardLists(lists))
   }
 }
 
@@ -611,6 +651,7 @@ export function onDragEnd(result) {
     let currentUser = state.currentUser
 
     const { destination, source, draggableId } = result
+    dispatch(changeActiveBoardLists(source, destination, draggableId))
     console.log(draggableId)
     console.log('source ' + JSON.stringify(source))
     console.log('destination ' + JSON.stringify(destination))
@@ -648,9 +689,3 @@ export function onDragEnd(result) {
 }
 
 //change lists along with updateCurrentUser (pass updates lists to action); create serparate action for card order changes
-export function changeActiveBoardLists() {
-  return (dispatch, getState) => {
-    let state = getState()
-    let lists = state.activeBoardLists
-  }
-}
