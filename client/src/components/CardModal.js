@@ -49,7 +49,7 @@ const CardModal = ({
   let cardActivity
   if (currentCard.activity) {
     cardActivity = currentCard.activity.map(action => {
-      return <li>{action}</li>
+      return <li key={action}>{action}</li>
     })
   }
 

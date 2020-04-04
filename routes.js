@@ -102,7 +102,8 @@ router.post('/createBoard', (req, res, next) => {
           res.json({ error: 'Error saving board' })
         }
         console.log('user[0] ' + user)
-        return res.json(user)
+        let userAndLists = { user: user, lists: board.lists }
+        return res.json(userAndLists)
       })
     })
     console.log('board ' + board)
@@ -191,7 +192,8 @@ router.post('/createList', (req, res, next) => {
               return next(err)
             }
             console.log('server user ' + user)
-            return res.json(user)
+            let userAndLists = { user: user, lists: board.lists }
+            return res.json(userAndLists)
           })
         })
       })
@@ -240,7 +242,8 @@ router.delete('/deleteList', (req, res, next) => {
               next(err)
             }
             console.log('user[0] ' + user)
-            return res.json(user)
+            let userAndLists = { user: user, lists: board.lists }
+            return res.json(userAndLists)
           })
         })
       })
@@ -334,7 +337,8 @@ router.post('/changeListName', (req, res, next) => {
               console.log(err)
               next(err)
             }
-            return res.json(user)
+            let userAndLists = { user: user, lists: board.lists }
+            return res.json(userAndLists)
           })
         })
       })
@@ -408,7 +412,8 @@ router.post('/createCard', (req, res, next) => {
                   next(err)
                 }
                 console.log('butts ' + JSON.stringify(user.boards))
-                return res.json(user)
+                let userAndLists = { user: user, lists: board.lists }
+                return res.json(userAndLists)
               })
             })
           })
@@ -491,7 +496,8 @@ router.delete('/deleteCard', (req, res, next) => {
                     console.error(err)
                     next(err)
                   }
-                  return res.json(user)
+                  let userAndLists = { user: user, lists: board.lists }
+                  return res.json(userAndLists)
                 })
               })
             })
@@ -512,12 +518,19 @@ router.patch('/switchActiveBoard', (req, res, next) => {
       next(err)
     }
     user.activeBoard = boardId
-    user.save((err, user) => {
+    Board.findById(boardId, (err, board) => {
       if (err) {
         console.error(err)
         next(err)
       }
-      return res.json(user)
+      user.save((err, user) => {
+        if (err) {
+          console.error(err)
+          next(err)
+        }
+        let userAndLists = { user: user, lists: board.lists }
+        return res.json(userAndLists)
+      })
     })
   })
 })
@@ -631,6 +644,7 @@ router.post('/updateCardAttribute', (req, res, next) => {
                     next(err)
                   }
                   console.log('butts ' + JSON.stringify(user.boards))
+
                   return res.json(user)
                 })
               })

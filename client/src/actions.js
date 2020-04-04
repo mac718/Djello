@@ -27,6 +27,7 @@ export const SELECT_MEMBER_FROM_DROPDOWN = 'SELECT_MEMBER_FROM_DROPDOWN'
 export const DISPLAY_DUPLICATE_MEMBER_WARNING =
   'DISPLAY_DUPLICATE_MEMBER_WARNING'
 export const CLOSE_DUPLICATE_MEMBER_WARNING = 'CLOSE_DUPLICATE_MEMBER_WARNING'
+export const UPDATE_ACTIVE_BOARD_LISTS = 'UPDATE_ACTIVE_BOARD_LISTS'
 
 export function getDataRequest() {
   return {
@@ -177,6 +178,13 @@ export function closeDuplicateMemberWarning() {
   }
 }
 
+export function updateActiveBoardLists(lists) {
+  return {
+    type: UPDATE_ACTIVE_BOARD_LISTS,
+    lists,
+  }
+}
+
 //handles register and login
 export function handleSubmit(e, route) {
   return (dispatch, getState) => {
@@ -246,7 +254,8 @@ export function createBoard(e) {
         return res.json()
       })
       .then(json => {
-        dispatch(updateCurrentUser(json))
+        dispatch(updateActiveBoardLists(json.lists))
+        dispatch(updateCurrentUser(json.user))
       })
       .catch(err => {
         alert(err)
@@ -271,8 +280,10 @@ export function createList(e) {
         return res.json()
       })
       .then(json => {
+        console.log('json ' + JSON.stringify(json))
         //console.log('create list ' + JSON.stringify(json))
-        dispatch(updateCurrentUser(json))
+        dispatch(updateActiveBoardLists(json.lists))
+        dispatch(updateCurrentUser(json.user))
       })
       .catch(err => {
         console.log(err)
@@ -298,7 +309,8 @@ export function deleteList(e) {
       })
       .then(json => {
         console.log(json)
-        dispatch(updateCurrentUser(json))
+        dispatch(updateActiveBoardLists(json.lists))
+        dispatch(updateCurrentUser(json.user))
       })
       .catch(err => {
         console.log(err)
@@ -359,11 +371,15 @@ export function changeName(e, componentName, route) {
       })
       .then(json => {
         console.log('change name ' + JSON.stringify(json))
-        dispatch(updateCurrentUser(json))
+        if (route === '/changeListName') {
+          dispatch(updateActiveBoardLists(json.lists))
+          dispatch(updateCurrentUser(json.user))
+        } else {
+          dispatch(updateCurrentUser(json.user))
+        }
       })
       .catch(err => {
         console.log(err)
-        //dispatch(getDataFailure(err))
         alert('hmmmm')
       })
   }
@@ -375,7 +391,7 @@ export function saveCard(e) {
     dispatch(hideCardForm())
     let state = getState()
     let currentUser = state.currentUser
-    let listId = e.target.parentElement.id //.parentElement.parentElement.parentElement.id
+    let listId = e.target.parentElement.id
     console.log('list yo ' + listId)
     let title = state.title
     fetch('/createCard', {
@@ -389,7 +405,8 @@ export function saveCard(e) {
         return res.json()
       })
       .then(json => {
-        dispatch(updateCurrentUser(json))
+        dispatch(updateActiveBoardLists(json.lists))
+        dispatch(updateCurrentUser(json.user))
       })
       .catch(err => {
         console.log(err)
@@ -413,7 +430,8 @@ export function deleteCard(cardId, listId) {
         return res.json()
       })
       .then(json => {
-        dispatch(updateCurrentUser(json))
+        dispatch(updateActiveBoardLists(json.lists))
+        dispatch(updateCurrentUser(json.user))
       })
       .catch(err => {
         console.log(err)
@@ -439,7 +457,8 @@ export function switchActiveBoard(e) {
         return res.json()
       })
       .then(json => {
-        dispatch(updateCurrentUser(json))
+        dispatch(updateActiveBoardLists(json.lists))
+        dispatch(updateCurrentUser(json.user))
       })
       .catch(err => {
         console.log(err)
@@ -625,5 +644,13 @@ export function onDragEnd(result) {
         console.log(err)
         alert('hmmmm')
       })
+  }
+}
+
+//change lists along with updateCurrentUser (pass updates lists to action); create serparate action for card order changes
+export function changeActiveBoardLists() {
+  return (dispatch, getState) => {
+    let state = getState()
+    let lists = state.activeBoardLists
   }
 }

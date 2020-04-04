@@ -5,7 +5,7 @@ const CardMemberList = ({ members }) => {
     <div className="dropdown is-hoverable">
       <div className="dropdown-trigger">
         <span
-          class="tag is-link is-light"
+          className="tag is-link is-light"
           aria-haspopup="true"
           aria-controls="dropdown-menu"
         >

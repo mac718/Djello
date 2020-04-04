@@ -105,9 +105,11 @@ const mapDispatchToProps = dispatch => {
     },
 
     handleDeleteCard: e => {
-      let cardId = e.target.parentElement.parentElement.parentElement.id
+      let cardId =
+        e.target.parentElement.parentElement.parentElement.parentElement.id
       let listId =
-        e.target.parentElement.parentElement.parentElement.firstChild.id
+        e.target.parentElement.parentElement.parentElement.parentElement
+          .firstChild.id
       dispatch(deleteCard(cardId, listId))
       dispatch(changeActiveCardModal())
     },

@@ -20,6 +20,7 @@ const initialState = {
   isLoading: false,
   userList: [],
   showDuplicateMemberWarning: false,
+  activeBoardLists: [],
 }
 
 export function djello(state = initialState, action) {
@@ -151,6 +152,11 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         showDuplicateMemberWarning: false,
+      }
+    case Actions.UPDATE_ACTIVE_BOARD_LISTS:
+      return {
+        ...state,
+        activeBoardLists: action.lists,
       }
     default:
       return state
