@@ -22,6 +22,7 @@ class ListContainer extends Component {
       handleHideCardForm,
       showCardForm,
       handleTitleChange,
+      lists,
     } = this.props
     return (
       <List
@@ -34,6 +35,7 @@ class ListContainer extends Component {
         handleHideCardForm={handleHideCardForm}
         showCardForm={showCardForm}
         handleTitleChange={handleTitleChange}
+        lists={lists}
       />
     )
   }
@@ -44,6 +46,7 @@ const mapStateToProps = (state, ownProps) => {
     id: ownProps.id,
     currentUser: state.currentUser,
     showCardForm: state.showCardForm,
+    lists: state.activeBoardLists,
   }
 }
 

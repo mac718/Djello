@@ -28,6 +28,7 @@ const Card = ({
   handleCloseDuplicateMemberWarning,
   handleDeleteMemberFromCard,
   index,
+  lists,
 }) => {
   let classes
   if (activeCardModal === cardId) {
@@ -41,22 +42,34 @@ const Card = ({
   })[0]
 
   console.log('currentBoard ' + JSON.stringify(currentBoard))
+  console.log('lists ' + JSON.stringify(lists[0]._id))
+  console.log('listId ' + JSON.stringify(listId))
 
-  let currentList = currentBoard.lists.filter(boardList => {
-    return JSON.stringify(boardList._id) === JSON.stringify(listId)
-  })[0]
+  let currentList
+  let currentCard
+  let membersList
 
-  let currentCard = currentList.cards.filter(listCard => {
-    return JSON.stringify(listCard._id) === JSON.stringify(cardId)
-  })[0]
-
-  let membersList = currentCard.members.map(member => {
-    return (
-      <div className="member" key={member}>
-        {member}
-      </div>
+  Promise.resolve(
+    (currentList = lists.filter(boardList => {
+      return JSON.stringify(boardList._id) === JSON.stringify(listId)
+    })[0]),
+  )
+    .then(
+      () =>
+        (currentCard = currentList.cards.filter(listCard => {
+          return JSON.stringify(listCard._id) === JSON.stringify(cardId)
+        })[0]),
     )
-  })
+    .then(
+      () =>
+        (membersList = currentCard.members.map(member => {
+          return (
+            <div className="member" key={member}>
+              {member}
+            </div>
+          )
+        })),
+    )
 
   console.log('index ' + index)
 
@@ -108,6 +121,7 @@ const Card = ({
               handleCloseDuplicateMemberWarning
             }
             handleDeleteMemberFromCard={handleDeleteMemberFromCard}
+            lists={lists}
           />
         </div>
       )}

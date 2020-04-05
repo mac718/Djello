@@ -43,6 +43,7 @@ class CardContainer extends Component {
       handleCloseDuplicateMemberWarning,
       handleDeleteMemberFromCard,
       index,
+      lists,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -73,6 +74,7 @@ class CardContainer extends Component {
         handleCloseDuplicateMemberWarning={handleCloseDuplicateMemberWarning}
         handleDeleteMemberFromCard={handleDeleteMemberFromCard}
         index={index}
+        lists={lists}
       />
     )
   }
@@ -93,6 +95,7 @@ const mapStateToProps = (state, ownProps) => {
     userList: state.userList,
     showDuplicateMemberWarning: state.showDuplicateMemberWarning,
     index: ownProps.index,
+    lists: state.activeBoardLists,
   }
 }
 

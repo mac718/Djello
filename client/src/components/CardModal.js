@@ -29,6 +29,7 @@ const CardModal = ({
   showDuplicateMemberWarning,
   handleCloseDuplicateMemberWarning,
   handleDeleteMemberFromCard,
+  lists,
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
@@ -37,74 +38,102 @@ const CardModal = ({
   })[0]
 
   console.log('currentBoard ' + JSON.stringify(currentBoard))
-
-  let currentList = currentBoard.lists.filter(boardList => {
-    return JSON.stringify(boardList._id) === JSON.stringify(listId)
-  })[0]
-
-  let currentCard = currentList.cards.filter(listCard => {
-    return JSON.stringify(listCard._id) === JSON.stringify(cardId)
-  })[0]
-
+  let currentList
+  let currentCard
   let cardActivity
-  if (currentCard.activity) {
-    cardActivity = currentCard.activity.map(action => {
-      return <li key={action}>{action}</li>
-    })
-  }
+  let descriptionForm
+  let descriptionDisplay
+  let titleForm
+  let titleDisplay
+  let descriptionComponent
+  let titleComponent
+  let membersList
 
-  let descriptionForm = (
-    <CardDescriptionForm
-      description={currentCard.description}
-      handleCardAttributeEdit={handleCardAttributeEdit}
-      handleCardAttributeUpdate={handleCardAttributeUpdate}
-      handleSwitchToCardDescriptionDisplay={
-        handleSwitchToCardDescriptionDisplay
-      }
-      listName={listId}
-      cardId={cardId}
-    />
+  Promise.resolve(
+    (currentList = lists.filter(boardList => {
+      return JSON.stringify(boardList._id) === JSON.stringify(listId)
+    })[0]),
   )
-
-  let descriptionDisplay = (
-    <CardDescriptionDisplay
-      description={isLoading ? attributeContent : currentCard.description}
-      handleSwitchToCardDescriptionForm={handleSwitchToCardDescriptionForm}
-    />
-  )
-
-  let titleForm = (
-    <CardTitleForm
-      title={currentCard.title}
-      handleCardAttributeEdit={handleCardAttributeEdit}
-      handleCardAttributeUpdate={handleCardAttributeUpdate}
-      handleSwitchToCardTitleDisplay={handleSwitchToCardTitleDisplay}
-    />
-  )
-
-  let titleDisplay = (
-    <CardTitleDisplay
-      title={isLoading ? attributeContent : currentCard.title}
-      handleSwitchToCardTitleForm={handleSwitchToCardTitleForm}
-    />
-  )
-
-  let descriptionComponent = showCardDescriptionForm
-    ? descriptionForm
-    : descriptionDisplay
-
-  let titleComponent = showCardTitleForm ? titleForm : titleDisplay
-
-  let membersList = currentCard.members.map(member => {
-    return (
-      <li className="member" key={member}>
-        <div className="member-username">{member}</div>
-        <a className="remove-link" onClick={handleDeleteMemberFromCard}>
-          remove
-        </a>
-      </li>
+    .then(
+      () =>
+        (currentCard = currentList.cards.filter(listCard => {
+          return JSON.stringify(listCard._id) === JSON.stringify(cardId)
+        })[0]),
     )
-  })
+    .then(() => {
+      if (currentCard.activity) {
+        return (cardActivity = currentCard.activity.map(action => {
+          return <li key={action}>{action}</li>
+        }))
+      }
+    })
+    .then(
+      () =>
+        (descriptionForm = (
+          <CardDescriptionForm
+            description={currentCard.description}
+            handleCardAttributeEdit={handleCardAttributeEdit}
+            handleCardAttributeUpdate={handleCardAttributeUpdate}
+            handleSwitchToCardDescriptionDisplay={
+              handleSwitchToCardDescriptionDisplay
+            }
+            listName={listId}
+            cardId={cardId}
+          />
+        )),
+    )
+    .then(
+      () =>
+        (descriptionDisplay = (
+          <CardDescriptionDisplay
+            description={isLoading ? attributeContent : currentCard.description}
+            handleSwitchToCardDescriptionForm={
+              handleSwitchToCardDescriptionForm
+            }
+          />
+        )),
+    )
+    .then(
+      () =>
+        (titleForm = (
+          <CardTitleForm
+            title={currentCard.title}
+            handleCardAttributeEdit={handleCardAttributeEdit}
+            handleCardAttributeUpdate={handleCardAttributeUpdate}
+            handleSwitchToCardTitleDisplay={handleSwitchToCardTitleDisplay}
+          />
+        )),
+    )
+    .then(
+      () =>
+        (titleDisplay = (
+          <CardTitleDisplay
+            title={isLoading ? attributeContent : currentCard.title}
+            handleSwitchToCardTitleForm={handleSwitchToCardTitleForm}
+          />
+        )),
+    )
+    .then(
+      () =>
+        (descriptionComponent = showCardDescriptionForm
+          ? descriptionForm
+          : descriptionDisplay),
+    )
+    .then(
+      () =>
+        (membersList = currentCard.members.map(member => {
+          return (
+            <li className="member" key={member}>
+              <div className="member-username">{member}</div>
+              <a className="remove-link" onClick={handleDeleteMemberFromCard}>
+                remove
+              </a>
+            </li>
+          )
+        })),
+    )
+
+  titleComponent = showCardTitleForm ? titleForm : titleDisplay
 
   let notificationClasses = showDuplicateMemberWarning
     ? 'notification is-danger is-light'

@@ -626,21 +626,25 @@ export function changeActiveBoardLists(source, destination, draggableId) {
 
     sourceList.cards.splice(source.index, 1)
     destinationList.cards.splice(destination.index, 0, draggedCard)
+    console.log('sourceList ' + JSON.stringify(sourceList))
+    console.log('destination ' + JSON.stringify(destinationList))
 
     let sourceListIndex
     let destinationListIndex
     lists.forEach((list, index) => {
-      if (JSON.stringify(list._id) === sourceList._id) {
+      if (JSON.stringify(list._id) === JSON.stringify(sourceList._id)) {
         sourceListIndex = index
-      } else if (
-        JSON.stringify(list._id) === JSON.stringify(destinationList._id)
-      ) {
+      }
+    })
+    lists.forEach((list, index) => {
+      if (JSON.stringify(list._id) === JSON.stringify(destinationList._id)) {
         destinationListIndex = index
       }
     })
+
     lists.splice(sourceListIndex, 1, sourceList)
     lists.splice(destinationListIndex, 1, destinationList)
-
+    //needs conditional logic to handle movement within same list vs between two lists
     dispatch(updateActiveBoardLists(lists))
   }
 }
@@ -651,7 +655,7 @@ export function onDragEnd(result) {
     let currentUser = state.currentUser
 
     const { destination, source, draggableId } = result
-    dispatch(changeActiveBoardLists(source, destination, draggableId))
+
     console.log(draggableId)
     console.log('source ' + JSON.stringify(source))
     console.log('destination ' + JSON.stringify(destination))
@@ -668,6 +672,8 @@ export function onDragEnd(result) {
       return
     }
 
+    dispatch(changeActiveBoardLists(source, destination, draggableId))
+
     fetch('/updateListAfterDnD', {
       method: 'POST',
       body: JSON.stringify({ currentUser, destination, source, draggableId }),
@@ -679,7 +685,7 @@ export function onDragEnd(result) {
         return res.json()
       })
       .then(json => {
-        dispatch(updateCurrentUser(json))
+        //dispatch(updateCurrentUser(json))
       })
       .catch(err => {
         console.log(err)

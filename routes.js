@@ -67,6 +67,7 @@ router.post('/register', (req, res, next) => {
         redirect: `/${user.username}`,
         boards: user.boards,
         activeBoard: activeBoardId,
+        lists: user.boards.lists,
       }
       res.json(info)
     })

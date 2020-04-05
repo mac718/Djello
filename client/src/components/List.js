@@ -13,6 +13,7 @@ const List = ({
   handleHideCardForm,
   showCardForm,
   handleTitleChange,
+  lists,
 }) => {
   let currentBoard = currentUser.boards.filter(board => {
     return board._id === currentUser.activeBoard
@@ -20,7 +21,7 @@ const List = ({
 
   console.log(currentBoard)
 
-  let currentList = currentBoard[0].lists.filter(list => {
+  let currentList = lists.filter(list => {
     return id === list._id
   })
 

@@ -39,7 +39,7 @@ export function djello(state = initialState, action) {
         redirect: action.data.redirect,
         userBoards: action.data.boards,
         currentBoard: action.data.user.activeBoard,
-        lists: action.data.lists,
+        activeBoardLists: action.data.lists,
       }
     case Actions.GET_DATA_FAILURE:
       return {

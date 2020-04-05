@@ -54,12 +54,12 @@ class BoardContainer extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log('lists ' + state.lists)
+  console.log('lists ' + state.activeBoardLists)
   return {
     currentUser: state.currentUser,
     currentBoard: ownProps.currentBoard,
     showBoardNameDisplay: state.showBoardNameDisplay,
-    lists: state.lists,
+    lists: state.activeBoardLists,
   }
 }
 const mapDispatchToProps = dispatch => {
