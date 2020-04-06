@@ -155,6 +155,7 @@ export function djello(state = initialState, action) {
         showDuplicateMemberWarning: false,
       }
     case Actions.UPDATE_ACTIVE_BOARD_LISTS:
+      console.log('lists ' + JSON.stringify(action.lists))
       return {
         ...state,
         activeBoardLists: action.lists,

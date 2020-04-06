@@ -55,13 +55,13 @@ const Card = ({
     })[0]),
   )
     .then(
-      () =>
+      currentList =>
         (currentCard = currentList.cards.filter(listCard => {
           return JSON.stringify(listCard._id) === JSON.stringify(cardId)
         })[0]),
     )
     .then(
-      () =>
+      currentCard =>
         (membersList = currentCard.members.map(member => {
           return (
             <div className="member" key={member}>
@@ -122,6 +122,8 @@ const Card = ({
             }
             handleDeleteMemberFromCard={handleDeleteMemberFromCard}
             lists={lists}
+            currentList={currentList}
+            currentCard={currentCard}
           />
         </div>
       )}

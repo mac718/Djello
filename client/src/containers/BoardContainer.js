@@ -30,18 +30,17 @@ class BoardContainer extends Component {
 
       console.log('BoardContainer ' + JSON.stringify(currentBoard))
       return (
-        <DragDropContext onDragEnd={handleOnDragEnd}>
-          <Board
-            handleClick={handleClick}
-            name={name}
-            lists={lists}
-            currentBoard={currentBoard}
-            handleBoardNameChange={handleBoardNameChange}
-            currentUser={currentUser}
-            showBoardNameDisplay={showBoardNameDisplay}
-            handleHideBoardNameDisplay={handleHideBoardNameDisplay}
-          />
-        </DragDropContext>
+        <Board
+          handleClick={handleClick}
+          name={name}
+          lists={lists}
+          currentBoard={currentBoard}
+          handleBoardNameChange={handleBoardNameChange}
+          currentUser={currentUser}
+          showBoardNameDisplay={showBoardNameDisplay}
+          handleHideBoardNameDisplay={handleHideBoardNameDisplay}
+          handleOnDragEnd={handleOnDragEnd}
+        />
       )
     } else {
       return (
@@ -54,7 +53,7 @@ class BoardContainer extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log('lists ' + state.activeBoardLists)
+  console.log('lists ' + JSON.stringify(state.activeBoardLists))
   return {
     currentUser: state.currentUser,
     currentBoard: ownProps.currentBoard,

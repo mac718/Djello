@@ -20,6 +20,7 @@ const List = ({
   })
 
   console.log(currentBoard)
+  console.log('list lists ' + JSON.stringify(lists))
 
   let currentList = lists.filter(list => {
     return id === list._id

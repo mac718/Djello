@@ -624,26 +624,36 @@ export function changeActiveBoardLists(source, destination, draggableId) {
       return JSON.stringify(card._id) === JSON.stringify(draggableId)
     })[0]
 
-    sourceList.cards.splice(source.index, 1)
-    destinationList.cards.splice(destination.index, 0, draggedCard)
-    console.log('sourceList ' + JSON.stringify(sourceList))
-    console.log('destination ' + JSON.stringify(destinationList))
-
     let sourceListIndex
     let destinationListIndex
-    lists.forEach((list, index) => {
-      if (JSON.stringify(list._id) === JSON.stringify(sourceList._id)) {
-        sourceListIndex = index
-      }
-    })
-    lists.forEach((list, index) => {
-      if (JSON.stringify(list._id) === JSON.stringify(destinationList._id)) {
-        destinationListIndex = index
-      }
-    })
+    console.log('source ' + source.index)
+    console.log('destination ' + destination.index)
 
-    lists.splice(sourceListIndex, 1, sourceList)
-    lists.splice(destinationListIndex, 1, destinationList)
+    if (
+      JSON.stringify(sourceList._id) === JSON.stringify(destinationList._id)
+    ) {
+      console.log('yayay!')
+      sourceList.cards.splice(source.index, 1)
+      sourceList.cards.splice(destination.index, 0, draggedCard)
+      lists.forEach((list, index) => {
+        if (JSON.stringify(list._id) === JSON.stringify(sourceList._id)) {
+          sourceListIndex = index
+        }
+      })
+      lists.splice(sourceListIndex, 1, sourceList)
+    }
+
+    // console.log('sourceList ' + JSON.stringify(sourceList))
+    // console.log('destination ' + JSON.stringify(destinationList))
+    console.log(JSON.stringify(lists))
+
+    // lists.forEach((list, index) => {
+    //   if (JSON.stringify(list._id) === JSON.stringify(destinationList._id)) {
+    //     destinationListIndex = index
+    //   }
+    // })
+
+    // lists.splice(destinationListIndex, 1, destinationList)
     //needs conditional logic to handle movement within same list vs between two lists
     dispatch(updateActiveBoardLists(lists))
   }
