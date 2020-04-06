@@ -681,7 +681,6 @@ export function onDragEnd(result) {
     ) {
       return
     }
-
     dispatch(changeActiveBoardLists(source, destination, draggableId))
 
     fetch('/updateListAfterDnD', {
@@ -695,7 +694,7 @@ export function onDragEnd(result) {
         return res.json()
       })
       .then(json => {
-        //dispatch(updateCurrentUser(json))
+        dispatch(updateCurrentUser(json))
       })
       .catch(err => {
         console.log(err)

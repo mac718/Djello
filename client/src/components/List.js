@@ -31,6 +31,7 @@ const List = ({
   let cardForm
   let name = currentList[0].name
   let cards = currentList[0].cards
+
   if (cards) {
     cardComponents = cards.map((card, index) => {
       return (

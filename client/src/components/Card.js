@@ -29,6 +29,8 @@ const Card = ({
   handleDeleteMemberFromCard,
   index,
   lists,
+  currentList,
+  currentCard,
 }) => {
   let classes
   if (activeCardModal === cardId) {
@@ -45,31 +47,15 @@ const Card = ({
   console.log('lists ' + JSON.stringify(lists[0]._id))
   console.log('listId ' + JSON.stringify(listId))
 
-  let currentList
-  let currentCard
   let membersList
 
-  Promise.resolve(
-    (currentList = lists.filter(boardList => {
-      return JSON.stringify(boardList._id) === JSON.stringify(listId)
-    })[0]),
-  )
-    .then(
-      currentList =>
-        (currentCard = currentList.cards.filter(listCard => {
-          return JSON.stringify(listCard._id) === JSON.stringify(cardId)
-        })[0]),
+  membersList = currentCard.members.map(member => {
+    return (
+      <div className="member" key={member}>
+        {member}
+      </div>
     )
-    .then(
-      currentCard =>
-        (membersList = currentCard.members.map(member => {
-          return (
-            <div className="member" key={member}>
-              {member}
-            </div>
-          )
-        })),
-    )
+  })
 
   console.log('index ' + index)
 

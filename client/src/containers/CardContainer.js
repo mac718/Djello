@@ -44,6 +44,8 @@ class CardContainer extends Component {
       handleDeleteMemberFromCard,
       index,
       lists,
+      currentList,
+      currentCard,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -75,12 +77,20 @@ class CardContainer extends Component {
         handleDeleteMemberFromCard={handleDeleteMemberFromCard}
         index={index}
         lists={lists}
+        currentList={currentList}
+        currentCard={currentCard}
       />
     )
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
+  let currentList = state.activeBoardLists.filter(boardList => {
+    return JSON.stringify(boardList._id) === JSON.stringify(ownProps.listId)
+  })[0]
+  let currentCard = currentList.cards.filter(listCard => {
+    return JSON.stringify(listCard._id) === JSON.stringify(ownProps.cardId)
+  })[0]
   return {
     currentUser: state.currentUser,
     title: ownProps.title,
@@ -96,6 +106,8 @@ const mapStateToProps = (state, ownProps) => {
     showDuplicateMemberWarning: state.showDuplicateMemberWarning,
     index: ownProps.index,
     lists: state.activeBoardLists,
+    currentList: currentList,
+    currentCard: currentCard,
   }
 }
 
@@ -160,6 +172,8 @@ const mapDispatchToProps = dispatch => {
     handleDeleteMemberFromCard: e => {
       dispatch(deleteMemberFromCard(e))
     },
+
+    handleSetCurrentList: e => {},
   }
 }
 
