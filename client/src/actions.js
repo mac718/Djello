@@ -652,7 +652,7 @@ export function changeActiveBoardLists(source, destination, draggableId) {
             sourceListIndex = index
           }
         }),
-      ).then(sourceList =>
+      ).then(() =>
         dispatch(
           updateActiveBoardLists(lists.splice(sourceListIndex, 1, sourceList)),
         ),
@@ -685,6 +685,7 @@ export function onDragEnd(result) {
     ) {
       return
     }
+    dispatch(changeActiveBoardLists(source, destination, draggableId))
 
     fetch('/updateListAfterDnD', {
       method: 'POST',
@@ -697,9 +698,7 @@ export function onDragEnd(result) {
         return res.json()
       })
       .then(json => {
-        Promise.resolve(
-          dispatch(changeActiveBoardLists(source, destination, draggableId)),
-        ).then(() => dispatch(updateCurrentUser(json)))
+        dispatch(updateCurrentUser(json))
       })
       .catch(err => {
         console.log(err)

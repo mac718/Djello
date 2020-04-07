@@ -53,7 +53,6 @@ class BoardContainer extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  //console.log('lists ' + JSON.stringify(state.activeBoardLists))
   return {
     currentUser: state.currentUser,
     currentBoard: ownProps.currentBoard,
