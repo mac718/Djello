@@ -23,16 +23,16 @@ class BoardContainer extends Component {
     } = this.props
     let name
     //let lists
-    console.log(currentBoard)
+    //console.log(currentBoard)
     if (currentBoard && currentBoard[0]) {
-      name = currentBoard[0].name
+      //name = currentBoard[0].name
       //lists = currentBoard[0].lists
 
       console.log('BoardContainer ' + JSON.stringify(currentBoard))
       return (
         <Board
           handleClick={handleClick}
-          name={name}
+          //name={name}
           lists={lists}
           currentBoard={currentBoard}
           handleBoardNameChange={handleBoardNameChange}
@@ -53,7 +53,7 @@ class BoardContainer extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log('lists ' + JSON.stringify(state.activeBoardLists))
+  //console.log('lists ' + JSON.stringify(state.activeBoardLists))
   return {
     currentUser: state.currentUser,
     currentBoard: ownProps.currentBoard,

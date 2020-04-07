@@ -28,6 +28,7 @@ export const DISPLAY_DUPLICATE_MEMBER_WARNING =
   'DISPLAY_DUPLICATE_MEMBER_WARNING'
 export const CLOSE_DUPLICATE_MEMBER_WARNING = 'CLOSE_DUPLICATE_MEMBER_WARNING'
 export const UPDATE_ACTIVE_BOARD_LISTS = 'UPDATE_ACTIVE_BOARD_LISTS'
+export const SET_CURRENT_LIST_AND_CARD = 'SET_CURRENT_LIST_AND_CARD'
 
 export function getDataRequest() {
   return {
@@ -182,6 +183,13 @@ export function updateActiveBoardLists(lists) {
   return {
     type: UPDATE_ACTIVE_BOARD_LISTS,
     lists,
+  }
+}
+
+export function setCurrentListAndCard(listAndCard) {
+  return {
+    type: SET_CURRENT_LIST_AND_CARD,
+    listAndCard,
   }
 }
 
@@ -633,29 +641,25 @@ export function changeActiveBoardLists(source, destination, draggableId) {
       JSON.stringify(sourceList._id) === JSON.stringify(destinationList._id)
     ) {
       console.log('yayay!')
+
       sourceList.cards.splice(source.index, 1)
+
       sourceList.cards.splice(destination.index, 0, draggedCard)
-      lists.forEach((list, index) => {
-        if (JSON.stringify(list._id) === JSON.stringify(sourceList._id)) {
-          sourceListIndex = index
-        }
-      })
-      lists.splice(sourceListIndex, 1, sourceList)
+      console.log(sourceList)
+      Promise.resolve(
+        lists.forEach((list, index) => {
+          if (JSON.stringify(list._id) === JSON.stringify(sourceList._id)) {
+            sourceListIndex = index
+          }
+        }),
+      ).then(sourceList =>
+        dispatch(
+          updateActiveBoardLists(lists.splice(sourceListIndex, 1, sourceList)),
+        ),
+      )
+
+      console.log('lizzists ' + JSON.stringify(lists))
     }
-
-    // console.log('sourceList ' + JSON.stringify(sourceList))
-    // console.log('destination ' + JSON.stringify(destinationList))
-    console.log(JSON.stringify(lists))
-
-    // lists.forEach((list, index) => {
-    //   if (JSON.stringify(list._id) === JSON.stringify(destinationList._id)) {
-    //     destinationListIndex = index
-    //   }
-    // })
-
-    // lists.splice(destinationListIndex, 1, destinationList)
-    //needs conditional logic to handle movement within same list vs between two lists
-    dispatch(updateActiveBoardLists(lists))
   }
 }
 
@@ -681,7 +685,6 @@ export function onDragEnd(result) {
     ) {
       return
     }
-    dispatch(changeActiveBoardLists(source, destination, draggableId))
 
     fetch('/updateListAfterDnD', {
       method: 'POST',
@@ -694,7 +697,9 @@ export function onDragEnd(result) {
         return res.json()
       })
       .then(json => {
-        dispatch(updateCurrentUser(json))
+        Promise.resolve(
+          dispatch(changeActiveBoardLists(source, destination, draggableId)),
+        ).then(() => dispatch(updateCurrentUser(json)))
       })
       .catch(err => {
         console.log(err)
@@ -702,5 +707,3 @@ export function onDragEnd(result) {
       })
   }
 }
-
-//change lists along with updateCurrentUser (pass updates lists to action); create serparate action for card order changes

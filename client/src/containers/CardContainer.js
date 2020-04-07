@@ -14,6 +14,7 @@ import {
   selectMemberFromDropdown,
   closeDuplicateMemberWarning,
   deleteMemberFromCard,
+  setCurrentListAndCard,
 } from '../actions'
 
 class CardContainer extends Component {
@@ -45,7 +46,7 @@ class CardContainer extends Component {
       index,
       lists,
       currentList,
-      currentCard,
+      //currentCard,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -78,19 +79,15 @@ class CardContainer extends Component {
         index={index}
         lists={lists}
         currentList={currentList}
-        currentCard={currentCard}
+        //currentCard={currentCard}
       />
     )
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
-  let currentList = state.activeBoardLists.filter(boardList => {
-    return JSON.stringify(boardList._id) === JSON.stringify(ownProps.listId)
-  })[0]
-  let currentCard = currentList.cards.filter(listCard => {
-    return JSON.stringify(listCard._id) === JSON.stringify(ownProps.cardId)
-  })[0]
+  let currentList
+  // let currentCard
   return {
     currentUser: state.currentUser,
     title: ownProps.title,
@@ -106,8 +103,12 @@ const mapStateToProps = (state, ownProps) => {
     showDuplicateMemberWarning: state.showDuplicateMemberWarning,
     index: ownProps.index,
     lists: state.activeBoardLists,
-    currentList: currentList,
-    currentCard: currentCard,
+    currentList: (currentList = state.activeBoardLists.filter(boardList => {
+      return JSON.stringify(boardList._id) === JSON.stringify(ownProps.listId)
+    })[0]),
+    // currentCard: currentList.cards.filter(listCard => {
+    //   return JSON.stringify(listCard._id) === JSON.stringify(ownProps.cardId)
+    // })[0],
   }
 }
 

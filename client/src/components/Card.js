@@ -30,7 +30,7 @@ const Card = ({
   index,
   lists,
   currentList,
-  currentCard,
+  //currentCard,
 }) => {
   let classes
   if (activeCardModal === cardId) {
@@ -49,13 +49,21 @@ const Card = ({
 
   let membersList
 
-  membersList = currentCard.members.map(member => {
-    return (
-      <div className="member" key={member}>
-        {member}
-      </div>
-    )
-  })
+  console.log(JSON.stringify(currentList))
+
+  let currentCard = currentList.cards.filter(listCard => {
+    return JSON.stringify(listCard._id) === JSON.stringify(cardId)
+  })[0]
+
+  if (currentCard.members) {
+    membersList = currentCard.members.map(member => {
+      return (
+        <div className="member" key={member}>
+          {member}
+        </div>
+      )
+    })
+  }
 
   console.log('index ' + index)
 
@@ -109,7 +117,7 @@ const Card = ({
             handleDeleteMemberFromCard={handleDeleteMemberFromCard}
             lists={lists}
             currentList={currentList}
-            currentCard={currentCard}
+            //currentCard={currentCard}
           />
         </div>
       )}

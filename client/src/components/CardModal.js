@@ -54,26 +54,15 @@ const CardModal = ({
 
   console.log(currentList)
 
-  // Promise.resolve(
-  //   (currentList = lists.filter(boardList => {
-  //     return JSON.stringify(boardList._id) === JSON.stringify(listId)
-  //   })[0]),
-  // )
-  //.then(
-  //currentList =>
   currentCard = currentList.cards.filter(listCard => {
     return JSON.stringify(listCard._id) === JSON.stringify(cardId)
   })[0]
-  //)
-  //.then(currentCard => {
+
   if (currentCard.activity) {
     cardActivity = currentCard.activity.map(action => {
       return <li key={action}>{action}</li>
     })
   }
-  //return currentCard
-  //})
-  //.then(currentCard => {
   descriptionForm = (
     <CardDescriptionForm
       description={currentCard.description}

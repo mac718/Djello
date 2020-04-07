@@ -5,7 +5,7 @@ import { DragDropContext } from 'react-beautiful-dnd'
 
 const Board = ({
   handleClick,
-  name,
+  //name,
   lists,
   handleBoardNameChange,
   currentUser,

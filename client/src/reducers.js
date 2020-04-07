@@ -21,6 +21,8 @@ const initialState = {
   userList: [],
   showDuplicateMemberWarning: false,
   activeBoardLists: [],
+  currentList: {},
+  currentCard: {},
 }
 
 export function djello(state = initialState, action) {
@@ -159,6 +161,12 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         activeBoardLists: action.lists,
+      }
+    case Actions.SET_CURRENT_LIST_AND_CARD:
+      return {
+        ...state,
+        currentList: action.listAndCard.currentList,
+        currentCard: action.listAndCard.currentCard,
       }
     default:
       return state
