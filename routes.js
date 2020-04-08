@@ -165,7 +165,8 @@ router.post('/createList', (req, res, next) => {
     }
     Board.findById(activeBoard, (err, board) => {
       console.log('191 ' + board)
-      board.lists.push(list)
+      //board.lists.push(list)
+      board.lists = [...board.lists, list]
       board.save((err, board) => {
         if (err) {
           console.log('goodbye')
@@ -197,6 +198,7 @@ router.post('/createList', (req, res, next) => {
               return next(err)
             }
             console.log('server user ' + user)
+            console.log('board.lists ' + board.lists[6])
             let userAndLists = { user: user, lists: board.lists }
             return res.json(userAndLists)
           })
@@ -767,6 +769,7 @@ router.delete('/deleteMemberFromCard', (req, res, next) => {
               console.error(err)
               next(err)
             }
+
             let modifiedListIndex
             board.lists.forEach((boardList, index) => {
               if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
@@ -840,6 +843,7 @@ router.post('/updateListAfterDnd', (req, res, next) => {
             next(err)
           }
           Board.findById(currentUser.activeBoard, (err, board) => {
+            //console.log('active bbibibb ' + board)
             let modifiedLisIndex
             board.lists.forEach((boardList, index) => {
               if (JSON.stringify(list._id) === JSON.stringify(boardList._id)) {

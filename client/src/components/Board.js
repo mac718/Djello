@@ -14,7 +14,7 @@ const Board = ({
   handleOnDragEnd,
 }) => {
   console.log('list lists ' + JSON.stringify(lists))
-  let boardLists = 'hello'
+  let boardLists
   if (lists) {
     boardLists = lists.map(list => {
       return <ListContainer id={list._id} key={list._id} />
