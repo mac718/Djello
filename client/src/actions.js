@@ -619,11 +619,15 @@ export function deleteMemberFromCard(e) {
 export function changeActiveBoardLists(source, destination, draggableId) {
   return (dispatch, getState) => {
     let state = getState()
-    let lists = state.activeBoardLists
-    let sourceList = lists.filter(list => {
+    let lists = Array.from(state.activeBoardLists)
+    let sourceListIndex
+    let destinationListIndex
+    let sourceList = lists.filter((list, index) => {
+      sourceListIndex = index
       return JSON.stringify(source.droppableId) === JSON.stringify(list._id)
     })[0]
-    let destinationList = lists.filter(list => {
+    let destinationList = lists.filter((list, index) => {
+      destinationListIndex = index
       return (
         JSON.stringify(destination.droppableId) === JSON.stringify(list._id)
       )
@@ -632,8 +636,8 @@ export function changeActiveBoardLists(source, destination, draggableId) {
       return JSON.stringify(card._id) === JSON.stringify(draggableId)
     })[0]
 
-    let sourceListIndex
-    let destinationListIndex
+    // let sourceListIndex
+    // let destinationListIndex
     console.log('source ' + source.index)
     console.log('destination ' + destination.index)
 
@@ -646,19 +650,44 @@ export function changeActiveBoardLists(source, destination, draggableId) {
 
       sourceList.cards.splice(destination.index, 0, draggedCard)
       console.log(sourceList)
+
+      // lists.forEach((list, index) => {
+      //   if (JSON.stringify(list._id) === JSON.stringify(sourceList._id)) {
+      //     sourceListIndex = index
+      //     Promise.resolve(
+      //       lists.splice(sourceListIndex, 1, sourceList),
+      //     ).then(() => dispatch(updateActiveBoardLists(lists)))
+      //   }
+      // })
+      console.log(state.activeBoardLists)
+      Promise.resolve(lists.splice(sourceListIndex, 1, sourceList)).then(() =>
+        dispatch(updateActiveBoardLists(lists)),
+      )
+
+      //console.log('lizzists ' + JSON.stringify(lists))
+    } else {
+      sourceList.cards.splice(source.index, 1)
+      destinationList.cards.splice(destination.index, 0, draggedCard)
       Promise.resolve(
         lists.forEach((list, index) => {
           if (JSON.stringify(list._id) === JSON.stringify(sourceList._id)) {
             sourceListIndex = index
+            lists.splice(sourceListIndex, 1, sourceList)
+          } else if (
+            JSON.stringify(list._id) === JSON.stringify(destinationList._id)
+          ) {
+            destinationListIndex = index
+            lists.splice(destinationListIndex, 1, destinationList)
           }
         }),
       ).then(() =>
         dispatch(
           updateActiveBoardLists(lists.splice(sourceListIndex, 1, sourceList)),
+          updateActiveBoardLists(
+            lists.splice(destinationListIndex, 1, destinationList),
+          ),
         ),
       )
-
-      console.log('lizzists ' + JSON.stringify(lists))
     }
   }
 }
@@ -666,6 +695,7 @@ export function changeActiveBoardLists(source, destination, draggableId) {
 export function onDragEnd(result) {
   return (dispatch, getState) => {
     let state = getState()
+    console.log(state.activeBoardLists)
     let currentUser = state.currentUser
 
     const { destination, source, draggableId } = result
@@ -685,6 +715,7 @@ export function onDragEnd(result) {
     ) {
       return
     }
+
     dispatch(changeActiveBoardLists(source, destination, draggableId))
 
     fetch('/updateListAfterDnD', {
@@ -698,7 +729,7 @@ export function onDragEnd(result) {
         return res.json()
       })
       .then(json => {
-        dispatch(updateCurrentUser(json))
+        //dispatch(updateCurrentUser(json))
       })
       .catch(err => {
         console.log(err)

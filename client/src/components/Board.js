@@ -33,32 +33,31 @@ const Board = ({
 
   console.log('active board ' + JSON.stringify(activeBoard[0].name))
   return (
-    <DragDropContext onDragEnd={handleOnDragEnd}>
-      <div className="board has-background-white-bis">
-        <div className="is-size-4 board-name">
-          <div>
-            <input
-              id="board-name"
-              className="input is-large has-text-dark has-background-white-bis"
-              type="text"
-              defaultValue={activeBoard[0].name}
-              onBlur={handleBoardNameChange}
-              onFocus={handleHideBoardNameDisplay}
-              placeholder="Enter Board Name..."
-            />
-          </div>
-          <div className={boardNameDisplayClasses}>{activeBoard[0].name}</div>
+    <div className="board has-background-white-bis">
+      <div className="is-size-4 board-name">
+        <div>
+          <input
+            id="board-name"
+            className="input is-large has-text-dark has-background-white-bis"
+            type="text"
+            defaultValue={activeBoard[0].name}
+            onBlur={handleBoardNameChange}
+            onFocus={handleHideBoardNameDisplay}
+            placeholder="Enter Board Name..."
+          />
         </div>
-
-        {boardLists}
-        <button
-          className="button add-list is-light is-large is-outlined is-primary"
-          onClick={handleClick}
-        >
-          Add A List...
-        </button>
+        <div className={boardNameDisplayClasses}>{activeBoard[0].name}</div>
       </div>
-    </DragDropContext>
+      <DragDropContext onDragEnd={handleOnDragEnd}>
+        {boardLists}
+      </DragDropContext>
+      <button
+        className="button add-list is-light is-large is-outlined is-primary"
+        onClick={handleClick}
+      >
+        Add A List...
+      </button>
+    </div>
   )
 }
 
