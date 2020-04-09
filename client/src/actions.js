@@ -629,100 +629,104 @@ export function changeActiveBoardLists(
   destinationListIndex,
 ) {
   return (dispatch, getState) => {
+    console.log(sourceListIndex)
+    console.log(destinationListIndex)
     //let state
-    let lists
+    //let lists
 
-    let state = Promise.resolve(getState())
-    state.then(state => {
-      console.log(state.activeBoardLists)
-      let lists = stateLists
-      //return Array.from(state.activeBoardLists)
+    //let state = Promise.resolve(getState())
+    //let state = getState()
+    //state.then(state => {
+    //console.log(state.activeBoardLists)
+    let lists = stateLists
+    //return Array.from(state.activeBoardLists)
 
-      //console.log('active board lists ' + JSON.stringify(state.activeBoardLists))
-      //console.log(state.activeBoardLists)
+    //console.log('active board lists ' + JSON.stringify(state.activeBoardLists))
+    //console.log(state.activeBoardLists)
 
-      // let lists = []
+    // let lists = []
 
-      // state.activeBoardLists.forEach(list => {
-      //   lists.push(list)
+    // state.activeBoardLists.forEach(list => {
+    //   lists.push(list)
+    // })
+
+    // console.log(state.activeBoardLists)
+
+    //let listsString = JSON.stringify(state.activeBoardLists)
+    //let lists = JSON.parse(listsString)
+
+    //let thing = JSON.stringify(state.activeBoardLists)
+
+    // let state = getState()
+    // console.log(...state.activeBoardLists)
+    // let lists = state.activeBoardLists
+    //console.log(listsString)
+    console.log('lists ' + JSON.stringify(lists))
+    //console.log(state.activeBoardLists)
+
+    // let sourceListIndex
+    // let destinationListIndex
+    // let sourceList
+    // let destinationList
+    // let draggedCard
+    // let sourceList = lists.filter((list, index) => {
+    //   sourceListIndex = index
+    //   return JSON.stringify(source.droppableId) === JSON.stringify(list._id)
+    // })[0]
+    // let destinationList = lists.filter((list, index) => {
+    //   destinationListIndex = index
+    //   return (
+    //     JSON.stringify(destination.droppableId) === JSON.stringify(list._id)
+    //   )
+    // })[0]
+    // let draggedCard = sourceList.cards.filter(card => {
+    //   return JSON.stringify(card._id) === JSON.stringify(draggableId)
+    // })[0]
+    console.log(lists)
+
+    // let sourceListIndex
+    // let destinationListIndex
+    console.log('source ' + JSON.stringify(sourceList))
+    console.log('destination ' + JSON.stringify(destinationList))
+
+    if (
+      JSON.stringify(sourceList._id) === JSON.stringify(destinationList._id)
+    ) {
+      console.log('yayay!')
+
+      sourceList.cards.splice(source.index, 1)
+
+      sourceList.cards.splice(destination.index, 0, draggedCard)
+      //console.log(sourceList)
+
+      // lists.forEach((list, index) => {
+      //   if (JSON.stringify(list._id) === JSON.stringify(sourceList._id)) {
+      //     sourceListIndex = index
+      //     Promise.resolve(
+      //       lists.splice(sourceListIndex, 1, sourceList),
+      //     ).then(() => dispatch(updateActiveBoardLists(lists)))
+      //   }
       // })
+      //console.log(state.activeBoardLists)
+      // Promise.resolve(lists.splice(sourceListIndex, 1, sourceList)).then(() =>
+      //   dispatch(updateActiveBoardLists(lists)),
+      // )
+      lists.splice(sourceListIndex, 1, sourceList)
+      dispatch(updateActiveBoardLists(lists))
 
-      console.log(state.activeBoardLists)
+      //console.log('lizzists ' + JSON.stringify(lists))
+    } else {
+      //Promise.resolve(() => {
+      sourceList.cards.splice(source.index, 1)
+      destinationList.cards.splice(destination.index, 0, draggedCard)
+      lists.splice(sourceListIndex, 1, sourceList)
 
-      //let listsString = JSON.stringify(state.activeBoardLists)
-      //let lists = JSON.parse(listsString)
-
-      //let thing = JSON.stringify(state.activeBoardLists)
-
-      // let state = getState()
-      // console.log(...state.activeBoardLists)
-      // let lists = state.activeBoardLists
-      //console.log(listsString)
-      console.log('lists ' + JSON.stringify(lists))
-      console.log(state.activeBoardLists)
-
-      // let sourceListIndex
-      // let destinationListIndex
-      // let sourceList
-      // let destinationList
-      // let draggedCard
-      // let sourceList = lists.filter((list, index) => {
-      //   sourceListIndex = index
-      //   return JSON.stringify(source.droppableId) === JSON.stringify(list._id)
-      // })[0]
-      // let destinationList = lists.filter((list, index) => {
-      //   destinationListIndex = index
-      //   return (
-      //     JSON.stringify(destination.droppableId) === JSON.stringify(list._id)
-      //   )
-      // })[0]
-      // let draggedCard = sourceList.cards.filter(card => {
-      //   return JSON.stringify(card._id) === JSON.stringify(draggableId)
-      // })[0]
+      lists.splice(destinationListIndex, 1, destinationList)
       console.log(lists)
-
-      // let sourceListIndex
-      // let destinationListIndex
-      console.log('source ' + JSON.stringify(sourceList))
-      console.log('destination ' + JSON.stringify(destinationList))
-
-      if (
-        JSON.stringify(sourceList._id) === JSON.stringify(destinationList._id)
-      ) {
-        console.log('yayay!')
-
-        sourceList.cards.splice(source.index, 1)
-
-        sourceList.cards.splice(destination.index, 0, draggedCard)
-        //console.log(sourceList)
-
-        // lists.forEach((list, index) => {
-        //   if (JSON.stringify(list._id) === JSON.stringify(sourceList._id)) {
-        //     sourceListIndex = index
-        //     Promise.resolve(
-        //       lists.splice(sourceListIndex, 1, sourceList),
-        //     ).then(() => dispatch(updateActiveBoardLists(lists)))
-        //   }
-        // })
-        console.log(state.activeBoardLists)
-        // Promise.resolve(lists.splice(sourceListIndex, 1, sourceList)).then(() =>
-        //   dispatch(updateActiveBoardLists(lists)),
-        // )
-        lists.splice(sourceListIndex, 1, sourceList)
-        dispatch(updateActiveBoardLists(lists))
-
-        //console.log('lizzists ' + JSON.stringify(lists))
-      } else {
-        Promise.resolve(() => {
-          sourceList.cards.splice(source.index, 1)
-          destinationList.cards.splice(destination.index, 0, draggedCard)
-          lists.splice(sourceListIndex, 1, sourceList)
-
-          lists.splice(destinationListIndex, 1, destinationList)
-          console.log(lists)
-        }).then(lists => dispatch(updateActiveBoardLists(lists)))
-      }
-    })
+      //}).then(lists => dispatch(updateActiveBoardLists(lists)))
+      dispatch(updateActiveBoardLists(lists))
+    }
+    // })
   }
 }
 
@@ -761,7 +765,7 @@ export function onDragEnd(result) {
         if (
           JSON.stringify(list._id) === JSON.stringify(destination.droppableId)
         ) {
-          sourceListIndex = index
+          destinationListIndex = index
         }
       }),
       (draggedCard = sourceList.cards.filter(card => {
@@ -799,26 +803,33 @@ export function onDragEnd(result) {
       )
     })
 
-    // Promise.resolve(
-    //   dispatch(changeActiveBoardLists(source, destination, draggableId, lists)),
-    // ).then(() => {
-    //   fetch('/updateListAfterDnD', {
-    //     method: 'POST',
-    //     body: JSON.stringify({ currentUser, destination, source, draggableId }),
-    //     headers: {
-    //       'Content-type': 'application/json',
-    //     },
-    //   })
-    //     .then(res => {
-    //       //return res.json()
-    //     })
-    //     .then(json => {
-    //       //dispatch(updateCurrentUser(json))
-    //     })
-    //     .catch(err => {
-    //       console.log(err)
-    //       alert('hmmmm')
-    //     })
-    // })
+    Promise
+      .resolve
+      //dispatch(changeActiveBoardLists(source, destination, draggableId, lists)),
+      ()
+      .then(() => {
+        fetch('/updateListAfterDnD', {
+          method: 'POST',
+          body: JSON.stringify({
+            currentUser,
+            destination,
+            source,
+            draggableId,
+          }),
+          headers: {
+            'Content-type': 'application/json',
+          },
+        })
+          .then(res => {
+            return res.json()
+          })
+          .then(json => {
+            dispatch(updateCurrentUser(json))
+          })
+          .catch(err => {
+            console.log(err)
+            alert('hmmmm')
+          })
+      })
   }
 }
