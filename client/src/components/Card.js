@@ -43,6 +43,8 @@ const Card = ({
     return JSON.stringify(board._id) === JSON.stringify(currentUser.activeBoard)
   })[0]
 
+  //console.log('current card ' + currentCard)
+
   console.log('currentBoard ' + JSON.stringify(currentBoard))
   console.log('lists ' + JSON.stringify(lists[0]._id))
   console.log('listId ' + JSON.stringify(listId))
@@ -117,7 +119,7 @@ const Card = ({
             handleDeleteMemberFromCard={handleDeleteMemberFromCard}
             lists={lists}
             currentList={currentList}
-            //currentCard={currentCard}
+            currentCard={currentCard}
           />
         </div>
       )}

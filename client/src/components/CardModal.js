@@ -31,7 +31,7 @@ const CardModal = ({
   handleDeleteMemberFromCard,
   lists,
   currentList,
-  //currentCard,
+  currentCard,
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
@@ -42,7 +42,7 @@ const CardModal = ({
   console.log('currentBoard ' + JSON.stringify(currentBoard))
 
   //let currentList
-  let currentCard
+  //let currentCard
   let cardActivity
   let descriptionForm
   let descriptionDisplay
@@ -54,9 +54,9 @@ const CardModal = ({
 
   console.log(currentList)
 
-  currentCard = currentList.cards.filter(listCard => {
-    return JSON.stringify(listCard._id) === JSON.stringify(cardId)
-  })[0]
+  // currentCard = currentList.cards.filter(listCard => {
+  //   return JSON.stringify(listCard._id) === JSON.stringify(cardId)
+  // })[0]
 
   if (currentCard.activity) {
     cardActivity = currentCard.activity.map(action => {

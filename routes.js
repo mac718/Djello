@@ -198,7 +198,7 @@ router.post('/createList', (req, res, next) => {
               return next(err)
             }
             console.log('server user ' + user)
-            console.log('board.lists ' + board.lists[6])
+            console.log('board.lists ' + board.lists)
             let userAndLists = { user: user, lists: board.lists }
             return res.json(userAndLists)
           })

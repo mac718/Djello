@@ -46,7 +46,7 @@ class CardContainer extends Component {
       index,
       lists,
       currentList,
-      //currentCard,
+      currentCard,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -79,7 +79,7 @@ class CardContainer extends Component {
         index={index}
         lists={lists}
         currentList={currentList}
-        //currentCard={currentCard}
+        currentCard={currentCard}
       />
     )
   }
