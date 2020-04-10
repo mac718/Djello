@@ -43,7 +43,7 @@ const Board = ({
             defaultValue={activeBoard[0].name}
             onBlur={handleBoardNameChange}
             onFocus={handleHideBoardNameDisplay}
-            placeholder="Enter Board Name..."
+            placeholder={showBoardNameDisplay ? '' : 'Enter Board Name...'}
           />
         </div>
         <div className={boardNameDisplayClasses}>{activeBoard[0].name}</div>

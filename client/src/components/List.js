@@ -47,7 +47,7 @@ const List = ({
     })
   }
 
-  if (showCardForm) {
+  if (showCardForm === id) {
     cardForm = (
       <CardForm
         handleSaveCard={handleSaveCard}

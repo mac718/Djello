@@ -38,7 +38,7 @@ router.post(
 router.post('/register', (req, res, next) => {
   let { username, password } = req.body
   let activeBoard = new Board({
-    name: 'My Board (click here to change name)',
+    name: '',
     lists: [],
   })
   let boards = [activeBoard]
@@ -83,7 +83,7 @@ router.post('/logout', (req, res) => {
 
 router.post('/createBoard', (req, res, next) => {
   let board = new Board({
-    name: 'My Board (click here to change name)',
+    name: '',
     lists: [],
   })
   console.log('new board ' + board)
@@ -293,7 +293,8 @@ router.post('/changeBoardName', (req, res, next) => {
             console.log(err)
             next(err)
           }
-          return res.json(user)
+          let userAndLists = { user: user, lists: board.lists }
+          return res.json(userAndLists)
         })
       })
     })
@@ -843,7 +844,6 @@ router.post('/updateListAfterDnd', (req, res, next) => {
             next(err)
           }
           Board.findById(currentUser.activeBoard, (err, board) => {
-            //console.log('active bbibibb ' + board)
             let modifiedLisIndex
             board.lists.forEach((boardList, index) => {
               if (JSON.stringify(list._id) === JSON.stringify(boardList._id)) {

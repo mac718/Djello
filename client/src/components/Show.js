@@ -29,7 +29,7 @@ const Show = ({
           onClick={handleActiveBoardSwitch}
           key={board._id + '1'}
         >
-          {board.name}
+          {board.name ? board.name : `board ${i}`}
         </a>
       )
     })
