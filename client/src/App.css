@@ -60,6 +60,7 @@
   margin-left: 10px;
   margin-right: 10px;
   position: relative;
+  border-radius: 10px;
 }
 
 .list-name {
