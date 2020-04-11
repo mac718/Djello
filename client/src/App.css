@@ -43,6 +43,16 @@
   overflow: auto;
   height: 100vh;
   flex-wrap: wrap;
+
+  position: relative;
+  width: 90%;
+}
+
+.current-board {
+  position: absolute;
+  background-image: url(https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
+  background-size: cover;
+  height: 100vh;
 }
 
 .list {
@@ -60,6 +70,8 @@
   float: right;
   display: flex;
   flex-direction: column;
+  border-radius: 10px;
+  opacity: 0.8;
 }
 
 .no-board {
@@ -73,6 +85,12 @@
   box-shadow: none;
   padding-left: 0;
   font-size: 2.5rem;
+}
+
+#board-name {
+  opacity: 0.2;
+  width: 33%;
+  margin-top: 20px;
 }
 
 #list-name {
@@ -92,6 +110,7 @@
   align-items: center;
   height: 2.5em;
   font-size: 2.5rem;
+  margin-top: 20px;
 }
 
 .task {
@@ -143,4 +162,24 @@
 .member-selection {
   display: flex;
   align-items: center;
+}
+
+#add-delete-board {
+  display: flex;
+  flex-direction: column;
+  float: right;
+  position: relative;
+  z-index: 20;
+  margin-top: 20px;
+}
+
+#board-dropdown-board-buttons-container {
+  display: flex;
+  flex-direction: column;
+  float: right;
+  margin-top: 20px;
+}
+
+.show {
+  position: relative;
 }

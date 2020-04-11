@@ -29,7 +29,7 @@ const Show = ({
           onClick={handleActiveBoardSwitch}
           key={board._id + '1'}
         >
-          {board.name ? board.name : `board ${i}`}
+          {board.name ? board.name : `board ${i + 1}`}
         </a>
       )
     })
@@ -75,31 +75,35 @@ const Show = ({
           </div>
         </nav>
       </div>
-      <nav
-        className="navbar board-dropdown has-background-white-bis"
-        role="navigation"
-        aria-label="dropdown navigation"
-      >
-        <div className="navbar-item has-dropdown is-hoverable boards-dropdown">
-          <a className="navbar-link">Boards</a>
-          <div className="navbar-dropdown">{dropdownItems}</div>
+      <div id="board-dropdown-board-buttons-container">
+        <nav
+          className="navbar board-dropdown has-background-white-bis"
+          role="navigation"
+          aria-label="dropdown navigation"
+        >
+          <div className="navbar-item has-dropdown is-hoverable boards-dropdown">
+            <a className="navbar-link is-size-5">Your Boards</a>
+            <div className="navbar-dropdown">{dropdownItems}</div>
+          </div>
+        </nav>
+        <div id="add-delete-board">
+          <button
+            className="button is-primary is-light is-large is-outlined create-board-button"
+            onClick={handleCreateBoard}
+          >
+            + Create New Board
+          </button>
+          <button
+            className="button is-danger is-light is-small is-outlined delete-board-button"
+            onClick={handleDeleteBoard}
+          >
+            <span className="icon is-small">
+              <i className="fas fa-minus-circle"></i>
+            </span>
+            <span>Delete Current Board</span>
+          </button>
         </div>
-        <button
-          className="button is-primary is-light is-large is-outlined create-board-button"
-          onClick={handleCreateBoard}
-        >
-          + Create New Board
-        </button>
-        <button
-          className="button is-danger is-light is-small is-outlined delete-board-button"
-          onClick={handleDeleteBoard}
-        >
-          <span className="icon is-small">
-            <i className="fas fa-minus-circle"></i>
-          </span>
-          <span>Delete Current Board</span>
-        </button>
-      </nav>
+      </div>
       <div className="current-board">{activeBoard}</div>
     </div>
   )

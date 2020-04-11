@@ -92,7 +92,7 @@ router.post('/createBoard', (req, res, next) => {
   board.save((err, board) => {
     if (err) {
       console.error(err)
-      return next(err)
+      res.status(401).json({ error: err })
     }
     User.findById(currentUser._id, (err, user) => {
       if (err) {

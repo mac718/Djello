@@ -33,14 +33,13 @@ const Board = ({
 
   console.log('active board ' + JSON.stringify(activeBoard[0].name))
   return (
-    <div className="board has-background-white-bis">
+    <div className="board">
       <div className="is-size-4 board-name">
         <div>
           <input
             id="board-name"
             className="input is-large has-text-dark has-background-white-bis"
             type="text"
-            defaultValue={activeBoard[0].name}
             onBlur={handleBoardNameChange}
             onFocus={handleHideBoardNameDisplay}
             placeholder={showBoardNameDisplay ? '' : 'Enter Board Name...'}
