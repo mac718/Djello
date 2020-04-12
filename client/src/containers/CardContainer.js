@@ -47,6 +47,7 @@ class CardContainer extends Component {
       lists,
       currentList,
       currentCard,
+      isdragging,
     } = this.props
     console.log(activeCardModal)
     return (

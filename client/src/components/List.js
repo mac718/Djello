@@ -60,38 +60,45 @@ const List = ({
   }
 
   return (
-    <div id={id} className="list tile is-2 is-vertical is-parent notification">
-      <a className="delete-list delete is-medium" onClick={deleteList}></a>
-      <div className="list-name is-size-5">
-        <input
-          id="list-name"
-          className="input"
-          type="text"
-          placeholder="Enter List Name"
-          defaultValue={name}
-          onBlur={handleListNameChange}
-        />
-      </div>
-      <Droppable droppableId={id}>
-        {provided => (
-          <div
-            provided={provided}
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-          >
+    <Droppable droppableId={id}>
+      {(provided, snapshot) => (
+        <div
+          provided={provided}
+          {...provided.droppableProps}
+          ref={provided.innerRef}
+          className={
+            snapshot.isDraggingOver
+              ? 'list tile is-2 is-vertical is-parent notification is-dragging-over'
+              : 'list tile is-2 is-vertical is-parent notification'
+          }
+        >
+          <a className="delete-list delete is-medium" onClick={deleteList}></a>
+          <div id={id}>
+            <div className="list-name is-size-5">
+              <input
+                id="list-name"
+                className="input"
+                type="text"
+                placeholder="Enter List Name"
+                defaultValue={name}
+                onBlur={handleListNameChange}
+              />
+            </div>
+
             {cardComponents}
             {provided.placeholder}
+
+            {cardForm}
+            <button
+              className="button is-primary is-light is-fullwidth"
+              onClick={handleShowCardForm}
+            >
+              + Add Card
+            </button>
           </div>
-        )}
-      </Droppable>
-      {cardForm}
-      <button
-        className="button is-primary is-light"
-        onClick={handleShowCardForm}
-      >
-        + Add Card
-      </button>
-    </div>
+        </div>
+      )}
+    </Droppable>
   )
 }
 

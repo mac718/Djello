@@ -53,6 +53,7 @@
   background-image: url(https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
   background-size: cover;
   height: 100vh;
+  width: 100%;
 }
 
 .list {
@@ -183,4 +184,13 @@
 
 .show {
   position: relative;
+}
+
+.is-dragging {
+  background-color: hsl(0, 0%, 96%);
+}
+
+.is-dragging-over {
+  transition: background-color 0.5s ease;
+  background-color: hsl(171, 100%, 41%);
 }

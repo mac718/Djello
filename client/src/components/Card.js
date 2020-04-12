@@ -2,6 +2,7 @@ import React from 'react'
 import CardModal from './CardModal'
 import CardMemberList from './CardMemberList'
 import { Draggable } from 'react-beautiful-dnd'
+import { is } from 'bluebird'
 
 const Card = ({
   currentUser,
@@ -67,11 +68,11 @@ const Card = ({
     })
   }
 
-  console.log('index ' + index)
+  let cardClasses = console.log('index ' + index)
 
   return (
     <Draggable draggableId={cardId} index={index}>
-      {provided => (
+      {(provided, snapshot) => (
         <div
           {...provided.draggableProps}
           {...provided.dragHandleProps}
@@ -80,7 +81,7 @@ const Card = ({
         >
           <div
             id={cardId}
-            className="card"
+            className={snapshot.isDragging ? 'card is-dragging' : 'card'}
             data-target={cardId}
             aria-haspopup="true"
             onClick={handleActiveCardModal}

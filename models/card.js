@@ -1,12 +1,15 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const CardSchema = new Schema({
-  title: { type: String, required: true },
-  description: { type: String },
-  members: { type: Array },
-  activity: { type: Array },
-})
+const CardSchema = new Schema(
+  {
+    title: { type: String, required: true },
+    description: { type: String },
+    members: { type: Array },
+    activity: { type: Array },
+  },
+  { timestamps: true },
+)
 
 const Card = mongoose.model('Card', CardSchema)
 
