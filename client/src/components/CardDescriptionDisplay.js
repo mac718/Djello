@@ -5,7 +5,10 @@ const CardDescriptionDisplay = ({
   handleSwitchToCardDescriptionForm,
 }) => {
   return (
-    <div className="card" onClick={handleSwitchToCardDescriptionForm}>
+    <div
+      className="card card-description-display"
+      onClick={handleSwitchToCardDescriptionForm}
+    >
       <div className="card-content">{description}</div>
     </div>
   )

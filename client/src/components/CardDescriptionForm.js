@@ -9,7 +9,10 @@ const CardDescriptionForm = ({
   cardId,
 }) => {
   return (
-    <form onSubmit={handleCardAttributeUpdate}>
+    <form
+      className="card-description-form"
+      onSubmit={handleCardAttributeUpdate}
+    >
       <textarea
         className="textarea"
         onChange={handleCardAttributeEdit}

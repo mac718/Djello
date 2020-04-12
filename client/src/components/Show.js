@@ -24,7 +24,7 @@ const Show = ({
       console.log(i + ' ' + board._id)
       return (
         <a
-          className="navbar-item"
+          className="navbar-item has-text-black"
           id={board._id}
           onClick={handleActiveBoardSwitch}
           key={board._id + '1'}
@@ -83,7 +83,7 @@ const Show = ({
         >
           <div className="navbar-item has-dropdown is-hoverable boards-dropdown">
             <a className="navbar-link is-size-5">Your Boards</a>
-            <div className="navbar-dropdown">{dropdownItems}</div>
+            <div className="navbar-dropdown is-right">{dropdownItems}</div>
           </div>
         </nav>
         <div id="add-delete-board">

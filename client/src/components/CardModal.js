@@ -5,6 +5,8 @@ import CardTitleForm from './CardTitleForm'
 import CardTitleDisplay from './CardTitleDisplay'
 import MemberSelectionDropdown from './MemberSelectionDropdown'
 import { displayDuplicateMemberWarning } from '../actions'
+import Checklist from './Checklist'
+import Checkist from './Checklist'
 
 const CardModal = ({
   currentUser,
@@ -135,7 +137,14 @@ const CardModal = ({
             onClick={handleActiveCardModal}
           ></button>
         </div>
+
         <div className="modal-card-body">
+          <div className="actions">
+            <button className="button is-fullwidth">Add Checklist</button>
+            <button className="button is-fullwidth">Add Member</button>
+            <button className="button is-fullwidth">Add Attachment</button>
+            <button className="button is-fullwidth">Add Cover</button>
+          </div>
           <button
             className="button is-link is-light is-outlined mark-as-complete"
             onClick={handleDeleteCard}
@@ -145,7 +154,10 @@ const CardModal = ({
             </span>
             <span>Mark as Complete</span>
           </button>
+          <p className="is-size-4">Description</p>
           {descriptionComponent}
+          <p className="is-size-4">Checklist</p>
+          <Checkist items={['hello', 'goodbye', 'other thing']} />
           <div className="members">
             <p className="is-size-4">Members</p>
             <div className={notificationClasses}>

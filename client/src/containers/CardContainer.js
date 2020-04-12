@@ -175,7 +175,9 @@ const mapDispatchToProps = dispatch => {
       dispatch(deleteMemberFromCard(e))
     },
 
-    handleSetCurrentList: e => {},
+    handleAddItemToChecklist: e => {
+      dispatch(addItemToChecklist())
+    },
   }
 }
 

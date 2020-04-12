@@ -194,3 +194,22 @@
   transition: background-color 0.5s ease;
   background-color: hsl(171, 100%, 41%);
 }
+
+.modal-card {
+  width: 40%;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  float: right;
+  width: 20%;
+  height: 100%;
+}
+
+.card-description-display,
+.card-description-form,
+.checklist {
+  width: 78%;
+}
