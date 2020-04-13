@@ -1006,7 +1006,7 @@ router.post('/createChecklist', (req, res, next) => {
             }
             let modifiedListIndex
             board.lists.forEach((boardList, index) => {
-              if (JSON.stringify(board._id) === JSON.stringify(boardList._id)) {
+              if (JSON.stringify(list._id) === JSON.stringify(boardList._id)) {
                 modifiedListIndex = index
               }
             })
