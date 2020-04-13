@@ -4,8 +4,6 @@ import CardDescriptionDisplay from './CardDescriptionDisplay'
 import CardTitleForm from './CardTitleForm'
 import CardTitleDisplay from './CardTitleDisplay'
 import MemberSelectionDropdown from './MemberSelectionDropdown'
-import { displayDuplicateMemberWarning } from '../actions'
-import Checklist from './Checklist'
 import Checkist from './Checklist'
 
 const CardModal = ({
@@ -34,6 +32,9 @@ const CardModal = ({
   lists,
   currentList,
   currentCard,
+  handleShowAddItemForm,
+  handleHideAddItemForm,
+  showChecklistItemForm,
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
@@ -157,7 +158,13 @@ const CardModal = ({
           <p className="is-size-4">Description</p>
           {descriptionComponent}
           <p className="is-size-4">Checklist</p>
-          <Checkist items={['hello', 'goodbye', 'other thing']} />
+          <Checkist
+            items={['hello', 'goodbye', 'other thing']}
+            handleShowAddItemForm={handleShowAddItemForm}
+            handleHideAddItemForm={handleHideAddItemForm}
+            showChecklistItemForm={showChecklistItemForm}
+            cardId={cardId}
+          />
           <div className="members">
             <p className="is-size-4">Members</p>
             <div className={notificationClasses}>

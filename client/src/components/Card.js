@@ -32,6 +32,9 @@ const Card = ({
   lists,
   currentList,
   //currentCard,
+  handleShowAddItemForm,
+  handleHideAddItemForm,
+  showChecklistItemForm,
 }) => {
   let classes
   if (activeCardModal === cardId) {
@@ -121,6 +124,9 @@ const Card = ({
             lists={lists}
             currentList={currentList}
             currentCard={currentCard}
+            handleShowAddItemForm={handleShowAddItemForm}
+            handleHideAddItemForm={handleHideAddItemForm}
+            showChecklistItemForm={showChecklistItemForm}
           />
         </div>
       )}

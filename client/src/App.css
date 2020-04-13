@@ -210,6 +210,7 @@
 
 .card-description-display,
 .card-description-form,
-.checklist {
+.checklist,
+.checklist-item-form {
   width: 78%;
 }

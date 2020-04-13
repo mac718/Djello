@@ -30,6 +30,8 @@ export const DISPLAY_DUPLICATE_MEMBER_WARNING =
 export const CLOSE_DUPLICATE_MEMBER_WARNING = 'CLOSE_DUPLICATE_MEMBER_WARNING'
 export const UPDATE_ACTIVE_BOARD_LISTS = 'UPDATE_ACTIVE_BOARD_LISTS'
 export const SET_CURRENT_LIST_AND_CARD = 'SET_CURRENT_LIST_AND_CARD'
+export const SHOW_ADD_ITEM_FORM = 'SHOW_ADD_ITEM_FORM'
+export const HIDE_ADD_ITEM_FORM = 'HIDE_ADD_ITEM_FORM'
 
 export function getDataRequest() {
   return {
@@ -192,6 +194,19 @@ export function setCurrentListAndCard(listAndCard) {
   return {
     type: SET_CURRENT_LIST_AND_CARD,
     listAndCard,
+  }
+}
+
+export function showAddItemForm(cardId) {
+  return {
+    type: SHOW_ADD_ITEM_FORM,
+    cardId,
+  }
+}
+
+export function hideAddItemForm() {
+  return {
+    type: HIDE_ADD_ITEM_FORM,
   }
 }
 

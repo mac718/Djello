@@ -1,10 +1,14 @@
 import React from 'react'
+import ChecklistItemForm from './ChecklistItemForm'
 
 const Checkist = ({
   items,
   handleToggleCheck,
-  handleAddItem,
+  handleShowAddItemForm,
+  handleHideAddItemForm,
+  showChecklistItemForm,
   progressValue,
+  cardId,
 }) => {
   let listItems = items.map(item => {
     return (
@@ -19,6 +23,15 @@ const Checkist = ({
       </div>
     )
   })
+
+  let itemForm
+  if (showChecklistItemForm === cardId) {
+    itemForm = (
+      <ChecklistItemForm handleHideAddItemForm={handleHideAddItemForm} />
+    )
+  } else {
+    itemForm = null
+  }
   return (
     <div className="checklist content">
       <span>15%</span>
@@ -26,9 +39,10 @@ const Checkist = ({
         15%
       </progress>
       {listItems}
-      <button className="button is-light" onClick={handleAddItem}>
+      <button className="button is-light" onClick={handleShowAddItemForm}>
         Add an item
       </button>
+      {itemForm}
     </div>
   )
 }

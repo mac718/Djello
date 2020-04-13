@@ -15,6 +15,8 @@ import {
   closeDuplicateMemberWarning,
   deleteMemberFromCard,
   setCurrentListAndCard,
+  showAddItemForm,
+  hideAddItemForm,
 } from '../actions'
 
 class CardContainer extends Component {
@@ -47,7 +49,9 @@ class CardContainer extends Component {
       lists,
       currentList,
       currentCard,
-      isdragging,
+      handleShowAddItemForm,
+      handleHideAddItemForm,
+      showChecklistItemForm,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -81,6 +85,9 @@ class CardContainer extends Component {
         lists={lists}
         currentList={currentList}
         currentCard={currentCard}
+        handleShowAddItemForm={handleShowAddItemForm}
+        handleHideAddItemForm={handleHideAddItemForm}
+        showChecklistItemForm={showChecklistItemForm}
       />
     )
   }
@@ -107,6 +114,7 @@ const mapStateToProps = (state, ownProps) => {
     currentList: (currentList = state.activeBoardLists.filter(boardList => {
       return JSON.stringify(boardList._id) === JSON.stringify(ownProps.listId)
     })[0]),
+    showChecklistItemForm: state.showChecklistItemForm,
     // currentCard: currentList.cards.filter(listCard => {
     //   return JSON.stringify(listCard._id) === JSON.stringify(ownProps.cardId)
     // })[0],
@@ -175,8 +183,14 @@ const mapDispatchToProps = dispatch => {
       dispatch(deleteMemberFromCard(e))
     },
 
-    handleAddItemToChecklist: e => {
-      dispatch(addItemToChecklist())
+    handleShowAddItemForm: e => {
+      let cardId =
+        e.target.parentElement.parentElement.parentElement.parentElement.id
+      dispatch(showAddItemForm(cardId))
+    },
+
+    handleHideAddItemForm: () => {
+      dispatch(hideAddItemForm())
     },
   }
 }

@@ -23,6 +23,8 @@ const initialState = {
   activeBoardLists: [],
   currentList: {},
   currentCard: {},
+  progressValue: 0,
+  showChecklistItemForm: false,
 }
 
 export function djello(state = initialState, action) {
@@ -167,6 +169,16 @@ export function djello(state = initialState, action) {
         ...state,
         currentList: action.listAndCard.currentList,
         currentCard: action.listAndCard.currentCard,
+      }
+    case Actions.SHOW_ADD_ITEM_FORM:
+      return {
+        ...state,
+        showChecklistItemForm: action.cardId,
+      }
+    case Actions.HIDE_ADD_ITEM_FORM:
+      return {
+        ...state,
+        showChecklistItemForm: false,
       }
     default:
       return state
