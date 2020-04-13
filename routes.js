@@ -6,6 +6,7 @@ const withAuth = require('./middleware')
 const Board = require('./models/board')
 const List = require('./models/list')
 const Card = require('./models/card')
+const Checklist = require('./models/checklist')
 
 router.get('/checkForCurrentUser', withAuth, (req, res) => {
   res.status(200).send()
@@ -964,6 +965,80 @@ router.post('/updateListAfterDnd', (req, res, next) => {
       })
     })
   }
+})
+
+router.post('/createChecklist', (req, res, next) => {
+  let { currentUser, cardId, listId } = req.body
+  let checklist = new Checklist({ title: '', items: [] })
+
+  Card.findById(cardId, (err, card) => {
+    if (err) {
+      console.error(err)
+      next(err)
+    }
+    card.checklists = [...card.checklists, checklist]
+    card.save((err, card) => {
+      if (err) {
+        console.error(err)
+        next(err)
+      }
+      List.findById(listId, (err, list) => {
+        if (err) {
+          console.error(err)
+          next(err)
+        }
+        let modifiedCardIndex
+        list.cards.forEach((listCard, index) => {
+          if (JSON.stringify(card._id) === JSON.stringify(listCard._id)) {
+            modifiedCardIndex = index
+          }
+        })
+        list.cards.splice(modifiedCardIndex, 1, card)
+        list.save((err, list) => {
+          if (err) {
+            console.error(err)
+            next(err)
+          }
+          Board.findById(currentUser.activeBoard, (err, board) => {
+            if (err) {
+              console.error(err)
+              next(err)
+            }
+            let modifiedListIndex
+            board.lists.forEach((boardList, index) => {
+              if (JSON.stringify(board._id) === JSON.stringify(boardList._id)) {
+                modifiedListIndex = index
+              }
+            })
+            board.lists.splice(modifiedListIndex, 1, list)
+            board.save((err, board) => {
+              if (err) {
+                console.error(err)
+                next(err)
+              }
+              User.findById(currentUser._id, (err, user) => {
+                if (err) {
+                  console.error(err)
+                  next(err)
+                }
+                let modifiedBoardIndex
+                user.boards.forEach((userBoard, index) => {
+                  if (
+                    JSON.stringify(board._id) === JSON.stringify(userBoard._id)
+                  ) {
+                    modifiedBoardIndex = index
+                  }
+                })
+                user.boards.splice(modifiedBoardIndex, 1, board)
+                let userAndLists = { user: user, lists: board.lists }
+                return res.json(userAndLists)
+              })
+            })
+          })
+        })
+      })
+    })
+  })
 })
 
 module.exports = router

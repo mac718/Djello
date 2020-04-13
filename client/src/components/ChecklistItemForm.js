@@ -6,8 +6,8 @@ const ChecklistItemForm = ({
   handleHideAddItemForm,
 }) => {
   return (
-    <div className="checklist-item-form" onSubmit={handleCardAttributeUpdate}>
-      <div className="control">
+    <form className="checklist-item-form" onSubmit={handleCardAttributeUpdate}>
+      <div>
         <a
           className="hide-add-item-form delete is-medium"
           onClick={handleHideAddItemForm}
@@ -21,7 +21,7 @@ const ChecklistItemForm = ({
       <button className="button" type="submit">
         Add
       </button>
-    </div>
+    </form>
   )
 }
 

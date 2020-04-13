@@ -174,6 +174,7 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         showChecklistItemForm: action.cardId,
+        attributeType: 'checklist-item',
       }
     case Actions.HIDE_ADD_ITEM_FORM:
       return {

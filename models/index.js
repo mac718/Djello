@@ -10,5 +10,6 @@ models.User = require('./user')
 models.Board = require('./board')
 models.List = require('./list')
 models.Card = require('./card')
+models.Checklist = require('./checklist')
 
 module.exports = models

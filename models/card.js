@@ -7,6 +7,7 @@ const CardSchema = new Schema(
     description: { type: String },
     members: { type: Array },
     activity: { type: Array },
+    checklists: { type: Array },
   },
   { timestamps: true },
 )

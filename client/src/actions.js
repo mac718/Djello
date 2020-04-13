@@ -520,6 +520,12 @@ export function updateCardAttribute(e) {
       listId =
         e.target.parentElement.parentElement.parentElement.parentElement
           .firstChild.id
+    } else if (attributeType === 'checklist-item') {
+      cardId =
+        e.target.parentElement.parentElement.parentElement.parentElement.id
+      listId =
+        e.target.parentElement.parentElement.parentElement.parentElement
+          .firstChild.id
     }
 
     console.log('hello')
@@ -756,6 +762,37 @@ export function onDragEnd(result) {
       })
       .then(json => {
         dispatch(updateCurrentUser(json))
+      })
+      .catch(err => {
+        console.log(err)
+        alert('hmmmm')
+      })
+  }
+}
+
+export function createChecklist(e) {
+  return (dispatch, getState) => {
+    let state = getState()
+    let currentUser = state.currentUser
+    let cardId =
+      e.target.parentElement.parentElement.parentElement.parentElement.id
+    let listId =
+      e.target.parentElement.parentElement.parentElement.parentElement
+        .firstChild.id
+
+    fetch('./createChecklist', {
+      method: 'POST',
+      body: JSON.stringify({ cardId, listId, currentUser }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then(res => {
+        return res.json()
+      })
+      .then(json => {
+        dispatch(updateActiveBoardLists(json.lists))
+        dispatch(updateCurrentUser(json.user))
       })
       .catch(err => {
         console.log(err)

@@ -17,6 +17,7 @@ import {
   setCurrentListAndCard,
   showAddItemForm,
   hideAddItemForm,
+  createChecklist,
 } from '../actions'
 
 class CardContainer extends Component {
@@ -52,6 +53,7 @@ class CardContainer extends Component {
       handleShowAddItemForm,
       handleHideAddItemForm,
       showChecklistItemForm,
+      handleCreateChecklist,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -88,6 +90,7 @@ class CardContainer extends Component {
         handleShowAddItemForm={handleShowAddItemForm}
         handleHideAddItemForm={handleHideAddItemForm}
         showChecklistItemForm={showChecklistItemForm}
+        handleCreateChecklist={handleCreateChecklist}
       />
     )
   }
@@ -191,6 +194,10 @@ const mapDispatchToProps = dispatch => {
 
     handleHideAddItemForm: () => {
       dispatch(hideAddItemForm())
+    },
+
+    handleCreateChecklist: e => {
+      dispatch(createChecklist(e))
     },
   }
 }

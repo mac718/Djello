@@ -30,18 +30,20 @@ const Checkist = ({
       <ChecklistItemForm handleHideAddItemForm={handleHideAddItemForm} />
     )
   } else {
-    itemForm = null
+    itemForm = (
+      <button className="button is-light" onClick={handleShowAddItemForm}>
+        Add an item
+      </button>
+    )
   }
   return (
     <div className="checklist content">
       <span>15%</span>
-      <progress class="progress is-primary" value="15" max="100">
+      <progress class="progress is-primary is-small" value="15" max="100">
         15%
       </progress>
       {listItems}
-      <button className="button is-light" onClick={handleShowAddItemForm}>
-        Add an item
-      </button>
+
       {itemForm}
     </div>
   )

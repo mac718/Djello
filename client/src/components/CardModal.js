@@ -35,6 +35,7 @@ const CardModal = ({
   handleShowAddItemForm,
   handleHideAddItemForm,
   showChecklistItemForm,
+  handleCreateChecklist,
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
@@ -54,6 +55,7 @@ const CardModal = ({
   let descriptionComponent
   let titleComponent
   let membersList
+  let checklists
 
   console.log(currentList)
 
@@ -64,6 +66,20 @@ const CardModal = ({
   if (currentCard.activity) {
     cardActivity = currentCard.activity.map(action => {
       return <li key={action}>{action}</li>
+    })
+  }
+
+  if (currentCard.checklists) {
+    checklists = currentCard.checklists.map(checklist => {
+      return (
+        <Checkist
+          items={checklist.items}
+          handleShowAddItemForm={handleShowAddItemForm}
+          handleHideAddItemForm={handleHideAddItemForm}
+          showChecklistItemForm={showChecklistItemForm}
+          cardId={cardId}
+        />
+      )
     })
   }
   descriptionForm = (
@@ -141,7 +157,12 @@ const CardModal = ({
 
         <div className="modal-card-body">
           <div className="actions">
-            <button className="button is-fullwidth">Add Checklist</button>
+            <button
+              className="button is-fullwidth"
+              onClick={handleCreateChecklist}
+            >
+              Add Checklist
+            </button>
             <button className="button is-fullwidth">Add Member</button>
             <button className="button is-fullwidth">Add Attachment</button>
             <button className="button is-fullwidth">Add Cover</button>
@@ -158,13 +179,7 @@ const CardModal = ({
           <p className="is-size-4">Description</p>
           {descriptionComponent}
           <p className="is-size-4">Checklist</p>
-          <Checkist
-            items={['hello', 'goodbye', 'other thing']}
-            handleShowAddItemForm={handleShowAddItemForm}
-            handleHideAddItemForm={handleHideAddItemForm}
-            showChecklistItemForm={showChecklistItemForm}
-            cardId={cardId}
-          />
+          {checklists}
           <div className="members">
             <p className="is-size-4">Members</p>
             <div className={notificationClasses}>
