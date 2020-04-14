@@ -1,12 +1,12 @@
 import React from 'react'
 
 const ChecklistItemForm = ({
-  handleCardAttributeUpdate,
   handleCardAttributeEdit,
   handleHideAddItemForm,
+  handleAddChecklistItem,
 }) => {
   return (
-    <form className="checklist-item-form" onSubmit={handleCardAttributeUpdate}>
+    <form className="checklist-item-form" onSubmit={handleAddChecklistItem}>
       <div>
         <a
           className="hide-add-item-form delete is-medium"

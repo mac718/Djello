@@ -800,3 +800,42 @@ export function createChecklist(e) {
       })
   }
 }
+
+export function addChecklistItem(e) {
+  return (dispatch, getState) => {
+    let state = getState()
+    let currentUser = state.currentUser
+    let checklistId = e.target.parentElement.id
+    let cardId =
+      e.target.parentElement.parentElement.parentElement.parentElement.id
+    let listId =
+      e.target.parentElement.parentElement.parentElement.parentElement
+        .firstChild.id
+    let cardAttributeContent = state.cardAttributeContent
+
+    fetch('./addChecklistItem', {
+      method: 'POST',
+      body: JSON.stringify({
+        currentUser,
+        checklistId,
+        cardId,
+        listId,
+        cardAttributeContent,
+      }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then(res => {
+        return res.json()
+      })
+      .then(json => {
+        dispatch(updateActiveBoardLists(json.lists))
+        dispatch(updateCurrentUser(json.user))
+      })
+      .catch(err => {
+        console.log(err)
+        alert('hmmmm')
+      })
+  }
+}

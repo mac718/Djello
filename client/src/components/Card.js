@@ -36,6 +36,7 @@ const Card = ({
   handleHideAddItemForm,
   showChecklistItemForm,
   handleCreateChecklist,
+  handleAddChecklistItem,
 }) => {
   let classes
   if (activeCardModal === cardId) {
@@ -129,6 +130,7 @@ const Card = ({
             handleHideAddItemForm={handleHideAddItemForm}
             showChecklistItemForm={showChecklistItemForm}
             handleCreateChecklist={handleCreateChecklist}
+            handleAddChecklistItem={handleAddChecklistItem}
           />
         </div>
       )}

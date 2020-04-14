@@ -7,8 +7,11 @@ const Checkist = ({
   handleShowAddItemForm,
   handleHideAddItemForm,
   showChecklistItemForm,
+  handleCardAttributeEdit,
+  handleAddChecklistItem,
   progressValue,
   cardId,
+  checklistId,
 }) => {
   let listItems = items.map(item => {
     return (
@@ -27,7 +30,11 @@ const Checkist = ({
   let itemForm
   if (showChecklistItemForm === cardId) {
     itemForm = (
-      <ChecklistItemForm handleHideAddItemForm={handleHideAddItemForm} />
+      <ChecklistItemForm
+        handleHideAddItemForm={handleHideAddItemForm}
+        handleCardAttributeEdit={handleCardAttributeEdit}
+        handleAddChecklistItem={handleAddChecklistItem}
+      />
     )
   } else {
     itemForm = (
@@ -37,7 +44,7 @@ const Checkist = ({
     )
   }
   return (
-    <div className="checklist content">
+    <div id={checklistId} className="checklist content">
       <span>15%</span>
       <progress class="progress is-primary is-small" value="15" max="100">
         15%
