@@ -33,6 +33,12 @@ const Checkist = ({
     )
   })
 
+  let checkedItemLength = items.filter(item => {
+    return item.checked
+  }).length
+
+  console.log(checkedItemLength)
+
   let itemForm
   if (showChecklistItemForm === cardId) {
     itemForm = (
@@ -51,9 +57,13 @@ const Checkist = ({
   }
   return (
     <div id={checklistId} className="checklist content">
-      <span>15%</span>
-      <progress class="progress is-primary is-small" value="15" max="100">
-        15%
+      <span>{(checkedItemLength / items.length) * 100}%</span>
+      <progress
+        class="progress is-primary is-small"
+        value={(checkedItemLength / items.length) * 100}
+        max="100"
+      >
+        {(checkedItemLength / items.length) * 100}%
       </progress>
       {listItems}
 
