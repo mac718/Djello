@@ -9,7 +9,6 @@ const Checkist = ({
   showChecklistItemForm,
   handleCardAttributeEdit,
   handleAddChecklistItem,
-  progressValue,
   cardId,
   checklistId,
 }) => {
@@ -37,6 +36,11 @@ const Checkist = ({
     return item.checked
   }).length
 
+  let progressValue =
+    (checkedItemLength / items.length) * 100
+      ? (checkedItemLength / items.length) * 100
+      : 0
+
   console.log(checkedItemLength)
 
   let itemForm
@@ -57,13 +61,13 @@ const Checkist = ({
   }
   return (
     <div id={checklistId} className="checklist content">
-      <span>{(checkedItemLength / items.length) * 100}%</span>
+      <span>{progressValue}%</span>
       <progress
         class="progress is-primary is-small"
-        value={(checkedItemLength / items.length) * 100}
+        value={progressValue}
         max="100"
       >
-        {(checkedItemLength / items.length) * 100}%
+        {progressValue}%
       </progress>
       {listItems}
 

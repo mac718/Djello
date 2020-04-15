@@ -1183,7 +1183,9 @@ router.patch('/checkChecklistItem', (req, res, next) => {
       console.error(err)
       next(err)
     }
-    checklistItem.checked = true
+    checklistItem.checked
+      ? (checklistItem.checked = false)
+      : (checklistItem.checked = true)
     checklistItem.save((err, checklistItem) => {
       if (err) {
         console.error(err)
