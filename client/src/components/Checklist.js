@@ -44,7 +44,7 @@ const Checkist = ({
   console.log(checkedItemLength)
 
   let itemForm
-  if (showChecklistItemForm === cardId) {
+  if (showChecklistItemForm === checklistId) {
     itemForm = (
       <ChecklistItemForm
         handleHideAddItemForm={handleHideAddItemForm}

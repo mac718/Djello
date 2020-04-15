@@ -193,9 +193,8 @@ const mapDispatchToProps = dispatch => {
     },
 
     handleShowAddItemForm: e => {
-      let cardId =
-        e.target.parentElement.parentElement.parentElement.parentElement.id
-      dispatch(showAddItemForm(cardId))
+      let checklistId = e.target.parentElement.id
+      dispatch(showAddItemForm(checklistId))
     },
 
     handleHideAddItemForm: () => {
@@ -208,9 +207,6 @@ const mapDispatchToProps = dispatch => {
 
     handleAddChecklistItem: e => {
       e.preventDefault()
-      console.log(
-        e.target.parentElement.parentElement.parentElement.parentElement.id,
-      )
       dispatch(addChecklistItem(e))
       dispatch(hideAddItemForm())
     },

@@ -197,10 +197,10 @@ export function setCurrentListAndCard(listAndCard) {
   }
 }
 
-export function showAddItemForm(cardId) {
+export function showAddItemForm(checklistId) {
   return {
     type: SHOW_ADD_ITEM_FORM,
-    cardId,
+    checklistId,
   }
 }
 
