@@ -62,6 +62,47 @@ const Show = ({
             </div>
           </div>
           <div className="navbar-end">
+            <div id="board-dropdown-board-buttons-container">
+              <div class="dropdown board-dropdown is-hoverable is-right">
+                <div class="dropdown-trigger">
+                  <button
+                    class="button"
+                    aria-haspopup="true"
+                    aria-controls="dropdown-menu4"
+                  >
+                    <span>Boards</span>
+                    <span class="icon is-small">
+                      <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                  <div class="dropdown-content">
+                    <div class="dropdown-item">{dropdownItems}</div>
+                  </div>
+                </div>
+              </div>
+              <div id="add-delete-board">
+                <button
+                  // className="button is-primary is-light is-large is-outlined create-board-button"
+                  className="button is-primary is-light create-board-button"
+                  onClick={handleCreateBoard}
+                >
+                  <span className="icon is-small">
+                    <i className="fas fa-plus"></i>
+                  </span>
+                </button>
+                <button
+                  className="button is-danger is-light delete-board-button"
+                  onClick={handleDeleteBoard}
+                >
+                  <span className="icon is-small">
+                    <i className="fas fa-minus-circle"></i>
+                  </span>
+                  {/* <span>Delete Current Board</span> */}
+                </button>
+              </div>
+            </div>
             <div className="navbar-item">
               <div className="logout">
                 <a
@@ -75,35 +116,7 @@ const Show = ({
           </div>
         </nav>
       </div>
-      <div id="board-dropdown-board-buttons-container">
-        <nav
-          className="navbar board-dropdown has-background-white-bis"
-          role="navigation"
-          aria-label="dropdown navigation"
-        >
-          <div className="navbar-item has-dropdown is-hoverable boards-dropdown">
-            <a className="navbar-link is-size-5">Your Boards</a>
-            <div className="navbar-dropdown is-right">{dropdownItems}</div>
-          </div>
-        </nav>
-        <div id="add-delete-board">
-          <button
-            className="button is-primary is-light is-large is-outlined create-board-button"
-            onClick={handleCreateBoard}
-          >
-            + Create New Board
-          </button>
-          <button
-            className="button is-danger is-light is-small is-outlined delete-board-button"
-            onClick={handleDeleteBoard}
-          >
-            <span className="icon is-small">
-              <i className="fas fa-minus-circle"></i>
-            </span>
-            <span>Delete Current Board</span>
-          </button>
-        </div>
-      </div>
+
       <div className="current-board">{activeBoard}</div>
     </div>
   )

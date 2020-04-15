@@ -839,3 +839,43 @@ export function addChecklistItem(e) {
       })
   }
 }
+
+export function checkChecklistItem(e) {
+  return (dispatch, getState) => {
+    let state = getState()
+    let currentUser = state.currentUser
+    let checklistItemId = e.target.parentElement.id
+    let checklistId = e.target.parentElement.parentElement.id
+    let cardId =
+      e.target.parentElement.parentElement.parentElement.parentElement
+        .parentElement.id
+    let listId =
+      e.target.parentElement.parentElement.parentElement.parentElement
+        .parentElement.firstChild.id
+
+    fetch('/checkChecklistItem', {
+      method: 'PATCH',
+      body: JSON.stringify({
+        currentUser,
+        checklistItemId,
+        checklistId,
+        cardId,
+        listId,
+      }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then(res => {
+        return res.json()
+      })
+      .then(json => {
+        dispatch(updateActiveBoardLists(json.lists))
+        dispatch(updateCurrentUser(json.user))
+      })
+      .catch(err => {
+        console.log(err)
+        alert('hmmmm')
+      })
+  }
+}

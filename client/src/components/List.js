@@ -68,8 +68,8 @@ const List = ({
           ref={provided.innerRef}
           className={
             snapshot.isDraggingOver
-              ? 'list tile is-2 is-vertical is-parent notification is-dragging-over'
-              : 'list tile is-2 is-vertical is-parent notification'
+              ? 'list tile is-2 is-vertical is-parent notification is-light is-dragging-over'
+              : 'list tile is-2 is-vertical is-parent notification is-light'
           }
         >
           <a className="delete-list delete is-medium" onClick={deleteList}></a>

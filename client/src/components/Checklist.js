@@ -3,7 +3,7 @@ import ChecklistItemForm from './ChecklistItemForm'
 
 const Checkist = ({
   items,
-  handleToggleCheck,
+  handleCheckItem,
   handleShowAddItemForm,
   handleHideAddItemForm,
   showChecklistItemForm,
@@ -14,15 +14,21 @@ const Checkist = ({
   checklistId,
 }) => {
   let listItems = items.map(item => {
+    let labelClasses = item.checked
+      ? 'checklist-item-label checked'
+      : 'checklist-item-label'
     return (
-      <div>
+      <div className="checklistItem" id={item._id}>
         <input
           type="checkbox"
-          value={item}
-          name={item}
-          onClick={handleToggleCheck}
+          value={item.content}
+          name={item.content}
+          onClick={handleCheckItem}
         />
-        <label for={item}> {item}</label>
+        <label className={labelClasses} for={item.content}>
+          {' '}
+          {item.content}
+        </label>
       </div>
     )
   })

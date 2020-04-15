@@ -37,6 +37,7 @@ const CardModal = ({
   showChecklistItemForm,
   handleCreateChecklist,
   handleAddChecklistItem,
+  handleCheckItem,
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
@@ -82,6 +83,7 @@ const CardModal = ({
           handleAddChecklistItem={handleAddChecklistItem}
           cardId={cardId}
           checklistId={checklist._id}
+          handleCheckItem={handleCheckItem}
         />
       )
     })

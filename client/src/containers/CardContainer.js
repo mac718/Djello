@@ -19,6 +19,7 @@ import {
   hideAddItemForm,
   createChecklist,
   addChecklistItem,
+  checkChecklistItem,
 } from '../actions'
 
 class CardContainer extends Component {
@@ -56,6 +57,7 @@ class CardContainer extends Component {
       showChecklistItemForm,
       handleCreateChecklist,
       handleAddChecklistItem,
+      handleCheckItem,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -94,6 +96,7 @@ class CardContainer extends Component {
         showChecklistItemForm={showChecklistItemForm}
         handleCreateChecklist={handleCreateChecklist}
         handleAddChecklistItem={handleAddChecklistItem}
+        handleCheckItem={handleCheckItem}
       />
     )
   }
@@ -209,6 +212,12 @@ const mapDispatchToProps = dispatch => {
         e.target.parentElement.parentElement.parentElement.parentElement.id,
       )
       dispatch(addChecklistItem(e))
+      dispatch(hideAddItemForm())
+    },
+
+    handleCheckItem: e => {
+      console.log(e.target.parentElement.id)
+      dispatch(checkChecklistItem(e))
     },
   }
 }

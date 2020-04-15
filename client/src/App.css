@@ -29,6 +29,10 @@
   bottom: 0;
 }
 
+.container.is-fluid {
+  padding: 0;
+}
+
 #Home {
   text-align: center;
 }
@@ -45,7 +49,7 @@
   flex-wrap: wrap;
 
   position: relative;
-  width: 90%;
+  width: 100%;
 }
 
 .current-board {
@@ -139,9 +143,9 @@
   margin-bottom: 20px;
 }
 
-.delete-board-button {
-  width: 66%;
-  margin: 10px auto;
+.delete-board-button,
+.create-board-button {
+  margin-left: 10px;
 }
 
 .add-member-button {
@@ -168,18 +172,20 @@
 
 #add-delete-board {
   display: flex;
-  flex-direction: column;
+  /*flex-direction: column;
   float: right;
   position: relative;
   z-index: 20;
-  margin-top: 20px;
+  margin-top: 20px;*/
+  align-items: center;
 }
 
 #board-dropdown-board-buttons-container {
   display: flex;
-  flex-direction: column;
+  /*flex-direction: column;*/
   float: right;
-  margin-top: 20px;
+  /*margin-top: 20px;*/
+  align-items: center;
 }
 
 .show {
@@ -197,6 +203,7 @@
 
 .modal-card {
   width: 40%;
+  height: 85%;
 }
 
 .actions {
@@ -213,4 +220,8 @@
 .checklist,
 .checklist-item-form {
   width: 78%;
+}
+
+.checked {
+  text-decoration: line-through;
 }
