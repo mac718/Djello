@@ -1176,16 +1176,32 @@ router.post('/addChecklistItem', (req, res, next) => {
 })
 
 router.patch('/checkChecklistItem', (req, res, next) => {
-  let { currentUser, checklistItemId, checklistId, cardId, listId } = req.body
+  let {
+    currentUser,
+    checklistItemId,
+    checklistId,
+    cardId,
+    listId,
+    attributeType,
+    cardAttributeContent,
+  } = req.body
 
   ChecklistItem.findById(checklistItemId, (err, checklistItem) => {
     if (err) {
       console.error(err)
       next(err)
     }
-    checklistItem.checked
-      ? (checklistItem.checked = false)
-      : (checklistItem.checked = true)
+
+    if (attributeType === 'checklist-item') {
+      checklistItem.checked
+        ? (checklistItem.checked = false)
+        : (checklistItem.checked = true)
+    } else if (attributeType === 'title') {
+      checklist.title = cardAttributeContent
+    }
+
+    console.log(JSON.stringify(attributeType))
+
     checklistItem.save((err, checklistItem) => {
       if (err) {
         console.error(err)
