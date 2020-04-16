@@ -38,6 +38,9 @@ const Card = ({
   handleCreateChecklist,
   handleAddChecklistItem,
   handleCheckItem,
+  handleDisplayChecklistTitleForm,
+  handleHideChecklistTitleForm,
+  showChecklistTitleForm,
 }) => {
   let classes
   if (activeCardModal === cardId) {
@@ -73,8 +76,6 @@ const Card = ({
       )
     })
   }
-
-  let cardClasses = console.log('index ' + index)
 
   return (
     <Draggable draggableId={cardId} index={index}>
@@ -133,6 +134,9 @@ const Card = ({
             handleCreateChecklist={handleCreateChecklist}
             handleAddChecklistItem={handleAddChecklistItem}
             handleCheckItem={handleCheckItem}
+            handleDisplayChecklistTitleForm={handleDisplayChecklistTitleForm}
+            handleHideChecklistTitleForm={handleHideChecklistTitleForm}
+            showChecklistTitleForm={showChecklistTitleForm}
           />
         </div>
       )}

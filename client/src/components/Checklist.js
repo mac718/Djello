@@ -1,5 +1,9 @@
 import React from 'react'
 import ChecklistItemForm from './ChecklistItemForm'
+import ChecklistTitleForm from './ChecklistTitleForm'
+import CheclistTitleDisplay from './ChecklistTitleDisplay'
+//import { showChecklistTitleForm } from '../actions'
+import ChecklistTitleDisplay from './ChecklistTitleDisplay'
 
 const Checkist = ({
   items,
@@ -9,8 +13,12 @@ const Checkist = ({
   showChecklistItemForm,
   handleCardAttributeEdit,
   handleAddChecklistItem,
+  handleDisplayChecklistTitleForm,
+  handleHideChecklistTitleForm,
   cardId,
   checklistId,
+  title,
+  showChecklistTitleForm,
 }) => {
   let listItems = items.map(item => {
     let labelClasses = item.checked
@@ -59,8 +67,28 @@ const Checkist = ({
       </button>
     )
   }
+  let checklistTitleComponent
+
+  if (showChecklistTitleForm === checklistId) {
+    checklistTitleComponent = (
+      <ChecklistTitleForm
+        title={title}
+        handleCardAttributeEdit={handleCardAttributeEdit}
+        handleHideChecklistTitleForm={handleHideChecklistTitleForm}
+      />
+    )
+  } else {
+    checklistTitleComponent = (
+      <ChecklistTitleDisplay
+        title={title}
+        handleDisplayChecklistTitleForm={handleDisplayChecklistTitleForm}
+        showChecklistTitleForm={showChecklistTitleForm}
+      />
+    )
+  }
   return (
     <div id={checklistId} className="checklist content">
+      {checklistTitleComponent}
       <span>{progressValue}%</span>
       <progress
         class="progress is-primary is-small"

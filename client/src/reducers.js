@@ -25,6 +25,7 @@ const initialState = {
   currentCard: {},
   progressValue: 0,
   showChecklistItemForm: false,
+  showChecklistTitleForm: false,
 }
 
 export function djello(state = initialState, action) {
@@ -177,6 +178,17 @@ export function djello(state = initialState, action) {
         attributeType: 'checklist-item',
       }
     case Actions.HIDE_ADD_ITEM_FORM:
+      return {
+        ...state,
+        showChecklistItemForm: false,
+      }
+    case Actions.DISPLAY_CHECKLIST_TITLE_FORM:
+      return {
+        ...state,
+        showChecklistTitleForm: action.checklistId,
+        attributeType: 'title',
+      }
+    case Actions.HIDE_CHECKLIST_TITLE_FORM:
       return {
         ...state,
         showChecklistItemForm: false,

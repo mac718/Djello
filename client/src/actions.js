@@ -32,6 +32,8 @@ export const UPDATE_ACTIVE_BOARD_LISTS = 'UPDATE_ACTIVE_BOARD_LISTS'
 export const SET_CURRENT_LIST_AND_CARD = 'SET_CURRENT_LIST_AND_CARD'
 export const SHOW_ADD_ITEM_FORM = 'SHOW_ADD_ITEM_FORM'
 export const HIDE_ADD_ITEM_FORM = 'HIDE_ADD_ITEM_FORM'
+export const DISPLAY_CHECKLIST_TITLE_FORM = 'DISPLAY_CHECKLIST_TITLE_FORM'
+export const HIDE_CHECKLIST_TITLE_FORM = 'HIDE_CHECKLIST_TITLE_FORM'
 
 export function getDataRequest() {
   return {
@@ -207,6 +209,19 @@ export function showAddItemForm(checklistId) {
 export function hideAddItemForm() {
   return {
     type: HIDE_ADD_ITEM_FORM,
+  }
+}
+
+export function displayChecklistTitleForm(checklistId) {
+  return {
+    type: DISPLAY_CHECKLIST_TITLE_FORM,
+    checklistId,
+  }
+}
+
+export function HideChecklistTitleForm() {
+  return {
+    type: HIDE_CHECKLIST_TITLE_FORM,
   }
 }
 
@@ -852,6 +867,8 @@ export function checkChecklistItem(e) {
     let listId =
       e.target.parentElement.parentElement.parentElement.parentElement
         .parentElement.firstChild.id
+    let attributeType = state.attributeType
+    let cardAttributeContent = state.cardAttributeContent
 
     fetch('/checkChecklistItem', {
       method: 'PATCH',
@@ -861,6 +878,8 @@ export function checkChecklistItem(e) {
         checklistId,
         cardId,
         listId,
+        attributeType,
+        cardAttributeContent,
       }),
       headers: {
         'Content-type': 'application/json',
@@ -877,5 +896,19 @@ export function checkChecklistItem(e) {
         console.log(err)
         alert('hmmmm')
       })
+  }
+}
+
+export function updateChecklistTitle(e) {
+  return (dispatch, getState) => {
+    let state = getState()
+    let checklistId = e.parentElement.id
+    let currentUser = state.currentUser
+    let title = state.cardAttributeContent
+
+    fetch('/updateChecklistTitle', {
+      method: 'PATCH',
+      body: JSON.stringify({ checklistId, currentUser, title }),
+    })
   }
 }

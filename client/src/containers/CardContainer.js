@@ -20,6 +20,8 @@ import {
   createChecklist,
   addChecklistItem,
   checkChecklistItem,
+  HideChecklistTitleForm,
+  displayChecklistTitleForm,
 } from '../actions'
 
 class CardContainer extends Component {
@@ -58,6 +60,9 @@ class CardContainer extends Component {
       handleCreateChecklist,
       handleAddChecklistItem,
       handleCheckItem,
+      handleDisplayChecklistTitleForm,
+      handleHideChecklistTitleForm,
+      showChecklistTitleForm,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -97,6 +102,9 @@ class CardContainer extends Component {
         handleCreateChecklist={handleCreateChecklist}
         handleAddChecklistItem={handleAddChecklistItem}
         handleCheckItem={handleCheckItem}
+        handleDisplayChecklistTitleForm={handleDisplayChecklistTitleForm}
+        handleHideChecklistTitleForm={handleHideChecklistTitleForm}
+        showChecklistTitleForm={showChecklistTitleForm}
       />
     )
   }
@@ -124,6 +132,7 @@ const mapStateToProps = (state, ownProps) => {
       return JSON.stringify(boardList._id) === JSON.stringify(ownProps.listId)
     })[0]),
     showChecklistItemForm: state.showChecklistItemForm,
+    showChecklistTitleForm: state.showChecklistTitleForm,
     // currentCard: currentList.cards.filter(listCard => {
     //   return JSON.stringify(listCard._id) === JSON.stringify(ownProps.cardId)
     // })[0],
@@ -214,6 +223,16 @@ const mapDispatchToProps = dispatch => {
     handleCheckItem: e => {
       console.log(e.target.parentElement.id)
       dispatch(checkChecklistItem(e))
+    },
+
+    handleDisplayChecklistTitleForm: e => {
+      console.log(e.target.parentElement.id)
+      let checklistId = e.target.parentElement.id
+      dispatch(displayChecklistTitleForm(checklistId))
+    },
+
+    handleHideChecklistTitleForm: () => {
+      dispatch(HideChecklistTitleForm())
     },
   }
 }

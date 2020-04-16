@@ -38,6 +38,9 @@ const CardModal = ({
   handleCreateChecklist,
   handleAddChecklistItem,
   handleCheckItem,
+  handleDisplayChecklistTitleForm,
+  handleHideChecklistTitleForm,
+  showChecklistTitleForm,
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
@@ -81,9 +84,13 @@ const CardModal = ({
           showChecklistItemForm={showChecklistItemForm}
           handleCardAttributeEdit={handleCardAttributeEdit}
           handleAddChecklistItem={handleAddChecklistItem}
+          handleDisplayChecklistTitleForm={handleDisplayChecklistTitleForm}
+          handleHideChecklistTitleForm={handleHideChecklistTitleForm}
           cardId={cardId}
           checklistId={checklist._id}
           handleCheckItem={handleCheckItem}
+          title={checklist.title}
+          showChecklistTitleForm={showChecklistTitleForm}
         />
       )
     })
@@ -143,8 +150,11 @@ const CardModal = ({
     ? 'notification is-danger is-light'
     : 'notification is-danger is-light hidden'
 
-  console.log('notification classes ' + notificationClasses)
-  console.log(titleComponent)
+  let checklistsHeading
+  checklistsHeading =
+    currentCard.checklists.length > 0 ? (
+      <p className="is-size-4">Checklists</p>
+    ) : null
 
   return (
     <div id={cardId} className={classes}>
@@ -184,7 +194,7 @@ const CardModal = ({
           </button>
           <p className="is-size-4">Description</p>
           {descriptionComponent}
-          <p className="is-size-4">Checklist</p>
+          {checklistsHeading}
           {checklists}
           <div className="members">
             <p className="is-size-4">Members</p>
