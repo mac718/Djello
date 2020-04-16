@@ -5,7 +5,7 @@ import CheclistTitleDisplay from './ChecklistTitleDisplay'
 //import { showChecklistTitleForm } from '../actions'
 import ChecklistTitleDisplay from './ChecklistTitleDisplay'
 
-const Checkist = ({
+const Checklist = ({
   items,
   handleCheckItem,
   handleShowAddItemForm,
@@ -19,6 +19,7 @@ const Checkist = ({
   checklistId,
   title,
   showChecklistTitleForm,
+  handleUpdateChecklistTitle,
 }) => {
   let listItems = items.map(item => {
     let labelClasses = item.checked
@@ -75,6 +76,7 @@ const Checkist = ({
         title={title}
         handleCardAttributeEdit={handleCardAttributeEdit}
         handleHideChecklistTitleForm={handleHideChecklistTitleForm}
+        handleUpdateChecklistTitle={handleUpdateChecklistTitle}
       />
     )
   } else {
@@ -104,4 +106,4 @@ const Checkist = ({
   )
 }
 
-export default Checkist
+export default Checklist

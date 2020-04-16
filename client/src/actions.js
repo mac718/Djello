@@ -902,13 +902,32 @@ export function checkChecklistItem(e) {
 export function updateChecklistTitle(e) {
   return (dispatch, getState) => {
     let state = getState()
-    let checklistId = e.parentElement.id
     let currentUser = state.currentUser
+    let checklistId = e.target.parentElement.id
+    let cardId =
+      e.target.parentElement.parentElement.parentElement.parentElement.id
+    let listId =
+      e.target.parentElement.parentElement.parentElement.parentElement
+        .firstChild.id
     let title = state.cardAttributeContent
 
     fetch('/updateChecklistTitle', {
       method: 'PATCH',
-      body: JSON.stringify({ checklistId, currentUser, title }),
+      body: JSON.stringify({ checklistId, currentUser, title, cardId, listId }),
+      headers: {
+        'Content-type': 'application/json',
+      },
     })
+      .then(res => {
+        return res.json()
+      })
+      .then(json => {
+        dispatch(updateActiveBoardLists(json.lists))
+        dispatch(updateCurrentUser(json.user))
+      })
+      .catch(err => {
+        console.log(err)
+        alert('hmmmm')
+      })
   }
 }

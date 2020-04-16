@@ -22,6 +22,7 @@ import {
   checkChecklistItem,
   HideChecklistTitleForm,
   displayChecklistTitleForm,
+  updateChecklistTitle,
 } from '../actions'
 
 class CardContainer extends Component {
@@ -63,6 +64,7 @@ class CardContainer extends Component {
       handleDisplayChecklistTitleForm,
       handleHideChecklistTitleForm,
       showChecklistTitleForm,
+      handleUpdateChecklistTitle,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -105,6 +107,7 @@ class CardContainer extends Component {
         handleDisplayChecklistTitleForm={handleDisplayChecklistTitleForm}
         handleHideChecklistTitleForm={handleHideChecklistTitleForm}
         showChecklistTitleForm={showChecklistTitleForm}
+        handleUpdateChecklistTitle={handleUpdateChecklistTitle}
       />
     )
   }
@@ -231,8 +234,15 @@ const mapDispatchToProps = dispatch => {
       dispatch(displayChecklistTitleForm(checklistId))
     },
 
-    handleHideChecklistTitleForm: () => {
+    handleHideChecklistTitleForm: e => {
+      e.preventDefault()
       dispatch(HideChecklistTitleForm())
+    },
+
+    handleUpdateChecklistTitle: e => {
+      e.preventDefault()
+      dispatch(HideChecklistTitleForm())
+      dispatch(updateChecklistTitle(e))
     },
   }
 }

@@ -191,7 +191,7 @@ export function djello(state = initialState, action) {
     case Actions.HIDE_CHECKLIST_TITLE_FORM:
       return {
         ...state,
-        showChecklistItemForm: false,
+        showChecklistTitleForm: false,
       }
     default:
       return state

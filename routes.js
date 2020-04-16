@@ -1192,13 +1192,9 @@ router.patch('/checkChecklistItem', (req, res, next) => {
       next(err)
     }
 
-    if (attributeType === 'checklist-item') {
-      checklistItem.checked
-        ? (checklistItem.checked = false)
-        : (checklistItem.checked = true)
-    } else if (attributeType === 'title') {
-      checklist.title = cardAttributeContent
-    }
+    checklistItem.checked
+      ? (checklistItem.checked = false)
+      : (checklistItem.checked = true)
 
     console.log(JSON.stringify(attributeType))
 
@@ -1306,6 +1302,114 @@ router.patch('/checkChecklistItem', (req, res, next) => {
                           return res.json(userAndLists)
                         })
                       })
+                    })
+                  })
+                })
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+})
+
+router.patch('/updateChecklistTitle', (req, res, next) => {
+  let { title, currentUser, checklistId, cardId, listId } = req.body
+
+  Checklist.findById(checklistId, (err, checklist) => {
+    if (err) {
+      console.error(err)
+      next(err)
+    }
+    checklist.title = title
+    let modifiedChecklistIndex
+    checklist.items.forEach((item, index) => {
+      if (JSON.stringify(checklistItem._id) === JSON.stringify(item._id)) {
+        modifiedChecklistIndex = index
+      }
+    })
+    checklist.save((err, checklist) => {
+      if (err) {
+        console.error(err)
+        next(err)
+      }
+      Card.findById(cardId, (err, card) => {
+        if (err) {
+          console.error(err)
+          next(err)
+        }
+        let modifiedChecklistIndex
+        card.checklists.forEach((cardChecklist, index) => {
+          if (
+            JSON.stringify(checklist._id) === JSON.stringify(cardChecklist._id)
+          ) {
+            modifiedChecklistIndex = index
+          }
+        })
+        card.checklists.splice(modifiedChecklistIndex, 1, checklist)
+        card.save((err, card) => {
+          if (err) {
+            console.error(err)
+            next(err)
+          }
+          List.findById(listId, (err, list) => {
+            if (err) {
+              console.error(err)
+              next(err)
+            }
+            let modifiedCardIndex
+            list.cards.forEach((listCard, index) => {
+              if (JSON.stringify(card._id) === JSON.stringify(listCard._id)) {
+                modifiedCardIndex = index
+              }
+            })
+            list.cards.splice(modifiedCardIndex, 1, card)
+            list.save((err, list) => {
+              if (err) {
+                console.error(err)
+                next(err)
+              }
+              Board.findById(currentUser.activeBoard, (err, board) => {
+                if (err) {
+                  console.error(err)
+                  next(err)
+                }
+                let modifiedListIndex
+                board.lists.forEach((boardList, index) => {
+                  if (
+                    JSON.stringify(list._id) === JSON.stringify(boardList._id)
+                  ) {
+                    modifiedListIndex = index
+                  }
+                })
+                board.lists.splice(modifiedListIndex, 1, list)
+                board.save((err, board) => {
+                  if (err) {
+                    console.error(err)
+                    next(err)
+                  }
+                  User.findById(currentUser._id, (err, user) => {
+                    if (err) {
+                      console.error(err)
+                      next(err)
+                    }
+                    let modifiedBoardIndex
+                    user.boards.forEach((userBoard, index) => {
+                      if (
+                        JSON.stringify(board._id) ===
+                        JSON.stringify(userBoard._id)
+                      ) {
+                        modifiedBoardIndex = index
+                      }
+                    })
+                    user.save((err, user) => {
+                      if (err) {
+                        console.error(err)
+                        next(err)
+                      }
+                      let userAndLists = { user: user, lists: board.lists }
+                      return res.json(userAndLists)
                     })
                   })
                 })

@@ -225,3 +225,12 @@
 .checked {
   text-decoration: line-through;
 }
+
+.checklist-title-display {
+  display: flex;
+  justify-content: space-between;
+}
+
+.delete-checklist {
+  float: right;
+}

@@ -4,7 +4,7 @@ import CardDescriptionDisplay from './CardDescriptionDisplay'
 import CardTitleForm from './CardTitleForm'
 import CardTitleDisplay from './CardTitleDisplay'
 import MemberSelectionDropdown from './MemberSelectionDropdown'
-import Checkist from './Checklist'
+import Checklist from './Checklist'
 
 const CardModal = ({
   currentUser,
@@ -41,6 +41,7 @@ const CardModal = ({
   handleDisplayChecklistTitleForm,
   handleHideChecklistTitleForm,
   showChecklistTitleForm,
+  handleUpdateChecklistTitle,
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
@@ -77,7 +78,7 @@ const CardModal = ({
   if (currentCard.checklists) {
     checklists = currentCard.checklists.map(checklist => {
       return (
-        <Checkist
+        <Checklist
           items={checklist.items}
           handleShowAddItemForm={handleShowAddItemForm}
           handleHideAddItemForm={handleHideAddItemForm}
@@ -91,6 +92,8 @@ const CardModal = ({
           handleCheckItem={handleCheckItem}
           title={checklist.title}
           showChecklistTitleForm={showChecklistTitleForm}
+          handleCheckItem={handleCheckItem}
+          handleUpdateChecklistTitle={handleUpdateChecklistTitle}
         />
       )
     })

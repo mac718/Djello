@@ -3,14 +3,14 @@ import React from 'react'
 const ChecklistTitleForm = ({
   title,
   handleCardAttributeEdit,
-  handleChecklistTitleUpdate,
   handleHideChecklistTitleForm,
+  handleUpdateChecklistTitle,
   checklistId,
   listId,
   cardId,
 }) => {
   return (
-    <form onSubmit={handleChecklistTitleUpdate}>
+    <form onSubmit={handleUpdateChecklistTitle}>
       <input
         className="input"
         type="text"
