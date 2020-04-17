@@ -10,7 +10,7 @@ const ChecklistTitleDisplay = ({
       className="checklist-title-display"
       onClick={handleDisplayChecklistTitleForm}
     >
-      {title}
+      <p className="checklist-title">{title}</p>
       <div className="delete-checklist">
         <button
           className="button is-small is-danger is-light"
