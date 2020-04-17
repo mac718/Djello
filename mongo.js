@@ -7,6 +7,6 @@ module.exports = () => {
   var localUrl = `mongodb://${config.host}/${config.database}`
   var mongoUrl = envUrl ? envUrl : localUrl
   return mongoose
-    .connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+    .connect(mongoUrl, { useNewUrlParser: true })
     .catch(err => console.log(err))
 }
