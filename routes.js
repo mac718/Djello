@@ -832,6 +832,7 @@ router.post('/updateListAfterDnd', (req, res, next) => {
         console.error(err)
         next(err)
       }
+
       List.findById(source.droppableId, (err, list) => {
         if (err) {
           console.error(err)
@@ -983,6 +984,11 @@ router.post('/createChecklist', (req, res, next) => {
         next(err)
       }
       card.checklists = [...card.checklists, checklist]
+      let date = new Date()
+      card.activity = [
+        ...card.activity,
+        `${currentUser.username} created a checklist at ${date.toString()}`,
+      ]
       console.log(JSON.stringify(card.checklists))
       card.save((err, card) => {
         if (err) {
@@ -1100,6 +1106,13 @@ router.post('/addChecklistItem', (req, res, next) => {
             }
           })
           card.checklists.splice(modifiedChecklistIndex, 1, checklist)
+          let date = new Date()
+          card.activity = [
+            ...card.activity,
+            `${currentUser.username} added a new item to ${
+              checklist.title
+            } at ${date.toString()}`,
+          ]
           card.save((err, card) => {
             if (err) {
               console.error(err)
@@ -1235,6 +1248,13 @@ router.patch('/checkChecklistItem', (req, res, next) => {
               }
             })
             card.checklists.splice(modifiedChecklistIndex, 1, checklist)
+            let date = new Date()
+            card.activity = [
+              ...card.activity,
+              `${currentUser.username} checked an item in ${
+                checklist.title
+              } on ${date.toString()}`,
+            ]
             card.save((err, card) => {
               if (err) {
                 console.error(err)
@@ -1365,6 +1385,13 @@ router.patch('/updateChecklistTitle', (req, res, next) => {
               }
             })
             list.cards.splice(modifiedCardIndex, 1, card)
+            let date = new Date()
+            card.activity = [
+              ...card.activity,
+              `${currentUser.username} changed the title of ${
+                checklist.title
+              } on ${date.toString()}`,
+            ]
             list.save((err, list) => {
               if (err) {
                 console.error(err)
@@ -1449,6 +1476,13 @@ router.delete('/deleteChecklist', (req, res, next) => {
           }
         })
         card.checklists.splice(modifiedChecklistIndex, 1)
+        let date = new Date()
+        card.activity = [
+          ...card.activity,
+          `${currentUser.username} deleted ${
+            checklist.title
+          } on ${date.toString()}`,
+        ]
         card.save((err, card) => {
           if (err) {
             console.error(err)
