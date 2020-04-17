@@ -1,11 +1,10 @@
 import React from 'react'
-import List from './List'
 import ListContainer from '../containers/ListContainer'
 import { DragDropContext } from 'react-beautiful-dnd'
 
 const Board = ({
   handleClick,
-  //name,
+  name,
   lists,
   handleBoardNameChange,
   currentUser,
@@ -13,7 +12,6 @@ const Board = ({
   handleHideBoardNameDisplay,
   handleOnDragEnd,
 }) => {
-  console.log('list lists ' + JSON.stringify(lists))
   let boardLists
   if (lists) {
     boardLists = lists.map(list => {
@@ -31,6 +29,10 @@ const Board = ({
     ? 'board-name-display'
     : 'board-name-display hidden'
 
+  let boardNameInputClasses = showBoardNameDisplay
+    ? 'input is-large has-text-dark has-background-white-bis hidden'
+    : 'input is-large has-text-dark has-background-white-bis'
+
   console.log('active board ' + JSON.stringify(activeBoard[0].name))
   return (
     <div className="board">
@@ -38,14 +40,19 @@ const Board = ({
         <div>
           <input
             id="board-name"
-            className="input is-large has-text-dark has-background-white-bis"
+            className={boardNameInputClasses}
             type="text"
             onBlur={handleBoardNameChange}
-            onFocus={handleHideBoardNameDisplay}
+            defaultValue={activeBoard[0].name}
             placeholder={showBoardNameDisplay ? 'Enter Board Name...' : ''}
           />
         </div>
-        <div className={boardNameDisplayClasses}>{activeBoard[0].name}</div>
+        <div
+          className={boardNameDisplayClasses}
+          onClick={handleHideBoardNameDisplay}
+        >
+          {activeBoard[0].name ? activeBoard[0].name : 'Enter Name...'}
+        </div>
       </div>
       <DragDropContext onDragEnd={handleOnDragEnd}>
         {boardLists}

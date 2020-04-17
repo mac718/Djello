@@ -86,6 +86,7 @@ const Show = ({
                 <button
                   // className="button is-primary is-light is-large is-outlined create-board-button"
                   className="button is-primary is-light create-board-button"
+                  title="create new board"
                   onClick={handleCreateBoard}
                 >
                   <span className="icon is-small">
@@ -94,6 +95,7 @@ const Show = ({
                 </button>
                 <button
                   className="button is-danger is-light delete-board-button"
+                  title="delete current board"
                   onClick={handleDeleteBoard}
                 >
                   <span className="icon is-small">
