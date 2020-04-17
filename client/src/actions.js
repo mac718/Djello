@@ -931,3 +931,36 @@ export function updateChecklistTitle(e) {
       })
   }
 }
+
+export function deleteChecklist(e) {
+  return (dispatch, getState) => {
+    let state = getState()
+    let currentUser = state.currentUser
+    let checklistId = e.target.parentElement.parentElement.parentElement.id
+    let cardId =
+      e.target.parentElement.parentElement.parentElement.parentElement
+        .parentElement.parentElement.id
+    let listId =
+      e.target.parentElement.parentElement.parentElement.parentElement
+        .parentElement.parentElement.firstChild.id
+
+    fetch('/deleteChecklist', {
+      method: 'DELETE',
+      body: JSON.stringify({ checklistId, currentUser, cardId, listId }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then(res => {
+        return res.json()
+      })
+      .then(json => {
+        dispatch(updateActiveBoardLists(json.lists))
+        dispatch(updateCurrentUser(json.user))
+      })
+      .catch(err => {
+        console.log(err)
+        alert('hmmmm')
+      })
+  }
+}

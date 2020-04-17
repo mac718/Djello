@@ -20,6 +20,7 @@ const Checklist = ({
   title,
   showChecklistTitleForm,
   handleUpdateChecklistTitle,
+  handleDeleteChecklist,
 }) => {
   let listItems = items.map(item => {
     let labelClasses = item.checked
@@ -85,6 +86,7 @@ const Checklist = ({
         title={title}
         handleDisplayChecklistTitleForm={handleDisplayChecklistTitleForm}
         showChecklistTitleForm={showChecklistTitleForm}
+        handleDeleteChecklist={handleDeleteChecklist}
       />
     )
   }

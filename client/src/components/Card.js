@@ -42,6 +42,7 @@ const Card = ({
   handleHideChecklistTitleForm,
   showChecklistTitleForm,
   handleUpdateChecklistTitle,
+  handleDeleteChecklist,
 }) => {
   let classes
   if (activeCardModal === cardId) {
@@ -139,6 +140,7 @@ const Card = ({
             handleHideChecklistTitleForm={handleHideChecklistTitleForm}
             showChecklistTitleForm={showChecklistTitleForm}
             handleUpdateChecklistTitle={handleUpdateChecklistTitle}
+            handleDeleteChecklist={handleDeleteChecklist}
           />
         </div>
       )}

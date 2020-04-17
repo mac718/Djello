@@ -1,6 +1,10 @@
 import React from 'react'
 
-const ChecklistTitleDisplay = ({ title, handleDisplayChecklistTitleForm }) => {
+const ChecklistTitleDisplay = ({
+  title,
+  handleDisplayChecklistTitleForm,
+  handleDeleteChecklist,
+}) => {
   return (
     <div
       className="checklist-title-display"
@@ -8,7 +12,12 @@ const ChecklistTitleDisplay = ({ title, handleDisplayChecklistTitleForm }) => {
     >
       {title}
       <div className="delete-checklist">
-        <button className="button">delete</button>
+        <button
+          className="button is-small is-danger is-light"
+          onClick={handleDeleteChecklist}
+        >
+          delete
+        </button>
       </div>
     </div>
   )
