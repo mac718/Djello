@@ -8,6 +8,7 @@ const List = require('./models/list')
 const Card = require('./models/card')
 const Checklist = require('./models/checklist')
 const ChecklistItem = require('./models/checklistItem')
+var path = require('path')
 
 router.get('/checkForCurrentUser', withAuth, (req, res) => {
   res.status(200).send()
