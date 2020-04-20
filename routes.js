@@ -1555,7 +1555,7 @@ router.delete('/deleteChecklist', (req, res, next) => {
 })
 
 router.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname, './client/public/index.html'), function(
+  res.sendFile(path.join(__dirname, './client/build/index.html'), function(
     err,
   ) {
     if (err) {
