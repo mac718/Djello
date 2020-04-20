@@ -51,7 +51,7 @@ const Board = ({
           className={boardNameDisplayClasses}
           onClick={handleHideBoardNameDisplay}
         >
-          {activeBoard[0].name ? activeBoard[0].name : 'Enter Name...'}
+          {activeBoard[0].name ? activeBoard[0].name : 'Enter Board Name...'}
         </div>
       </div>
       <DragDropContext onDragEnd={handleOnDragEnd}>
