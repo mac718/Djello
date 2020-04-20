@@ -230,7 +230,15 @@ const mapDispatchToProps = dispatch => {
     },
 
     handleCreateChecklist: e => {
-      dispatch(createChecklist(e))
+      console.log(
+        e.target.parentElement.parentElement.parentElement.parentElement.id,
+      )
+      let cardId =
+        e.target.parentElement.parentElement.parentElement.parentElement.id
+      let listId =
+        e.target.parentElement.parentElement.parentElement.parentElement
+          .firstChild.id
+      dispatch(createChecklist(e, listId, cardId))
     },
 
     handleAddChecklistItem: e => {

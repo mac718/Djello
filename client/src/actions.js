@@ -804,15 +804,15 @@ export function onDragEnd(result) {
   }
 }
 
-export function createChecklist(e) {
+export function createChecklist(e, listId, cardId) {
   return (dispatch, getState) => {
     let state = getState()
     let currentUser = state.currentUser
-    let cardId =
-      e.target.parentElement.parentElement.parentElement.parentElement.id
-    let listId =
-      e.target.parentElement.parentElement.parentElement.parentElement
-        .firstChild.id
+    // let cardId =
+    //   e.target.parentElement.parentElement.parentElement.parentElement.id
+    // let listId =
+    //   e.target.parentElement.parentElement.parentElement.parentElement
+    //     .firstChild.id
 
     console.log(cardId)
 
