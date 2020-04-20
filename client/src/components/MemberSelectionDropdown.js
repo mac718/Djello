@@ -5,28 +5,13 @@ const MemberSelectionDropdown = ({
   handleAddMemberToCard,
   handleSelectMemberFromDropdown,
   handleCardAttributeUpdate,
+  handleActivateMemberListDropdown,
+  showMemberListDropdown,
 }) => {
   let repeat = false
   let memberArr = []
   let memberList = []
   if (members) {
-    // members.forEach(member => {
-    //   if (memberArr.includes(member.username)) {
-    //     repeat = true
-    //   } else {
-    //     memberArr.push(member.username)
-    //     memberList.push(
-    //       <a
-    //         href="#"
-    //         className="dropdown-item"
-    //         onClick={handleSelectMemberFromDropdown}
-    //         key={member._id}
-    //       >
-    //         {member.username}
-    //       </a>,
-    //     )
-    //   }
-    // })
     memberList = members.map(member => {
       return (
         <a
@@ -42,14 +27,21 @@ const MemberSelectionDropdown = ({
   }
 
   let repeatNotification = repeat ? <p>Member already added!</p> : null
+
+  console.log(showMemberListDropdown)
+
+  let dropdownClasses = showMemberListDropdown
+    ? 'dropdown is-active'
+    : 'dropdown'
   return (
     <form className="member-selection" onSubmit={handleCardAttributeUpdate}>
-      <div className="dropdown is-hoverable is-up">
+      <div className={dropdownClasses}>
         <div className="dropdown-trigger">
           <button
             className="button"
             aria-haspopup="true"
             aria-controls="dropdown-menu"
+            onClick={handleActivateMemberListDropdown}
           >
             <span id="dropdown-selection">Members</span>
             <span className="icon is-small">

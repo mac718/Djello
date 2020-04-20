@@ -43,6 +43,10 @@ const CardModal = ({
   showChecklistTitleForm,
   handleUpdateChecklistTitle,
   handleDeleteChecklist,
+  handleOpenAddMemberDropdown,
+  showAddMemberDropdown,
+  handleActivateMemberListDropdown,
+  showMemberListDropdown,
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
@@ -61,8 +65,9 @@ const CardModal = ({
   let titleDisplay
   let descriptionComponent
   let titleComponent
-  let membersList
+  let addedMembersList
   let checklists
+  let memberList
 
   console.log(currentList)
 
@@ -138,7 +143,7 @@ const CardModal = ({
     ? descriptionForm
     : descriptionDisplay
 
-  membersList = currentCard.members.map(member => {
+  addedMembersList = currentCard.members.map(member => {
     return (
       <li className="member" key={member}>
         <div className="member-username">{member}</div>
@@ -148,6 +153,21 @@ const CardModal = ({
       </li>
     )
   })
+
+  if (members) {
+    memberList = members.map(member => {
+      return (
+        <a
+          href="#"
+          className="dropdown-item"
+          onClick={handleSelectMemberFromDropdown}
+          key={member._id}
+        >
+          {member.username}
+        </a>
+      )
+    })
+  }
   titleComponent = showCardTitleForm ? titleForm : titleDisplay
   //})
 
@@ -161,14 +181,25 @@ const CardModal = ({
       <p className="is-size-4">Checklists</p>
     ) : null
 
+  let memberDropdown
+
+  console.log(showAddMemberDropdown)
+
+  let memberDropdownClasses = showAddMemberDropdown
+    ? 'dropdown member-dropdown is-right is-active'
+    : 'dropdown member-dropdown is-right'
+
   return (
     <div id={cardId} className={classes}>
       <span id={listId}></span>
       <div className="modal-background"></div>
       <div className="modal-card">
         <div className="modal-card-head">
-          <div className="modal-card-title">{titleComponent}</div>
-          <p>In list {listName}</p>
+          <div className="modal-card-title">
+            {titleComponent}
+            <p className="in-list is-size-6">In list {listName}</p>
+          </div>
+
           <button
             className="delete"
             aria-label="close"
@@ -178,15 +209,57 @@ const CardModal = ({
 
         <div className="modal-card-body">
           <div className="actions">
+            <p className="is-size-4">Add</p>
             <button
-              className="button is-fullwidth"
+              className="button is-fullwidth is-light"
               onClick={handleCreateChecklist}
             >
-              Add Checklist
+              <span className="icon action-button-icon is-small">
+                <i class="far fa-check-square"></i>
+              </span>
+              <span>Checklist</span>
             </button>
-            <button className="button is-fullwidth">Add Member</button>
-            <button className="button is-fullwidth">Add Attachment</button>
-            <button className="button is-fullwidth">Add Cover</button>
+            <div class={memberDropdownClasses}>
+              <div
+                class="dropdown-trigger member-dropdown-trigger"
+                onClick={handleOpenAddMemberDropdown}
+              >
+                <button
+                  className="button is-fullwidth is-light"
+                  aria-haspopup="true"
+                  aria-controls="dropdown-menu2"
+                >
+                  <span className="icon action-button-icon is-small">
+                    <i class="fas fa-user-plus"></i>
+                  </span>
+                  <span>Member</span>
+                </button>
+              </div>
+              <div class="dropdown-menu" id="dropdown-menu2" role="menu">
+                <div class="dropdown-content">
+                  {memberList}
+                  {/* <div class="dropdown-item"> */}
+                  {/* <MemberSelectionDropdown
+                    members={members}
+                    handleSelectMemberFromDropdown={
+                      handleSelectMemberFromDropdown
+                    }
+                    handleCardAttributeUpdate={handleCardAttributeUpdate}
+                    handleActivateMemberListDropdown={
+                      handleActivateMemberListDropdown
+                    }
+                    showMemberListDropdown={showMemberListDropdown}
+                  /> */}
+                  {/* </div> */}
+                </div>
+              </div>
+            </div>
+            <button className="button is-fullwidth is-light">
+              <span className="icon action-button-icon is-small">
+                <i class="fas fa-paperclip"></i>
+              </span>
+              <span>Attachment</span>
+            </button>
           </div>
           <button
             className="button is-link is-light is-outlined mark-as-complete"
@@ -210,14 +283,14 @@ const CardModal = ({
               ></button>
               Member already added to card!
             </div>
-            <MemberSelectionDropdown
+            {/* <MemberSelectionDropdown
               members={members}
               handleSelectMemberFromDropdown={handleSelectMemberFromDropdown}
               handleCardAttributeUpdate={handleCardAttributeUpdate}
-            />
+            /> */}
           </div>
-          <div className="content membersList-container">
-            <ul className="membersList">{membersList}</ul>
+          <div className="content addedMembersList-container">
+            <ul className="addedMembersList">{addedMembersList}</ul>
           </div>
           <div className="modal-card-footer">
             <p className="is-size-4">Activity</p>

@@ -24,6 +24,8 @@ import {
   displayChecklistTitleForm,
   updateChecklistTitle,
   deleteChecklist,
+  openMemberDropdown,
+  activateMemberListDropdown,
 } from '../actions'
 
 class CardContainer extends Component {
@@ -67,6 +69,10 @@ class CardContainer extends Component {
       showChecklistTitleForm,
       handleUpdateChecklistTitle,
       handleDeleteChecklist,
+      handleOpenAddMemberDropdown,
+      showAddMemberDropdown,
+      handleActivateMemberListDropdown,
+      ShowMemberListDropdown,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -111,6 +117,10 @@ class CardContainer extends Component {
         showChecklistTitleForm={showChecklistTitleForm}
         handleUpdateChecklistTitle={handleUpdateChecklistTitle}
         handleDeleteChecklist={handleDeleteChecklist}
+        handleOpenAddMemberDropdown={handleOpenAddMemberDropdown}
+        showAddMemberDropdown={showAddMemberDropdown}
+        handleActivateMemberListDropdown={handleActivateMemberListDropdown}
+        ShowMemberListDropdown={ShowMemberListDropdown}
       />
     )
   }
@@ -139,6 +149,8 @@ const mapStateToProps = (state, ownProps) => {
     })[0]),
     showChecklistItemForm: state.showChecklistItemForm,
     showChecklistTitleForm: state.showChecklistTitleForm,
+    showAddMemberDropdown: state.showAddMemberDropdown,
+    showMemberListDropdown: state.showMemberListDropdown,
     // currentCard: currentList.cards.filter(listCard => {
     //   return JSON.stringify(listCard._id) === JSON.stringify(ownProps.cardId)
     // })[0],
@@ -195,8 +207,9 @@ const mapDispatchToProps = dispatch => {
 
     handleSelectMemberFromDropdown: e => {
       let member = e.target.innerHTML
-      document.getElementById('dropdown-selection').innerHTML = member
+      //document.getElementById('dropdown-selection').innerHTML = member
       dispatch(selectMemberFromDropdown(member))
+      dispatch(updateCardAttribute(e))
     },
 
     handleCloseDuplicateMemberWarning: () => {
@@ -252,6 +265,14 @@ const mapDispatchToProps = dispatch => {
       e.preventDefault()
       console.log(e.target.parentElement.parentElement.parentElement.id)
       dispatch(deleteChecklist(e))
+    },
+
+    handleOpenAddMemberDropdown: () => {
+      dispatch(openMemberDropdown())
+    },
+
+    handleActivateMemberListDropdown: () => {
+      dispatch(activateMemberListDropdown())
     },
   }
 }

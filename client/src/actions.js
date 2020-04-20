@@ -34,6 +34,8 @@ export const SHOW_ADD_ITEM_FORM = 'SHOW_ADD_ITEM_FORM'
 export const HIDE_ADD_ITEM_FORM = 'HIDE_ADD_ITEM_FORM'
 export const DISPLAY_CHECKLIST_TITLE_FORM = 'DISPLAY_CHECKLIST_TITLE_FORM'
 export const HIDE_CHECKLIST_TITLE_FORM = 'HIDE_CHECKLIST_TITLE_FORM'
+export const OPEN_MEMBER_DROPDOWN = 'OPEN_MEMBER_DROPDOWN'
+export const ACTIVATE_MEMBER_LIST_DROPDOWN = 'ACTIVATE_MEMBER_LIST_DROPDOWN'
 
 export function getDataRequest() {
   return {
@@ -222,6 +224,18 @@ export function displayChecklistTitleForm(checklistId) {
 export function HideChecklistTitleForm() {
   return {
     type: HIDE_CHECKLIST_TITLE_FORM,
+  }
+}
+
+export function openMemberDropdown() {
+  return {
+    type: OPEN_MEMBER_DROPDOWN,
+  }
+}
+
+export function activateMemberListDropdown() {
+  return {
+    type: ACTIVATE_MEMBER_LIST_DROPDOWN,
   }
 }
 
@@ -446,8 +460,12 @@ export function saveCard(e) {
         return res.json()
       })
       .then(json => {
-        dispatch(updateActiveBoardLists(json.lists))
-        dispatch(updateCurrentUser(json.user))
+        if (json.error) {
+          alert(JSON.stringify(json.error))
+        } else {
+          dispatch(updateActiveBoardLists(json.lists))
+          dispatch(updateCurrentUser(json.user))
+        }
       })
       .catch(err => {
         console.log(err)
@@ -531,10 +549,11 @@ export function updateCardAttribute(e) {
       listId = e.target.parentElement.parentElement.parentElement.firstChild.id
     } else if (attributeType === 'member') {
       cardId =
-        e.target.parentElement.parentElement.parentElement.parentElement.id
+        e.target.parentElement.parentElement.parentElement.parentElement
+          .parentElement.parentElement.parentElement.id
       listId =
         e.target.parentElement.parentElement.parentElement.parentElement
-          .firstChild.id
+          .parentElement.parentElement.parentElement.firstChild.id
     } else if (attributeType === 'checklist-item') {
       cardId =
         e.target.parentElement.parentElement.parentElement.parentElement.id
@@ -794,6 +813,8 @@ export function createChecklist(e) {
     let listId =
       e.target.parentElement.parentElement.parentElement.parentElement
         .firstChild.id
+
+    console.log(cardId)
 
     fetch('./createChecklist', {
       method: 'POST',

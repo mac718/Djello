@@ -26,6 +26,8 @@ const initialState = {
   progressValue: 0,
   showChecklistItemForm: false,
   showChecklistTitleForm: false,
+  showAddMemberDropdown: false,
+  showMemberListDropdown: false,
 }
 
 export function djello(state = initialState, action) {
@@ -192,6 +194,16 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         showChecklistTitleForm: false,
+      }
+    case Actions.OPEN_MEMBER_DROPDOWN:
+      return {
+        ...state,
+        showAddMemberDropdown: state.showAddMemberDropdown ? false : true,
+      }
+    case Actions.ACTIVATE_MEMBER_LIST_DROPDOWN:
+      return {
+        ...state,
+        showMemberListDropdown: state.showMemberListDropdown ? false : true,
       }
     default:
       return state

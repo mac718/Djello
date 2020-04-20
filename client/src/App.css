@@ -201,9 +201,14 @@
   background-color: hsl(171, 100%, 41%);
 }
 
+.modal {
+  cursor: auto;
+}
+
 .modal-card {
   width: 40%;
   height: 85%;
+  cursor: auto;
 }
 
 .actions {
@@ -237,6 +242,32 @@
 
 .delete-checklist {
   float: right;
+}
+
+.actions button {
+  margin-bottom: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+  justify-content: space-around;
+}
+
+.action-button-icon {
+  padding-left: 10px;
+  float: left;
+}
+
+.in-list {
+  margin-top: 10px;
+}
+
+.card-title-display,
+.card-description-display {
+  cursor: pointer;
+}
+
+.member-dropdown,
+.member-dropdown-trigger {
+  width: 100% !important;
 }
 
 @media screen and (max-width: 1750px) {

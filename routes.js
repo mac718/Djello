@@ -368,13 +368,15 @@ router.post('/createCard', (req, res, next) => {
   card.save((err, card) => {
     if (err) {
       console.error(err)
-      next(err)
+      return res.json({ error: err })
+      //next(err)
     }
     List.findById(listId, (err, list) => {
       console.log('list id ' + listId)
       if (err) {
         console.error(err)
-        next(err)
+        return res.json({ error: err })
+        //next(err)
       }
       console.log('cards ' + list)
       list.cards = [...list.cards, card]
@@ -1344,12 +1346,6 @@ router.patch('/updateChecklistTitle', (req, res, next) => {
       next(err)
     }
     checklist.title = title
-    let modifiedChecklistIndex
-    checklist.items.forEach((item, index) => {
-      if (JSON.stringify(checklistItem._id) === JSON.stringify(item._id)) {
-        modifiedChecklistIndex = index
-      }
-    })
     checklist.save((err, checklist) => {
       if (err) {
         console.error(err)
@@ -1559,7 +1555,7 @@ router.delete('/deleteChecklist', (req, res, next) => {
 })
 
 router.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname, './client/build/index.html'), function(
+  res.sendFile(path.join(__dirname, './client/public/index.html'), function(
     err,
   ) {
     if (err) {
