@@ -613,7 +613,7 @@ export function addMemberToCard(e) {
     dispatch(toggleIsLoading())
     let state = getState()
     //let attributeType = state.attributeType
-    let memberUsername = state.cardmemberUsername
+    let memberUsername = state.memberToAdd
     let currentUser = state.currentUser
     let cardId =
       e.target.parentElement.parentElement.parentElement.parentElement
@@ -622,7 +622,7 @@ export function addMemberToCard(e) {
       e.target.parentElement.parentElement.parentElement.parentElement
         .parentElement.parentElement.parentElement.firstChild.id
 
-    fetch('/updateCardTitle', {
+    fetch('/addMemberToCard', {
       method: 'POST',
       body: JSON.stringify({
         memberUsername,
@@ -678,7 +678,7 @@ export function addBoardToMember() {
   return (dispatch, getState) => {
     let state = getState()
     console.log('state' + JSON.stringify(state))
-    let username = state.cardAttributeContent
+    let username = state.memberToAdd
     let boardId = state.currentUser.activeBoard
     fetch('/addBoardToMember', {
       method: 'POST',

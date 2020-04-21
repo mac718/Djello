@@ -155,8 +155,7 @@ export function djello(state = initialState, action) {
     case Actions.SELECT_MEMBER_FROM_DROPDOWN:
       return {
         ...state,
-        attributeType: 'member',
-        cardAttributeContent: action.member,
+        memberToAdd: action.member,
       }
     case Actions.DISPLAY_DUPLICATE_MEMBER_WARNING:
       return {

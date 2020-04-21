@@ -736,7 +736,7 @@ router.post('/updateCardDescription', (req, res, next) => {
   })
 })
 
-router.post('/addMemberToList', (req, res, next) => {
+router.post('/addMemberToCard', (req, res, next) => {
   let { listId, cardId, memberUsername, currentUser } = req.body
 
   Card.findById(cardId, (err, card) => {
