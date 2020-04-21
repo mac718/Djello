@@ -456,7 +456,7 @@ export function saveCard(e) {
     let currentUser = state.currentUser
     let listId = e.target.parentElement.id
     console.log('list yo ' + listId)
-    let title = state.title
+    let title = state.cardTitle
     fetch('/createCard', {
       method: 'POST',
       body: JSON.stringify({ listId, currentUser, title }),

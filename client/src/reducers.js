@@ -92,7 +92,7 @@ export function djello(state = initialState, action) {
     case Actions.CHANGE_TITLE:
       return {
         ...state,
-        cardTitle: action.cardTitle,
+        cardTitle: action.title,
       }
     case Actions.CHANGE_ACTIVE_CARD_MODAL:
       return {
