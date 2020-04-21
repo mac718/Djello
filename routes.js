@@ -549,50 +549,217 @@ router.patch('/switchActiveBoard', (req, res, next) => {
 })
 
 //handles updates card title, card description, and card members list
-router.post('/updateCardAttribute', (req, res, next) => {
-  let listId = req.body.listId
-  let cardId = req.body.cardId
-  let attributeType = req.body.attributeType
-  let attributeContent = req.body.attributeContent
-  let currentUser = req.body.currentUser
+router.post('/updateCardTitle', (req, res, next) => {
+  let { listId, cardId, cardTitle, currentUser } = req.body
 
-  console.log('list id ' + listId)
-  console.log('card id ' + cardId)
   Card.findById(cardId, (err, card) => {
     if (err) {
       console.error(err)
       next(err)
     }
-    if (attributeType === 'title') {
-      card.title = attributeContent
-      let date = new Date()
-      card.activity = [
-        ...card.activity,
-        `${currentUser.username} edited the title at ${date.toString()}`,
-      ]
-    } else if (attributeType === 'description') {
-      card.description = attributeContent
-      let date = new Date()
-      card.activity = [
-        ...card.activity,
-        `${currentUser.username} edited the description at ${date.toString()}`,
-      ]
-    } else if (attributeType === 'member') {
-      if (!card.members.includes(attributeContent)) {
-        console.log('yayayya!!!!')
-        card.members = [...card.members, attributeContent]
-        let date = new Date()
-        card.activity = [
-          ...card.activity,
-          `${
-            currentUser.username
-          } added ${attributeContent} to the card at ${date.toString()}`,
-        ]
-      } else {
-        console.log('nonnnoono!!!!')
-        return res.status(500).send()
+
+    card.title = cardTitle
+    let date = new Date()
+    card.activity = [
+      ...card.activity,
+      `${currentUser.username} edited the title at ${date.toString()}`,
+    ]
+    card.save((err, card) => {
+      if (err) {
+        console.error(err)
+        next(err)
       }
+      console.log(JSON.stringify(card))
+      List.findById(listId, (err, list) => {
+        console.log('list id ' + listId)
+        if (err) {
+          console.error(err)
+          next(err)
+        }
+        let modifiedCardIndex
+        list.cards.forEach((listCard, index) => {
+          if (JSON.stringify(listCard._id) === JSON.stringify(card._id)) {
+            modifiedCardIndex = index
+          }
+        })
+        console.log('modifiedCardIndex ' + modifiedCardIndex)
+        list.cards.splice(modifiedCardIndex, 1, card)
+        list.save((err, list) => {
+          if (err) {
+            console.error(err)
+            next(err)
+          }
+          Board.findById(currentUser.activeBoard, (err, board) => {
+            if (err) {
+              console.error(err)
+              next(err)
+            }
+            let modifiedListIndex
+            board.lists.forEach((boardList, index) => {
+              if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
+                modifiedListIndex = index
+              }
+            })
+            console.log('modifiedLisIndex ' + modifiedListIndex)
+
+            board.lists.splice(modifiedListIndex, 1, list)
+
+            board.save((err, board) => {
+              if (err) {
+                console.error(err)
+                next(err)
+              }
+              User.findById(currentUser._id, (err, user) => {
+                if (err) {
+                  console.error(err)
+                  next(err)
+                }
+                let modifiedBoardIndex
+                user.boards.forEach((userBoard, index) => {
+                  if (
+                    JSON.stringify(userBoard._id) === JSON.stringify(board._id)
+                  ) {
+                    modifiedBoardIndex = index
+                  }
+                })
+                user.boards.splice(modifiedBoardIndex, 1, board)
+                user.save((err, user) => {
+                  if (err) {
+                    console.error(err)
+                    next(err)
+                  }
+                  console.log('butts ' + JSON.stringify(user.boards))
+
+                  let userAndLists = { user: user, lists: board.lists }
+                  return res.json(userAndLists)
+                })
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+})
+
+router.post('/updateCardDescription', (req, res, next) => {
+  let { listId, cardId, cardDescription, currentUser } = req.body
+  console.log('cardDescription ' + cardDescription)
+
+  Card.findById(cardId, (err, card) => {
+    if (err) {
+      console.error(err)
+      next(err)
     }
+
+    card.description = cardDescription
+    let date = new Date()
+    card.activity = [
+      ...card.activity,
+      `${currentUser.username} edited the description at ${date.toString()}`,
+    ]
+
+    card.save((err, card) => {
+      if (err) {
+        console.error(err)
+        next(err)
+      }
+      List.findById(listId, (err, list) => {
+        console.log('list id ' + listId)
+        if (err) {
+          console.error(err)
+          next(err)
+        }
+        let modifiedCardIndex
+        list.cards.forEach((listCard, index) => {
+          if (JSON.stringify(listCard._id) === JSON.stringify(card._id)) {
+            modifiedCardIndex = index
+          }
+        })
+        console.log('modifiedCardIndex ' + modifiedCardIndex)
+        list.cards.splice(modifiedCardIndex, 1, card)
+        list.save((err, list) => {
+          if (err) {
+            console.error(err)
+            next(err)
+          }
+          Board.findById(currentUser.activeBoard, (err, board) => {
+            if (err) {
+              console.error(err)
+              next(err)
+            }
+            let modifiedListIndex
+            board.lists.forEach((boardList, index) => {
+              if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
+                modifiedListIndex = index
+              }
+            })
+            console.log('modifiedLisIndex ' + modifiedListIndex)
+
+            board.lists.splice(modifiedListIndex, 1, list)
+
+            board.save((err, board) => {
+              if (err) {
+                console.error(err)
+                next(err)
+              }
+              User.findById(currentUser._id, (err, user) => {
+                if (err) {
+                  console.error(err)
+                  next(err)
+                }
+                let modifiedBoardIndex
+                user.boards.forEach((userBoard, index) => {
+                  if (
+                    JSON.stringify(userBoard._id) === JSON.stringify(board._id)
+                  ) {
+                    modifiedBoardIndex = index
+                  }
+                })
+                user.boards.splice(modifiedBoardIndex, 1, board)
+                user.save((err, user) => {
+                  if (err) {
+                    console.error(err)
+                    next(err)
+                  }
+                  console.log('butts ' + JSON.stringify(user.boards))
+
+                  let userAndLists = { user: user, lists: board.lists }
+                  return res.json(userAndLists)
+                })
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+})
+
+router.post('/addMemberToList', (req, res, next) => {
+  let { listId, cardId, memberUsername, currentUser } = req.body
+
+  Card.findById(cardId, (err, card) => {
+    if (err) {
+      console.error(err)
+      next(err)
+    }
+
+    if (!card.members.includes(memberUsername)) {
+      console.log('yayayya!!!!')
+      card.members = [...card.members, memberUsername]
+      let date = new Date()
+      card.activity = [
+        ...card.activity,
+        `${
+          currentUser.username
+        } added ${memberUsername} to the card at ${date.toString()}`,
+      ]
+    } else {
+      console.log('nonnnoono!!!!')
+      return res.status(500).send()
+    }
+
     card.save((err, card) => {
       if (err) {
         console.error(err)

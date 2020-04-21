@@ -4,8 +4,11 @@ import Card from '../components/Card'
 import {
   changeActiveCardModal,
   deleteCard,
-  editCardAttribute,
-  updateCardAttribute,
+  editCardTitle,
+  updateCardTitle,
+  editCardDescription,
+  updateCardDescription,
+  addMemberToCard,
   switchToCardDescriptionForm,
   switchToCardDescriptionDisplay,
   switchToCardDTitleForm,
@@ -40,7 +43,9 @@ class CardContainer extends Component {
       listId,
       listName,
       handleCardAttributeEdit,
-      handleCardAttributeUpdate,
+      handleUpdateCardTitle,
+      handleUpdateCardDescription,
+      handleAddMemberToCard,
       handleSwitchToCardDescriptionForm,
       handleSwitchToCardDescriptionDisplay,
       showCardDescriptionForm,
@@ -73,6 +78,8 @@ class CardContainer extends Component {
       showAddMemberDropdown,
       handleActivateMemberListDropdown,
       ShowMemberListDropdown,
+      handleEditCardTitle,
+      handleEditCardDescription,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -85,8 +92,11 @@ class CardContainer extends Component {
         handleDeleteCard={handleDeleteCard}
         listId={listId}
         listName={listName}
-        handleCardAttributeEdit={handleCardAttributeEdit}
-        handleCardAttributeUpdate={handleCardAttributeUpdate}
+        handleEditCardTitle={handleEditCardTitle}
+        handleEditCardDescription={handleEditCardDescription}
+        handleUpdateCardTitle={handleUpdateCardTitle}
+        handleUpdateCardDescription={handleUpdateCardDescription}
+        handleAddMemberToCard={handleAddMemberToCard}
         handleSwitchToCardDescriptionForm={handleSwitchToCardDescriptionForm}
         handleSwitchToCardDescriptionDisplay={
           handleSwitchToCardDescriptionDisplay
@@ -175,13 +185,24 @@ const mapDispatchToProps = dispatch => {
       dispatch(changeActiveCardModal())
     },
 
-    handleCardAttributeUpdate: e => {
+    handleUpdateCardTitle: e => {
       e.preventDefault()
-      console.log(
+      let cardId =
+        e.target.parentElement.parentElement.parentElement.parentElement.id
+      let listId =
         e.target.parentElement.parentElement.parentElement.parentElement
-          .firstChild.id,
-      )
-      dispatch(updateCardAttribute(e))
+          .firstChild.id
+      dispatch(updateCardTitle(e, listId, cardId))
+    },
+
+    handleUpdateCardDescription: e => {
+      e.preventDefault()
+      dispatch(updateCardDescription(e))
+    },
+
+    handleAddMemberToCard: e => {
+      e.preventDefault()
+      dispatch(addMemberToCard(e))
     },
 
     handleSwitchToCardDescriptionForm: () => {
@@ -192,9 +213,14 @@ const mapDispatchToProps = dispatch => {
       dispatch(switchToCardDescriptionDisplay())
     },
 
-    handleCardAttributeEdit: e => {
-      let attribute = e.target.value
-      dispatch(editCardAttribute(attribute))
+    handleEditCardTitle: e => {
+      let title = e.target.value
+      dispatch(editCardTitle(title))
+    },
+
+    handleEditCardDescription: e => {
+      let description = e.target.value
+      dispatch(editCardDescription(description))
     },
 
     handleSwitchToCardTitleForm: () => {
@@ -209,7 +235,7 @@ const mapDispatchToProps = dispatch => {
       let member = e.target.innerHTML
       //document.getElementById('dropdown-selection').innerHTML = member
       dispatch(selectMemberFromDropdown(member))
-      dispatch(updateCardAttribute(e))
+      dispatch(addMemberToCard(e))
     },
 
     handleCloseDuplicateMemberWarning: () => {

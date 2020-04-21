@@ -16,8 +16,11 @@ const CardModal = ({
   handleDeleteCard,
   listId,
   listName,
-  handleCardAttributeEdit,
-  handleCardAttributeUpdate,
+  handleEditCardTitle,
+  handleEditCardDescription,
+  handleUpdateCardTitle,
+  handleUpdateCardDescription,
+  handleAddMemberToCard,
   handleSwitchToCardDescriptionForm,
   handleSwitchToCardDescriptionDisplay,
   handleSwitchToCardTitleForm,
@@ -89,7 +92,7 @@ const CardModal = ({
           handleShowAddItemForm={handleShowAddItemForm}
           handleHideAddItemForm={handleHideAddItemForm}
           showChecklistItemForm={showChecklistItemForm}
-          handleCardAttributeEdit={handleCardAttributeEdit}
+          //handleCardAttributeEdit={handleCardAttributeEdit}
           handleAddChecklistItem={handleAddChecklistItem}
           handleDisplayChecklistTitleForm={handleDisplayChecklistTitleForm}
           handleHideChecklistTitleForm={handleHideChecklistTitleForm}
@@ -108,8 +111,8 @@ const CardModal = ({
   descriptionForm = (
     <CardDescriptionForm
       description={currentCard.description}
-      handleCardAttributeEdit={handleCardAttributeEdit}
-      handleCardAttributeUpdate={handleCardAttributeUpdate}
+      handleEditCardDescription={handleEditCardDescription}
+      handleUpdateCardDescription={handleUpdateCardDescription}
       handleSwitchToCardDescriptionDisplay={
         handleSwitchToCardDescriptionDisplay
       }
@@ -126,8 +129,8 @@ const CardModal = ({
   titleForm = (
     <CardTitleForm
       title={currentCard.title}
-      handleCardAttributeEdit={handleCardAttributeEdit}
-      handleCardAttributeUpdate={handleCardAttributeUpdate}
+      handleEditCardTitle={handleEditCardTitle}
+      handleUpdateCardTitle={handleUpdateCardTitle}
       handleSwitchToCardTitleDisplay={handleSwitchToCardTitleDisplay}
     />
   )

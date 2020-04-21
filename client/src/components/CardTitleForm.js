@@ -2,18 +2,18 @@ import React from 'react'
 
 const CardTitleForm = ({
   title,
-  handleCardAttributeEdit,
-  handleCardAttributeUpdate,
+  handleEditCardTitle,
+  handleUpdateCardTitle,
   handleSwitchToCardTitleDisplay,
   listId,
   cardId,
 }) => {
   return (
-    <form onSubmit={handleCardAttributeUpdate}>
+    <form onSubmit={handleUpdateCardTitle}>
       <input
         className="input"
         type="text"
-        onChange={handleCardAttributeEdit}
+        onChange={handleEditCardTitle}
         defaultValue={title}
       ></input>
       <div id="card-modal-buttons" className="field is-grouped">

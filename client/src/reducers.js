@@ -10,7 +10,9 @@ const initialState = {
   error: '',
   redirect: '',
   showCardForm: false,
-  title: '',
+  cardTitle: '',
+  cardDescription: '',
+  memberToAdd: '',
   activeCardModal: null,
   cardAttributeContent: '',
   showBoardNameDisplay: true,
@@ -90,18 +92,23 @@ export function djello(state = initialState, action) {
     case Actions.CHANGE_TITLE:
       return {
         ...state,
-        title: action.title,
+        cardTitle: action.cardTitle,
       }
     case Actions.CHANGE_ACTIVE_CARD_MODAL:
       return {
         ...state,
         activeCardModal: state.activeCardModal ? null : action.id,
       }
-    case Actions.EDIT_CARD_ATTRIBUTE:
+    case Actions.EDIT_CARD_TITLE:
       console.log('decription ' + action.attribute)
       return {
         ...state,
-        cardAttributeContent: action.attribute,
+        cardTitle: action.title,
+      }
+    case Actions.EDIT_CARD_DESCRIPTION:
+      return {
+        ...state,
+        cardDescription: action.description,
       }
     case Actions.CHANGE_SHOW_BOARD_NAME_DISPLAY:
       return {

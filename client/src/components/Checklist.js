@@ -11,7 +11,7 @@ const Checklist = ({
   handleShowAddItemForm,
   handleHideAddItemForm,
   showChecklistItemForm,
-  handleCardAttributeEdit,
+  //handleCardAttributeEdit,
   handleAddChecklistItem,
   handleDisplayChecklistTitleForm,
   handleHideChecklistTitleForm,
@@ -58,7 +58,7 @@ const Checklist = ({
     itemForm = (
       <ChecklistItemForm
         handleHideAddItemForm={handleHideAddItemForm}
-        handleCardAttributeEdit={handleCardAttributeEdit}
+        //handleCardAttributeEdit={handleCardAttributeEdit}
         handleAddChecklistItem={handleAddChecklistItem}
       />
     )
@@ -75,7 +75,7 @@ const Checklist = ({
     checklistTitleComponent = (
       <ChecklistTitleForm
         title={title}
-        handleCardAttributeEdit={handleCardAttributeEdit}
+        //handleCardAttributeEdit={handleCardAttributeEdit}
         handleHideChecklistTitleForm={handleHideChecklistTitleForm}
         handleUpdateChecklistTitle={handleUpdateChecklistTitle}
       />

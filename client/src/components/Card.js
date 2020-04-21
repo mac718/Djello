@@ -13,8 +13,11 @@ const Card = ({
   handleDeleteCard,
   listId,
   listName,
-  handleCardAttributeEdit,
-  handleCardAttributeUpdate,
+  handleEditCardTitle,
+  handleEditCardDescription,
+  handleUpdateCardTitle,
+  handleUpdateCardDescription,
+  handleAddMemberToCard,
   handleSwitchToCardDescriptionForm,
   handleSwitchToCardDescriptionDisplay,
   handleSwitchToCardTitleForm,
@@ -111,8 +114,9 @@ const Card = ({
             handleDeleteCard={handleDeleteCard}
             listId={listId}
             listName={listName}
-            handleCardAttributeEdit={handleCardAttributeEdit}
-            handleCardAttributeUpdate={handleCardAttributeUpdate}
+            handleUpdateCardTitle={handleUpdateCardTitle}
+            handleUpdateCardDescription={handleUpdateCardDescription}
+            handleAddMemberToCard={handleAddMemberToCard}
             handleSwitchToCardDescriptionForm={
               handleSwitchToCardDescriptionForm
             }
@@ -149,6 +153,8 @@ const Card = ({
             showAddMemberDropdown={showAddMemberDropdown}
             handleActivateMemberListDropdown={handleActivateMemberListDropdown}
             showMemberListDropdown={showMemberListDropdown}
+            handleEditCardTitle={handleEditCardTitle}
+            handleEditCardDescription={handleEditCardDescription}
           />
         </div>
       )}

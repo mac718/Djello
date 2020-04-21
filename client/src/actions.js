@@ -14,7 +14,8 @@ export const CREATE_CARD_FORM = 'CREAT_CARD_FORM'
 export const HIDE_CARD_FORM = 'HIDE_CARD_FORM'
 export const CHANGE_TITLE = 'CHANGE_TITLE'
 export const CHANGE_ACTIVE_CARD_MODAL = 'CHANGE_ACTIVE_CARD_MODAL'
-export const EDIT_CARD_ATTRIBUTE = 'EDIT_CARD_ATTRIBUTE'
+export const EDIT_CARD_TITLE = 'EDIT_CARD_TITLE'
+export const EDIT_CARD_DESCRIPTION = 'EDIT_CARD_DESCRIPTION'
 export const CHANGE_SHOW_BOARD_NAME_DISPLAY = 'SHOW_BOARD_NAME_DISPLAY'
 export const SWITCH_TO_CARD_DESCRIPTION_FORM = 'SWITCH_TO_CARD_DESCRIPTION_FORM'
 export const SWITCH_TO_CARD_DESCRIPTION_DISPLAY =
@@ -112,10 +113,17 @@ export function changeActiveCardModal(id) {
   }
 }
 
-export function editCardAttribute(attribute) {
+export function editCardTitle(title) {
   return {
-    type: EDIT_CARD_ATTRIBUTE,
-    attribute,
+    type: EDIT_CARD_TITLE,
+    title,
+  }
+}
+
+export function editCardDescription(description) {
+  return {
+    type: EDIT_CARD_DESCRIPTION,
+    description,
   }
 }
 
@@ -526,49 +534,98 @@ export function switchActiveBoard(e) {
   }
 }
 
-export function updateCardAttribute(e) {
+export function updateCardTitle(e, listId, cardId) {
+  return (dispatch, getState) => {
+    dispatch(toggleIsLoading())
+
+    let state = getState()
+    //let attributeType = state.attributeType
+    let cardTitle = state.cardTitle
+    let currentUser = state.currentUser
+    dispatch(switchToCardTItleDisplay())
+
+    fetch('/updateCardTitle', {
+      method: 'POST',
+      body: JSON.stringify({
+        cardTitle,
+        currentUser,
+        listId,
+        cardId,
+      }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then(res => {
+        return res.json()
+      })
+      .then(json => {
+        dispatch(updateActiveBoardLists(json.lists))
+        dispatch(updateCurrentUser(json.user))
+      })
+      .catch(err => {
+        console.log(err)
+        alert('hmmmm')
+      })
+  }
+}
+
+export function updateCardDescription(e) {
+  return (dispatch, getState) => {
+    dispatch(toggleIsLoading())
+    dispatch(switchToCardDescriptionDisplay())
+    let state = getState()
+    //let attributeType = state.attributeType
+    let cardDescription = state.cardDescription
+    let currentUser = state.currentUser
+    let cardId = e.target.parentElement.parentElement.parentElement.id
+    let listId =
+      e.target.parentElement.parentElement.parentElement.firstChild.id
+
+    fetch('/updateCardDescription', {
+      method: 'POST',
+      body: JSON.stringify({
+        cardDescription,
+        currentUser,
+        listId,
+        cardId,
+      }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then(res => {
+        return res.json()
+      })
+      .then(json => {
+        dispatch(updateActiveBoardLists(json.lists))
+        dispatch(updateCurrentUser(json.user))
+      })
+      .catch(err => {
+        console.log(err)
+        alert('hmmmm')
+      })
+  }
+}
+
+export function addMemberToCard(e) {
   return (dispatch, getState) => {
     dispatch(toggleIsLoading())
     let state = getState()
-    let attributeType = state.attributeType
-    let attributeContent = state.cardAttributeContent
+    //let attributeType = state.attributeType
+    let memberUsername = state.cardmemberUsername
     let currentUser = state.currentUser
-    let listId
-    let cardId
+    let cardId =
+      e.target.parentElement.parentElement.parentElement.parentElement
+        .parentElement.parentElement.parentElement.id
+    let listId =
+      e.target.parentElement.parentElement.parentElement.parentElement
+        .parentElement.parentElement.parentElement.firstChild.id
 
-    if (attributeType === 'title') {
-      dispatch(switchToCardTItleDisplay())
-      cardId =
-        e.target.parentElement.parentElement.parentElement.parentElement.id
-      listId =
-        e.target.parentElement.parentElement.parentElement.parentElement
-          .firstChild.id
-    } else if (attributeType === 'description') {
-      dispatch(switchToCardDescriptionDisplay())
-      cardId = e.target.parentElement.parentElement.parentElement.id
-      listId = e.target.parentElement.parentElement.parentElement.firstChild.id
-    } else if (attributeType === 'member') {
-      cardId =
-        e.target.parentElement.parentElement.parentElement.parentElement
-          .parentElement.parentElement.parentElement.id
-      listId =
-        e.target.parentElement.parentElement.parentElement.parentElement
-          .parentElement.parentElement.parentElement.firstChild.id
-    } else if (attributeType === 'checklist-item') {
-      cardId =
-        e.target.parentElement.parentElement.parentElement.parentElement.id
-      listId =
-        e.target.parentElement.parentElement.parentElement.parentElement
-          .firstChild.id
-    }
-
-    console.log('hello')
-
-    fetch('/updateCardAttribute', {
+    fetch('/updateCardTitle', {
       method: 'POST',
       body: JSON.stringify({
-        attributeType,
-        attributeContent,
+        memberUsername,
         currentUser,
         listId,
         cardId,
@@ -588,13 +645,10 @@ export function updateCardAttribute(e) {
       .then(json => {
         if (json.status === 500) {
           dispatch(displayDuplicateMemberWarning())
-        } else if (attributeType === 'member') {
-          dispatch(updateActiveBoardLists(json.lists))
-          dispatch(updateCurrentUser(json.user))
-          dispatch(addBoardToMember())
         } else {
           dispatch(updateActiveBoardLists(json.lists))
           dispatch(updateCurrentUser(json.user))
+          dispatch(addBoardToMember())
         }
       })
       .catch(err => {

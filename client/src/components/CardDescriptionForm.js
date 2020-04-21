@@ -2,8 +2,8 @@ import React from 'react'
 
 const CardDescriptionForm = ({
   description,
-  handleCardAttributeEdit,
-  handleCardAttributeUpdate,
+  handleEditCardDescription,
+  handleUpdateCardDescription,
   handleSwitchToCardDescriptionDisplay,
   listId,
   cardId,
@@ -11,11 +11,11 @@ const CardDescriptionForm = ({
   return (
     <form
       className="card-description-form"
-      onSubmit={handleCardAttributeUpdate}
+      onSubmit={handleUpdateCardDescription}
     >
       <textarea
         className="textarea"
-        onChange={handleCardAttributeEdit}
+        onChange={handleEditCardDescription}
         defaultValue={description}
       ></textarea>
       <div id="card-modal-buttons" className="field is-grouped">
