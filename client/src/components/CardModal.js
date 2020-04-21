@@ -217,7 +217,7 @@ const CardModal = ({
             <p className="is-size-4">Add</p>
             <button
               className="button is-fullwidth is-light"
-              onClick={handleCreateChecklist}
+              onClick={() => handleCreateChecklist(cardId, listId)}
             >
               <span className="icon action-button-icon is-small">
                 <i class="far fa-check-square"></i>

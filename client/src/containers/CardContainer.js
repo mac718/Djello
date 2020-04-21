@@ -258,16 +258,16 @@ const mapDispatchToProps = dispatch => {
       dispatch(hideAddItemForm())
     },
 
-    handleCreateChecklist: e => {
-      console.log(
-        e.target.parentElement.parentElement.parentElement.parentElement.id,
-      )
-      let cardId =
-        e.target.parentElement.parentElement.parentElement.parentElement.id
-      let listId =
-        e.target.parentElement.parentElement.parentElement.parentElement
-          .firstChild.id
-      dispatch(createChecklist(e, listId, cardId))
+    handleCreateChecklist: (cardId, listId) => {
+      // console.log(
+      //   e.target.parentElement.parentElement.parentElement.parentElement.id,
+      // )
+      // let cardId =
+      //   e.target.parentElement.parentElement.parentElement.parentElement.id
+      // let listId =
+      //   e.target.parentElement.parentElement.parentElement.parentElement
+      //     .firstChild.id
+      dispatch(createChecklist(cardId, listId))
     },
 
     handleAddChecklistItem: e => {

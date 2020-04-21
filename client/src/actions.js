@@ -866,7 +866,7 @@ export function onDragEnd(result) {
   }
 }
 
-export function createChecklist(e, listId, cardId) {
+export function createChecklist(cardId, listId) {
   return (dispatch, getState) => {
     let state = getState()
     let currentUser = state.currentUser
@@ -878,7 +878,7 @@ export function createChecklist(e, listId, cardId) {
 
     console.log(cardId)
 
-    fetch('./createChecklist', {
+    fetch('/createChecklist', {
       method: 'POST',
       body: JSON.stringify({ cardId, listId, currentUser }),
       headers: {
