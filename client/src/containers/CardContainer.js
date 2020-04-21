@@ -29,6 +29,7 @@ import {
   deleteChecklist,
   openMemberDropdown,
   activateMemberListDropdown,
+  editChecklistItemForm,
 } from '../actions'
 
 class CardContainer extends Component {
@@ -80,6 +81,7 @@ class CardContainer extends Component {
       ShowMemberListDropdown,
       handleEditCardTitle,
       handleEditCardDescription,
+      handleEditChecklistItemForm,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -131,6 +133,7 @@ class CardContainer extends Component {
         showAddMemberDropdown={showAddMemberDropdown}
         handleActivateMemberListDropdown={handleActivateMemberListDropdown}
         ShowMemberListDropdown={ShowMemberListDropdown}
+        handleEditChecklistItemForm={handleEditChecklistItemForm}
       />
     )
   }
@@ -307,6 +310,11 @@ const mapDispatchToProps = dispatch => {
 
     handleActivateMemberListDropdown: () => {
       dispatch(activateMemberListDropdown())
+    },
+
+    handleEditChecklistItemForm: e => {
+      let item = e.target.value
+      dispatch(editChecklistItemForm(item))
     },
   }
 }

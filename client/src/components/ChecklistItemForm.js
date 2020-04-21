@@ -1,7 +1,7 @@
 import React from 'react'
 
 const ChecklistItemForm = ({
-  handleCardAttributeEdit,
+  handleEditChecklistItemForm,
   handleHideAddItemForm,
   handleAddChecklistItem,
 }) => {
@@ -15,7 +15,7 @@ const ChecklistItemForm = ({
         <input
           className="input"
           type="text"
-          onChange={handleCardAttributeEdit}
+          onChange={handleEditChecklistItemForm}
         />
       </div>
       <button className="button" type="submit">

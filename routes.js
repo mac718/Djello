@@ -1234,10 +1234,10 @@ router.post('/addChecklistItem', (req, res, next) => {
     cardId,
     listId,
     currentUser,
-    cardAttributeContent,
+    checklistItemContent,
   } = req.body
   let checklistItem = new ChecklistItem({
-    content: cardAttributeContent,
+    content: checklistItemContent,
     checked: false,
   })
 

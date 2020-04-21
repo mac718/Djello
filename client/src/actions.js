@@ -37,6 +37,7 @@ export const DISPLAY_CHECKLIST_TITLE_FORM = 'DISPLAY_CHECKLIST_TITLE_FORM'
 export const HIDE_CHECKLIST_TITLE_FORM = 'HIDE_CHECKLIST_TITLE_FORM'
 export const OPEN_MEMBER_DROPDOWN = 'OPEN_MEMBER_DROPDOWN'
 export const ACTIVATE_MEMBER_LIST_DROPDOWN = 'ACTIVATE_MEMBER_LIST_DROPDOWN'
+export const EDIT_CHECKLIST_ITEM_FORM = 'EDIT_CHECKLIST_ITEM_FORM'
 
 export function getDataRequest() {
   return {
@@ -244,6 +245,13 @@ export function openMemberDropdown() {
 export function activateMemberListDropdown() {
   return {
     type: ACTIVATE_MEMBER_LIST_DROPDOWN,
+  }
+}
+
+export function editChecklistItemForm(item) {
+  return {
+    type: EDIT_CHECKLIST_ITEM_FORM,
+    item,
   }
 }
 
@@ -901,7 +909,7 @@ export function addChecklistItem(e) {
     let listId =
       e.target.parentElement.parentElement.parentElement.parentElement
         .firstChild.id
-    let cardAttributeContent = state.cardAttributeContent
+    let checklistItemContent = state.checklistItem
 
     fetch('./addChecklistItem', {
       method: 'POST',
@@ -910,7 +918,7 @@ export function addChecklistItem(e) {
         checklistId,
         cardId,
         listId,
-        cardAttributeContent,
+        checklistItemContent,
       }),
       headers: {
         'Content-type': 'application/json',

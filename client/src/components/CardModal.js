@@ -50,6 +50,7 @@ const CardModal = ({
   showAddMemberDropdown,
   handleActivateMemberListDropdown,
   showMemberListDropdown,
+  handleEditChecklistItemForm,
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
@@ -104,6 +105,7 @@ const CardModal = ({
           handleCheckItem={handleCheckItem}
           handleUpdateChecklistTitle={handleUpdateChecklistTitle}
           handleDeleteChecklist={handleDeleteChecklist}
+          handleEditChecklistItemForm={handleEditChecklistItemForm}
         />
       )
     })

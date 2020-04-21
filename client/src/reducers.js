@@ -30,6 +30,7 @@ const initialState = {
   showChecklistTitleForm: false,
   showAddMemberDropdown: false,
   showMemberListDropdown: false,
+  checklistItem: '',
 }
 
 export function djello(state = initialState, action) {
@@ -210,6 +211,11 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         showMemberListDropdown: state.showMemberListDropdown ? false : true,
+      }
+    case Actions.EDIT_CHECKLIST_ITEM_FORM:
+      return {
+        ...state,
+        checklistItem: action.item,
       }
     default:
       return state
