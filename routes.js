@@ -261,7 +261,7 @@ router.delete('/deleteList', (req, res, next) => {
   })
 })
 
-router.post('/changeBoardName', (req, res, next) => {
+router.put('/changeBoardName', (req, res, next) => {
   let name = req.body.componentName
   let currentUser = req.body.currentUser
   let activeBoardId = currentUser.activeBoard
@@ -304,7 +304,7 @@ router.post('/changeBoardName', (req, res, next) => {
   })
 })
 
-router.post('/changeListName', (req, res, next) => {
+router.put('/changeListName', (req, res, next) => {
   let name = req.body.componentName
   let currentUser = req.body.currentUser
   let activeBoardId = currentUser.activeBoard
@@ -549,7 +549,7 @@ router.patch('/switchActiveBoard', (req, res, next) => {
 })
 
 //handles updates card title, card description, and card members list
-router.post('/updateCardTitle', (req, res, next) => {
+router.put('/updateCardTitle', (req, res, next) => {
   let { listId, cardId, cardTitle, currentUser } = req.body
 
   Card.findById(cardId, (err, card) => {
@@ -647,7 +647,7 @@ router.post('/updateCardTitle', (req, res, next) => {
   })
 })
 
-router.post('/updateCardDescription', (req, res, next) => {
+router.put('/updateCardDescription', (req, res, next) => {
   let { listId, cardId, cardDescription, currentUser } = req.body
   console.log('cardDescription ' + cardDescription)
 
@@ -741,7 +741,7 @@ router.post('/updateCardDescription', (req, res, next) => {
   })
 })
 
-router.post('/addMemberToCard', (req, res, next) => {
+router.put('/addMemberToCard', (req, res, next) => {
   let { listId, cardId, memberUsername, currentUser } = req.body
 
   Card.findById(cardId, (err, card) => {
@@ -995,7 +995,7 @@ router.delete('/deleteMemberFromCard', (req, res, next) => {
   })
 })
 
-router.post('/updateListAfterDnd', (req, res, next) => {
+router.put('/updateListAfterDnd', (req, res, next) => {
   let currentUser = req.body.currentUser
   let source = req.body.source
   let destination = req.body.destination
@@ -1241,6 +1241,7 @@ router.post('/addChecklistItem', (req, res, next) => {
     currentUser,
     checklistItemContent,
   } = req.body
+
   let checklistItem = new ChecklistItem({
     content: checklistItemContent,
     checked: false,
@@ -1257,99 +1258,103 @@ router.post('/addChecklistItem', (req, res, next) => {
     }
     Checklist.findById(checklistId, (err, checklist) => {
       if (err) {
-        console.error(err)
-        next(err)
-      }
-      checklist.items = [...checklist.items, checklistItem]
-      checklist.save((err, checklist) => {
-        if (err) {
-          console.error(err)
-          next(err)
-        }
-        Card.findById(cardId, (err, card) => {
+        console.log(err)
+        return res.send({ error: err })
+      } else {
+        checklist.items = [...checklist.items, checklistItem]
+        checklist.save((err, checklist) => {
           if (err) {
             console.error(err)
             next(err)
           }
-          let modifiedChecklistIndex
-          card.checklists.forEach((cardChecklist, index) => {
-            if (
-              JSON.stringify(checklist._id) ===
-              JSON.stringify(cardChecklist._id)
-            ) {
-              modifiedChecklistIndex = index
-            }
-          })
-          card.checklists.splice(modifiedChecklistIndex, 1, checklist)
-          let date = new Date()
-          card.activity = [
-            ...card.activity,
-            `${currentUser.username} added a new item to ${
-              checklist.title
-            } at ${date.toString()}`,
-          ]
-          card.save((err, card) => {
+          Card.findById(cardId, (err, card) => {
             if (err) {
               console.error(err)
               next(err)
             }
-            List.findById(listId, (err, list) => {
+            let modifiedChecklistIndex
+            card.checklists.forEach((cardChecklist, index) => {
+              if (
+                JSON.stringify(checklist._id) ===
+                JSON.stringify(cardChecklist._id)
+              ) {
+                modifiedChecklistIndex = index
+              }
+            })
+            card.checklists.splice(modifiedChecklistIndex, 1, checklist)
+            let date = new Date()
+            card.activity = [
+              ...card.activity,
+              `${currentUser.username} added a new item to ${
+                checklist.title
+              } at ${date.toString()}`,
+            ]
+            card.save((err, card) => {
               if (err) {
                 console.error(err)
                 next(err)
               }
-              let modifiedCardIndex
-              list.cards.forEach((listCard, index) => {
-                if (JSON.stringify(card._id) === JSON.stringify(listCard._id)) {
-                  modifiedCardIndex = index
-                }
-              })
-              list.cards.splice(modifiedCardIndex, 1, card)
-              list.save((err, list) => {
+              List.findById(listId, (err, list) => {
                 if (err) {
                   console.error(err)
                   next(err)
                 }
-                Board.findById(currentUser.activeBoard, (err, board) => {
+                let modifiedCardIndex
+                list.cards.forEach((listCard, index) => {
+                  if (
+                    JSON.stringify(card._id) === JSON.stringify(listCard._id)
+                  ) {
+                    modifiedCardIndex = index
+                  }
+                })
+                list.cards.splice(modifiedCardIndex, 1, card)
+                list.save((err, list) => {
                   if (err) {
                     console.error(err)
                     next(err)
                   }
-                  let modifiedListIndex
-                  board.lists.forEach((boardList, index) => {
-                    if (
-                      JSON.stringify(list._id) === JSON.stringify(boardList._id)
-                    ) {
-                      modifiedListIndex = index
-                    }
-                  })
-                  board.lists.splice(modifiedListIndex, 1, list)
-                  board.save((err, board) => {
+                  Board.findById(currentUser.activeBoard, (err, board) => {
                     if (err) {
                       console.error(err)
                       next(err)
                     }
-                    User.findById(currentUser._id, (err, user) => {
+                    let modifiedListIndex
+                    board.lists.forEach((boardList, index) => {
+                      if (
+                        JSON.stringify(list._id) ===
+                        JSON.stringify(boardList._id)
+                      ) {
+                        modifiedListIndex = index
+                      }
+                    })
+                    board.lists.splice(modifiedListIndex, 1, list)
+                    board.save((err, board) => {
                       if (err) {
                         console.error(err)
                         next(err)
                       }
-                      let modifiedBoardIndex
-                      user.boards.forEach((userBoard, index) => {
-                        if (
-                          JSON.stringify(board._id) ===
-                          JSON.stringify(userBoard._id)
-                        ) {
-                          modifiedBoardIndex = index
-                        }
-                      })
-                      user.save((err, user) => {
+                      User.findById(currentUser._id, (err, user) => {
                         if (err) {
                           console.error(err)
                           next(err)
                         }
-                        let userAndLists = { user: user, lists: board.lists }
-                        return res.json(userAndLists)
+                        let modifiedBoardIndex
+                        user.boards.forEach((userBoard, index) => {
+                          if (
+                            JSON.stringify(board._id) ===
+                            JSON.stringify(userBoard._id)
+                          ) {
+                            modifiedBoardIndex = index
+                          }
+                        })
+                        user.save((err, user) => {
+                          if (err) {
+                            console.error(err)
+                            next(err)
+                          }
+                          let userAndLists = { user: user, lists: board.lists }
+                          return res.json(userAndLists)
+                        })
                       })
                     })
                   })
@@ -1358,7 +1363,7 @@ router.post('/addChecklistItem', (req, res, next) => {
             })
           })
         })
-      })
+      }
     })
   })
 })

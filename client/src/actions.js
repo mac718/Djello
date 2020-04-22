@@ -431,7 +431,7 @@ export function changeName(e, componentName, route) {
     let currentUser = state.currentUser
     console.log('route ' + route)
     fetch(route, {
-      method: 'POST',
+      method: 'PUT',
       body: JSON.stringify({ componentName, currentUser, listId }),
       headers: {
         'Content-type': 'application/json',
@@ -554,7 +554,7 @@ export function updateCardTitle(e, listId, cardId) {
     dispatch(switchToCardTItleDisplay())
 
     fetch('/updateCardTitle', {
-      method: 'POST',
+      method: 'PUT',
       body: JSON.stringify({
         cardTitle,
         currentUser,
@@ -592,7 +592,7 @@ export function updateCardDescription(e) {
       e.target.parentElement.parentElement.parentElement.firstChild.id
 
     fetch('/updateCardDescription', {
-      method: 'POST',
+      method: 'PUT',
       body: JSON.stringify({
         cardDescription,
         currentUser,
@@ -632,7 +632,7 @@ export function addMemberToCard(e) {
         .parentElement.parentElement.parentElement.firstChild.id
 
     fetch('/addMemberToCard', {
-      method: 'POST',
+      method: 'PUT',
       body: JSON.stringify({
         memberUsername,
         currentUser,
@@ -843,7 +843,7 @@ export function onDragEnd(result) {
     })
 
     fetch('/updateListAfterDnD', {
-      method: 'POST',
+      method: 'PUT',
       body: JSON.stringify({
         currentUser,
         destination,
@@ -929,8 +929,15 @@ export function addChecklistItem(e) {
         return res.json()
       })
       .then(json => {
-        dispatch(updateActiveBoardLists(json.lists))
-        dispatch(updateCurrentUser(json.user))
+        if (json.error) {
+          alert(
+            'Uh oh, something went wrong: ' +
+              JSON.stringify(json.error.message),
+          )
+        } else {
+          dispatch(updateActiveBoardLists(json.lists))
+          dispatch(updateCurrentUser(json.user))
+        }
       })
       .catch(err => {
         console.log(err)
