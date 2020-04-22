@@ -121,7 +121,7 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         showCardDescriptionForm: true,
-        attributeType: 'description',
+        cardDescription: '',
       }
     case Actions.SWITCH_TO_CARD_DESCRIPTION_DISPLAY:
       return {
