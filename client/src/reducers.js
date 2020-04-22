@@ -32,6 +32,7 @@ const initialState = {
   showMemberListDropdown: false,
   checklistItem: '',
   showDeleteListWarningModal: false,
+  showDeleteBoardWarningModal: false,
 }
 
 export function djello(state = initialState, action) {
@@ -228,6 +229,16 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         showDeleteListWarningModal: false,
+      }
+    case Actions.SHOW_DELETE_BOARD_WARNING_MODAL:
+      return {
+        ...state,
+        showDeleteBoardWarningModal: action.boardId,
+      }
+    case Actions.CLOSE_DELETE_BOARD_WARNING_MODAL:
+      return {
+        ...state,
+        showDeleteBoardWarningModal: false,
       }
     default:
       return state

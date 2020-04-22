@@ -9,6 +9,9 @@ const Show = ({
   handleDeleteBoard,
   handleActiveBoardSwitch,
   redirect,
+  handleShowDeleteBoardWarningModal,
+  handleCloseDeleteBoardWarningModal,
+  showDeleteBoardWarningModal,
 }) => {
   console.log('active ' + JSON.stringify(currentUser))
   let boards = []
@@ -48,6 +51,44 @@ const Show = ({
   if (redirect === '/login') {
     return <Redirect to={redirect} />
   }
+
+  let deleteBoardWarningModalClasses = showDeleteBoardWarningModal
+    ? 'modal is-active'
+    : 'modal'
+
+  let deleteBoardWarningModal = (
+    <div class={deleteBoardWarningModalClasses}>
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div className="box">
+          <p>
+            This action will permantly delete this list. Are you sure you want
+            to proceed?
+          </p>
+          <div className="field is-grouped">
+            <div className="control">
+              <button
+                className="button is-primary is-light"
+                onClick={() => handleDeleteBoard(currentUser.activeBoard)}
+              >
+                Yes, delete the list
+              </button>
+            </div>
+            <div className="control">
+              <button
+                className="button is-danger is-light"
+                onClick={handleCloseDeleteBoardWarningModal}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+  )
+
   return (
     <div className="show has-background-white-bis">
       <div>
@@ -96,7 +137,7 @@ const Show = ({
                 <button
                   className="button is-danger is-light delete-board-button"
                   title="delete current board"
-                  onClick={handleDeleteBoard}
+                  onClick={handleShowDeleteBoardWarningModal}
                 >
                   <span className="icon is-small">
                     <i className="fas fa-minus-circle"></i>
@@ -120,6 +161,7 @@ const Show = ({
       </div>
 
       <div className="current-board">{activeBoard}</div>
+      {deleteBoardWarningModal}
     </div>
   )
 }

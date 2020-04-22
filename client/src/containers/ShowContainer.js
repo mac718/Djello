@@ -7,6 +7,8 @@ import {
   deleteBoard,
   switchActiveBoard,
   redirectAfterLogout,
+  showDeleteBoardWarningModal,
+  closeDeleteBoardWarningModal,
 } from '../actions'
 
 class ShowContainer extends Component {
@@ -18,6 +20,9 @@ class ShowContainer extends Component {
       handleDeleteBoard,
       handleActiveBoardSwitch,
       redirect,
+      handleShowDeleteBoardWarningModal,
+      handleCloseDeleteBoardWarningModal,
+      showDeleteBoardWarningModal,
     } = this.props
     return (
       <Show
@@ -27,6 +32,9 @@ class ShowContainer extends Component {
         currentUser={currentUser}
         handleActiveBoardSwitch={handleActiveBoardSwitch}
         redirect={redirect}
+        handleShowDeleteBoardWarningModal={handleShowDeleteBoardWarningModal}
+        handleCloseDeleteBoardWarningModal={handleCloseDeleteBoardWarningModal}
+        showDeleteBoardWarningModal={showDeleteBoardWarningModal}
       />
     )
   }
@@ -36,6 +44,7 @@ const mapStateToProps = state => {
   return {
     currentUser: state.currentUser,
     redirect: state.redirect,
+    showDeleteBoardWarningModal: state.showDeleteBoardWarningModal,
   }
 }
 const mapDispatchToProps = dispatch => {
@@ -48,12 +57,21 @@ const mapDispatchToProps = dispatch => {
       dispatch(createBoard(e))
     },
 
-    handleDeleteBoard: e => {
-      dispatch(deleteBoard(e))
+    handleDeleteBoard: boardId => {
+      dispatch(deleteBoard(boardId))
+      dispatch(closeDeleteBoardWarningModal())
     },
 
     handleActiveBoardSwitch: e => {
       dispatch(switchActiveBoard(e))
+    },
+
+    handleShowDeleteBoardWarningModal: boardId => {
+      dispatch(showDeleteBoardWarningModal(boardId))
+    },
+
+    handleCloseDeleteBoardWarningModal: () => {
+      dispatch(closeDeleteBoardWarningModal())
     },
   }
 }

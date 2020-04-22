@@ -40,6 +40,9 @@ export const ACTIVATE_MEMBER_LIST_DROPDOWN = 'ACTIVATE_MEMBER_LIST_DROPDOWN'
 export const EDIT_CHECKLIST_ITEM_FORM = 'EDIT_CHECKLIST_ITEM_FORM'
 export const SHOW_DELETE_LIST_WARNING_MODAL = 'SHOW_DELETE_LIST_WARNING_MODAL'
 export const CLOSE_DELETE_LIST_WARNING_MODAL = 'CLOSE_DELETE_LIST_WARNING_MODAL'
+export const SHOW_DELETE_BOARD_WARNING_MODAL = 'SHOW_DELETE_BOARD_WARNING_MODAL'
+export const CLOSE_DELETE_BOARD_WARNING_MODAL =
+  'CLOSE_DELETE_BOARD_WARNING_MODAL'
 
 export function getDataRequest() {
   return {
@@ -270,6 +273,19 @@ export function closeDeleteListWarningModal() {
   }
 }
 
+export function showDeleteBoardWarningModal(boardId) {
+  return {
+    type: SHOW_DELETE_BOARD_WARNING_MODAL,
+    boardId,
+  }
+}
+
+export function closeDeleteBoardWarningModal() {
+  return {
+    type: CLOSE_DELETE_BOARD_WARNING_MODAL,
+  }
+}
+
 //handles register and login
 export function handleSubmit(e, route) {
   return (dispatch, getState) => {
@@ -405,11 +421,11 @@ export function deleteList(listId) {
   }
 }
 
-export function deleteBoard(e) {
+export function deleteBoard(id) {
   return (dispatch, getState) => {
     console.log('butts')
     let state = getState()
-    let id = state.currentUser.activeBoard
+    //let id = state.currentUser.activeBoard
     fetch('/deleteBoard', {
       method: 'DELETE',
       body: JSON.stringify({ board: id }),

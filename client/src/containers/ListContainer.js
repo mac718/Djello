@@ -63,6 +63,7 @@ const mapDispatchToProps = dispatch => {
   return {
     deleteList: listId => {
       dispatch(deleteList(listId))
+      dispatch(closeDeleteListWarningModal())
     },
 
     handleListNameChange: e => {

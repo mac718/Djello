@@ -66,7 +66,7 @@ const List = ({
     ? 'modal is-active'
     : 'modal'
 
-  let deleteWarningModal = (
+  let deleteListWarningModal = (
     <div class={deleteListWarningModalClasses}>
       <div class="modal-background"></div>
       <div class="modal-content">
@@ -75,18 +75,24 @@ const List = ({
             This action will permantly delete this list. Are you sure you want
             to proceed?
           </p>
-          <button
-            className="button is-primary is-light"
-            onClick={() => deleteList(id)}
-          >
-            Yes, delete the list
-          </button>
-          <button
-            className="button is-danger is-light"
-            onClick={handleCloseDeleteListWarningModal}
-          >
-            Cancel
-          </button>
+          <div className="field is-grouped">
+            <div className="control">
+              <button
+                className="button is-primary is-light"
+                onClick={() => deleteList(id)}
+              >
+                Yes, delete the list
+              </button>
+            </div>
+            <div className="control">
+              <button
+                className="button is-danger is-light"
+                onClick={handleCloseDeleteListWarningModal}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <button class="modal-close is-large" aria-label="close"></button>
@@ -133,7 +139,7 @@ const List = ({
               + Add Card
             </button>
           </div>
-          {deleteWarningModal}
+          {deleteListWarningModal}
         </div>
       )}
     </Droppable>
