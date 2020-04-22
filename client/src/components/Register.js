@@ -13,7 +13,7 @@ const Register = ({ onSubmit, onUsernameChange, onPasswordChange }) => {
                 className="input"
                 name="username"
                 type="email"
-                placeholder="Username"
+                placeholder="email"
                 onChange={onUsernameChange}
               />
             </div>

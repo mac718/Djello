@@ -84,6 +84,7 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         showCardForm: action.listId,
+        cardTitle: '',
       }
     case Actions.HIDE_CARD_FORM:
       return {

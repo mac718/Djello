@@ -558,7 +558,12 @@ router.post('/updateCardTitle', (req, res, next) => {
       next(err)
     }
 
-    card.title = cardTitle
+    if (cardTitle === '') {
+      card.title = 'Title...'
+    } else {
+      card.title = cardTitle
+    }
+
     let date = new Date()
     card.activity = [
       ...card.activity,
@@ -1722,7 +1727,7 @@ router.delete('/deleteChecklist', (req, res, next) => {
 })
 
 router.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname, './client/public/index.html'), function(
+  res.sendFile(path.join(__dirname, './client/build/index.html'), function(
     err,
   ) {
     if (err) {

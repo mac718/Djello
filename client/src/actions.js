@@ -547,6 +547,7 @@ export function updateCardTitle(e, listId, cardId) {
     dispatch(toggleIsLoading())
 
     let state = getState()
+    console.log(state.cardTitle)
     //let attributeType = state.attributeType
     let cardTitle = state.cardTitle
     let currentUser = state.currentUser
