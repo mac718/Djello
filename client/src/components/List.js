@@ -14,6 +14,9 @@ const List = ({
   showCardForm,
   handleTitleChange,
   lists,
+  showDeleteListWarningModal,
+  handleShowDeleteListWarningModal,
+  handleCloseDeleteListWarningModal,
 }) => {
   let currentBoard = currentUser.boards.filter(board => {
     return board._id === currentUser.activeBoard
@@ -59,6 +62,37 @@ const List = ({
     cardForm = null
   }
 
+  let deleteListWarningModalClasses = showDeleteListWarningModal
+    ? 'modal is-active'
+    : 'modal'
+
+  let deleteWarningModal = (
+    <div class={deleteListWarningModalClasses}>
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div className="box">
+          <p>
+            This action will permantly delete this list. Are you sure you want
+            to proceed?
+          </p>
+          <button
+            className="button is-primary is-light"
+            onClick={() => deleteList(id)}
+          >
+            Yes, delete the list
+          </button>
+          <button
+            className="button is-danger is-light"
+            onClick={handleCloseDeleteListWarningModal}
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+      <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+  )
+
   return (
     <Droppable droppableId={id}>
       {(provided, snapshot) => (
@@ -72,7 +106,10 @@ const List = ({
               : 'list tile is-2 is-vertical is-parent notification is-light'
           }
         >
-          <a className="delete-list delete is-medium" onClick={deleteList}></a>
+          <a
+            className="delete-list delete is-medium"
+            onClick={handleShowDeleteListWarningModal}
+          ></a>
           <div id={id}>
             <div className="list-name is-size-5">
               <input
@@ -96,6 +133,7 @@ const List = ({
               + Add Card
             </button>
           </div>
+          {deleteWarningModal}
         </div>
       )}
     </Droppable>

@@ -8,6 +8,8 @@ import {
   saveCard,
   hideCardForm,
   changeTitle,
+  showDeleteListWarningModal,
+  closeDeleteListWarningModal,
 } from '../actions'
 
 class ListContainer extends Component {
@@ -23,6 +25,9 @@ class ListContainer extends Component {
       showCardForm,
       handleTitleChange,
       lists,
+      showDeleteListWarningModal,
+      handleShowDeleteListWarningModal,
+      handleCloseDeleteListWarningModal,
     } = this.props
     return (
       <List
@@ -36,6 +41,9 @@ class ListContainer extends Component {
         showCardForm={showCardForm}
         handleTitleChange={handleTitleChange}
         lists={lists}
+        showDeleteListWarningModal={showDeleteListWarningModal}
+        handleShowDeleteListWarningModal={handleShowDeleteListWarningModal}
+        handleCloseDeleteListWarningModal={handleCloseDeleteListWarningModal}
       />
     )
   }
@@ -47,13 +55,14 @@ const mapStateToProps = (state, ownProps) => {
     currentUser: state.currentUser,
     showCardForm: state.showCardForm,
     lists: state.activeBoardLists,
+    showDeleteListWarningModal: state.showDeleteListWarningModal,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    deleteList: e => {
-      dispatch(deleteList(e))
+    deleteList: listId => {
+      dispatch(deleteList(listId))
     },
 
     handleListNameChange: e => {
@@ -78,6 +87,14 @@ const mapDispatchToProps = dispatch => {
       let title = e.target.value
       console.log(title)
       dispatch(changeTitle(title))
+    },
+
+    handleShowDeleteListWarningModal: listId => {
+      dispatch(showDeleteListWarningModal(listId))
+    },
+
+    handleCloseDeleteListWarningModal: () => {
+      dispatch(closeDeleteListWarningModal())
     },
   }
 }

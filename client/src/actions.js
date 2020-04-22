@@ -38,6 +38,8 @@ export const HIDE_CHECKLIST_TITLE_FORM = 'HIDE_CHECKLIST_TITLE_FORM'
 export const OPEN_MEMBER_DROPDOWN = 'OPEN_MEMBER_DROPDOWN'
 export const ACTIVATE_MEMBER_LIST_DROPDOWN = 'ACTIVATE_MEMBER_LIST_DROPDOWN'
 export const EDIT_CHECKLIST_ITEM_FORM = 'EDIT_CHECKLIST_ITEM_FORM'
+export const SHOW_DELETE_LIST_WARNING_MODAL = 'SHOW_DELETE_LIST_WARNING_MODAL'
+export const CLOSE_DELETE_LIST_WARNING_MODAL = 'CLOSE_DELETE_LIST_WARNING_MODAL'
 
 export function getDataRequest() {
   return {
@@ -255,6 +257,19 @@ export function editChecklistItemForm(item) {
   }
 }
 
+export function showDeleteListWarningModal(listId) {
+  return {
+    type: SHOW_DELETE_LIST_WARNING_MODAL,
+    listId,
+  }
+}
+
+export function closeDeleteListWarningModal() {
+  return {
+    type: CLOSE_DELETE_LIST_WARNING_MODAL,
+  }
+}
+
 //handles register and login
 export function handleSubmit(e, route) {
   return (dispatch, getState) => {
@@ -363,9 +378,9 @@ export function createList(e) {
   }
 }
 
-export function deleteList(e) {
+export function deleteList(listId) {
   return dispatch => {
-    let listId = e.target.parentElement.id
+    //let listId = e.target.parentElement.id
     fetch('/deleteList', {
       method: 'DELETE',
       body: JSON.stringify({ listId }),

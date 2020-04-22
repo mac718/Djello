@@ -194,6 +194,25 @@ const CardModal = ({
     ? 'dropdown member-dropdown is-right is-active'
     : 'dropdown member-dropdown is-right'
 
+  let deleteWarningModal = (
+    <div class="modal is-active">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div className="box">
+          <p>
+            This action will permantly delete this list. Are you sure you want
+            to proceed?
+          </p>
+          <button className="button is-primary is-light">
+            Yes, delete the list
+          </button>
+          <button className="button is-danger is-light">Cancel</button>
+        </div>
+      </div>
+      <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+  )
+
   return (
     <div id={cardId} className={classes}>
       <span id={listId}></span>
@@ -305,6 +324,7 @@ const CardModal = ({
           </div>
         </div>
       </div>
+      {deleteWarningModal}
     </div>
   )
 }
