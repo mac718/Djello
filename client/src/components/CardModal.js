@@ -51,6 +51,9 @@ const CardModal = ({
   handleActivateMemberListDropdown,
   showMemberListDropdown,
   handleEditChecklistItemForm,
+  handleShowDeleteCardWarningModal,
+  handleCloseDeleteCardWarningModal,
+  showDeleteCardWarningModal,
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
@@ -194,22 +197,50 @@ const CardModal = ({
     ? 'dropdown member-dropdown is-right is-active'
     : 'dropdown member-dropdown is-right'
 
-  let deleteWarningModal = (
-    <div class="modal is-active">
+  console.log(showDeleteCardWarningModal)
+
+  let deleteCardWarningModalClasses
+  if (showDeleteCardWarningModal === cardId) {
+    console.log('hallo!!')
+    deleteCardWarningModalClasses = 'modal delete-warning is-active'
+  } else {
+    deleteCardWarningModalClasses = 'modal delete-warning'
+  }
+
+  let deleteCardWarningModal = (
+    <div class={deleteCardWarningModalClasses}>
       <div class="modal-background"></div>
       <div class="modal-content">
         <div className="box">
-          <p>
-            This action will permantly delete this list. Are you sure you want
+          <p className="delete-warning-message">
+            This action will permantly delete this card. Are you sure you want
             to proceed?
           </p>
-          <button className="button is-primary is-light">
-            Yes, delete the list
-          </button>
-          <button className="button is-danger is-light">Cancel</button>
+          <div className="field is-grouped delete-warning-buttons">
+            <div className="control">
+              <button
+                className="button is-primary is-light"
+                onClick={() => handleDeleteCard(cardId, listId)}
+              >
+                Yep, I'm done with this card!
+              </button>
+            </div>
+            <div className="control">
+              <button
+                className="button is-danger is-light"
+                onClick={handleCloseDeleteCardWarningModal}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-      <button class="modal-close is-large" aria-label="close"></button>
+      <button
+        class="modal-close is-large"
+        aria-label="close"
+        onClick={handleCloseDeleteCardWarningModal}
+      ></button>
     </div>
   )
 
@@ -287,7 +318,7 @@ const CardModal = ({
           </div>
           <button
             className="button is-link is-light is-outlined mark-as-complete"
-            onClick={handleDeleteCard}
+            onClick={() => handleShowDeleteCardWarningModal(cardId)}
           >
             <span className="icon is-small">
               <i className="fas fa-check"></i>
@@ -324,7 +355,7 @@ const CardModal = ({
           </div>
         </div>
       </div>
-      {deleteWarningModal}
+      {deleteCardWarningModal}
     </div>
   )
 }

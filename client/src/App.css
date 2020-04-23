@@ -270,6 +270,17 @@
   width: 100% !important;
 }
 
+.delete-warning-buttons {
+  justify-content: center !important;
+  margin-top: 10px;
+}
+
+.delete-warning-message {
+  text-align: center;
+  font-size: large;
+  font-weight: 800;
+}
+
 @media screen and (max-width: 1750px) {
   .modal-card {
     width: 60%;

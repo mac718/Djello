@@ -51,6 +51,9 @@ const Card = ({
   handleActivateMemberListDropdown,
   showMemberListDropdown,
   handleEditChecklistItemForm,
+  handleShowDeleteCardWarningModal,
+  handleCloseDeleteCardWarningModal,
+  showDeleteCardWarningModal,
 }) => {
   let classes
   if (activeCardModal === cardId) {
@@ -157,6 +160,11 @@ const Card = ({
             handleEditCardTitle={handleEditCardTitle}
             handleEditCardDescription={handleEditCardDescription}
             handleEditChecklistItemForm={handleEditChecklistItemForm}
+            handleShowDeleteCardWarningModal={handleShowDeleteCardWarningModal}
+            handleCloseDeleteCardWarningModal={
+              handleCloseDeleteCardWarningModal
+            }
+            showDeleteCardWarningModal={showDeleteCardWarningModal}
           />
         </div>
       )}

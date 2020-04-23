@@ -43,6 +43,8 @@ export const CLOSE_DELETE_LIST_WARNING_MODAL = 'CLOSE_DELETE_LIST_WARNING_MODAL'
 export const SHOW_DELETE_BOARD_WARNING_MODAL = 'SHOW_DELETE_BOARD_WARNING_MODAL'
 export const CLOSE_DELETE_BOARD_WARNING_MODAL =
   'CLOSE_DELETE_BOARD_WARNING_MODAL'
+export const SHOW_DELETE_CARD_WARNING_MODAL = 'SHOW_DELETE_CARD_WARNING_MODAL'
+export const CLOSE_DELETE_CARD_WARNING_MODAL = 'CLOSE_DELETE_CARD_WARNING_MODAL'
 
 export function getDataRequest() {
   return {
@@ -283,6 +285,19 @@ export function showDeleteBoardWarningModal(boardId) {
 export function closeDeleteBoardWarningModal() {
   return {
     type: CLOSE_DELETE_BOARD_WARNING_MODAL,
+  }
+}
+
+export function showDeleteCardWarningModal(cardId) {
+  return {
+    type: SHOW_DELETE_CARD_WARNING_MODAL,
+    cardId,
+  }
+}
+
+export function closeDeleteCardWarningModal() {
+  return {
+    type: CLOSE_DELETE_CARD_WARNING_MODAL,
   }
 }
 

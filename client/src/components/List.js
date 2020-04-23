@@ -63,22 +63,22 @@ const List = ({
   }
 
   let deleteListWarningModalClasses = showDeleteListWarningModal
-    ? 'modal is-active'
-    : 'modal'
+    ? 'modal delete-warning is-active'
+    : 'modal delete-warning'
 
   let deleteListWarningModal = (
     <div class={deleteListWarningModalClasses}>
       <div class="modal-background"></div>
       <div class="modal-content">
         <div className="box">
-          <p>
+          <p className="delete-warning-message">
             This action will permantly delete this list. Are you sure you want
             to proceed?
           </p>
-          <div className="field is-grouped">
+          <div className="field is-grouped delete-warning-buttons">
             <div className="control">
               <button
-                className="button is-primary is-light"
+                className="button is-primary is-light is-outlined"
                 onClick={() => deleteList(id)}
               >
                 Yes, delete the list
@@ -86,7 +86,7 @@ const List = ({
             </div>
             <div className="control">
               <button
-                className="button is-danger is-light"
+                className="button is-danger is-light is-outlined"
                 onClick={handleCloseDeleteListWarningModal}
               >
                 Cancel
@@ -95,7 +95,11 @@ const List = ({
           </div>
         </div>
       </div>
-      <button class="modal-close is-large" aria-label="close"></button>
+      <button
+        class="modal-close is-large"
+        aria-label="close"
+        onClick={handleCloseDeleteListWarningModal}
+      ></button>
     </div>
   )
 

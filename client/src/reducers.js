@@ -33,6 +33,7 @@ const initialState = {
   checklistItem: '',
   showDeleteListWarningModal: false,
   showDeleteBoardWarningModal: false,
+  showDeleteCardWarningModal: false,
 }
 
 export function djello(state = initialState, action) {
@@ -239,6 +240,16 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         showDeleteBoardWarningModal: false,
+      }
+    case Actions.SHOW_DELETE_CARD_WARNING_MODAL:
+      return {
+        ...state,
+        showDeleteCardWarningModal: action.cardId,
+      }
+    case Actions.CLOSE_DELETE_CARD_WARNING_MODAL:
+      return {
+        ...state,
+        showDeleteCardWarningModal: false,
       }
     default:
       return state

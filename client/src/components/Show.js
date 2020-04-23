@@ -53,30 +53,30 @@ const Show = ({
   }
 
   let deleteBoardWarningModalClasses = showDeleteBoardWarningModal
-    ? 'modal is-active'
-    : 'modal'
+    ? 'modal delete-warning is-active'
+    : 'modal delete-warning'
 
   let deleteBoardWarningModal = (
     <div class={deleteBoardWarningModalClasses}>
       <div class="modal-background"></div>
       <div class="modal-content">
         <div className="box">
-          <p>
-            This action will permantly delete this list. Are you sure you want
+          <p className="delete-warning-message">
+            This action will permantly delete this board. Are you sure you want
             to proceed?
           </p>
-          <div className="field is-grouped">
+          <div className="field is-grouped delete-warning-buttons">
             <div className="control">
               <button
-                className="button is-primary is-light"
+                className="button is-primary is-light is-outlined"
                 onClick={() => handleDeleteBoard(currentUser.activeBoard)}
               >
-                Yes, delete the list
+                Yes, delete the board
               </button>
             </div>
             <div className="control">
               <button
-                className="button is-danger is-light"
+                className="button is-danger is-light is-outlined"
                 onClick={handleCloseDeleteBoardWarningModal}
               >
                 Cancel
@@ -85,7 +85,11 @@ const Show = ({
           </div>
         </div>
       </div>
-      <button class="modal-close is-large" aria-label="close"></button>
+      <button
+        class="modal-close is-large"
+        aria-label="close"
+        onClick={handleCloseDeleteBoardWarningModal}
+      ></button>
     </div>
   )
 

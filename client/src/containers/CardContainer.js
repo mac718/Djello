@@ -30,6 +30,8 @@ import {
   openMemberDropdown,
   activateMemberListDropdown,
   editChecklistItemForm,
+  showDeleteCardWarningModal,
+  closeDeleteCardWarningModal,
 } from '../actions'
 
 class CardContainer extends Component {
@@ -82,6 +84,9 @@ class CardContainer extends Component {
       handleEditCardTitle,
       handleEditCardDescription,
       handleEditChecklistItemForm,
+      handleShowDeleteCardWarningModal,
+      handleCloseDeleteCardWarningModal,
+      showDeleteCardWarningModal,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -134,6 +139,9 @@ class CardContainer extends Component {
         handleActivateMemberListDropdown={handleActivateMemberListDropdown}
         ShowMemberListDropdown={ShowMemberListDropdown}
         handleEditChecklistItemForm={handleEditChecklistItemForm}
+        handleShowDeleteCardWarningModal={handleShowDeleteCardWarningModal}
+        handleCloseDeleteCardWarningModal={handleCloseDeleteCardWarningModal}
+        showDeleteCardWarningModal={showDeleteCardWarningModal}
       />
     )
   }
@@ -164,6 +172,7 @@ const mapStateToProps = (state, ownProps) => {
     showChecklistTitleForm: state.showChecklistTitleForm,
     showAddMemberDropdown: state.showAddMemberDropdown,
     showMemberListDropdown: state.showMemberListDropdown,
+    showDeleteCardWarningModal: state.showDeleteCardWarningModal,
     // currentCard: currentList.cards.filter(listCard => {
     //   return JSON.stringify(listCard._id) === JSON.stringify(ownProps.cardId)
     // })[0],
@@ -178,12 +187,12 @@ const mapDispatchToProps = dispatch => {
       dispatch(getAllUsers())
     },
 
-    handleDeleteCard: e => {
-      let cardId =
-        e.target.parentElement.parentElement.parentElement.parentElement.id
-      let listId =
-        e.target.parentElement.parentElement.parentElement.parentElement
-          .firstChild.id
+    handleDeleteCard: (cardId, listId) => {
+      // let cardId =
+      //   e.target.parentElement.parentElement.parentElement.parentElement.id
+      // let listId =
+      //   e.target.parentElement.parentElement.parentElement.parentElement
+      //     .firstChild.id
       dispatch(deleteCard(cardId, listId))
       dispatch(changeActiveCardModal())
     },
@@ -315,6 +324,15 @@ const mapDispatchToProps = dispatch => {
     handleEditChecklistItemForm: e => {
       let item = e.target.value
       dispatch(editChecklistItemForm(item))
+    },
+
+    handleShowDeleteCardWarningModal: cardId => {
+      dispatch(showDeleteCardWarningModal(cardId))
+    },
+
+    handleCloseDeleteCardWarningModal: e => {
+      e.preventDefault()
+      dispatch(closeDeleteCardWarningModal())
     },
   }
 }
