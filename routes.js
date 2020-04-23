@@ -16,7 +16,7 @@ router.get('/checkForCurrentUser', withAuth, (req, res) => {
 
 router.post(
   '/login',
-  function(req, res, next) {
+  function (req, res, next) {
     console.log(req.body)
     console.log('================')
     next()
@@ -25,7 +25,7 @@ router.post(
   (req, res) => {
     console.log('logged in', req.user)
     res.cookie('user', req.user.username)
-    let activeBoard = req.user.boards.filter(board => {
+    let activeBoard = req.user.boards.filter((board) => {
       return JSON.stringify(board._id) === JSON.stringify(req.user.activeBoard)
     })[0]
     var info = {
@@ -58,7 +58,7 @@ router.post('/register', (req, res, next) => {
   })
 
   user.save((err, user) => {
-    req.login(user, function(err) {
+    req.login(user, function (err) {
       console.log(user)
       if (err) {
         console.log(err)
@@ -122,7 +122,7 @@ router.delete('/deleteBoard', (req, res, next) => {
   let board = req.body['board']
   console.log('delete board ' + board)
 
-  Board.findById(board, err => {
+  Board.findById(board, (err) => {
     if (err) {
       console.log(err)
       res.status(401).json({ error: err })
@@ -137,12 +137,12 @@ router.delete('/deleteBoard', (req, res, next) => {
       user[0].boards.splice(index, 1)
       user[0].activeBoard = null
       console.log(user[0])
-      user[0].save(err => {
+      user[0].save((err) => {
         if (err) {
           console.log(err)
           res.status(401).json({ error: err })
         }
-        Board.findByIdAndDelete(board, err => {
+        Board.findByIdAndDelete(board, (err) => {
           if (err) console.log(err)
           console.log('hoooray ' + board)
           res.json(user[0])
@@ -184,7 +184,7 @@ router.post('/createList', (req, res, next) => {
             console.error(err)
             return next(err)
           }
-          let oldBoard = user[0].boards.filter(json => {
+          let oldBoard = user[0].boards.filter((json) => {
             return JSON.stringify(json._id) == JSON.stringify(board._id)
           })[0]
 
@@ -212,48 +212,51 @@ router.post('/createList', (req, res, next) => {
 })
 
 router.delete('/deleteList', (req, res, next) => {
-  let listId = req.body.listId
-  List.deleteOne({ id: listId }, err => {
+  let { listId, currentUser } = req.body
+
+  List.findById(listId, (err, list) => {
     if (err) {
       console.log(err)
       next(err)
     }
-    User.find({ username: req.cookies.user }, (err, user) => {
+    list.delete((err, list) => {
       if (err) {
         console.log(err)
         next(err)
       }
-      Board.find({ _id: user[0].activeBoard }, (err, board) => {
-        console.log('modify ' + JSON.stringify(board))
+      Board.findById(currentUser.activeBoard, (err, board) => {
         if (err) {
           console.log(err)
           next(err)
         }
-        let deletedList = board[0].lists.filter(list => {
-          return list._id === listId
+        let deletedListIndex
+        board.lists.forEach((boardList, index) => {
+          if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
+            deletedListIndex = index
+          }
         })
-        let deletedListIndex = board[0].lists.indexOf(deletedList)
-        board[0].lists.splice(deletedListIndex, 1)
-        board[0].save((err, board) => {
+        board.lists.splice(deletedListIndex, 1)
+        board.save((err, board) => {
           if (err) {
             console.log(err)
             next(err)
           }
-          let modifiedBoard = user[0].boards.filter(board => {
-            return (
-              JSON.stringify(board._id) === JSON.stringify(user[0].activeBoard)
-            )
-          })
-          let modifiedBoardIndex = user[0].boards.indexOf(modifiedBoard)
-          user[0].boards.splice(modifiedBoardIndex, 1, board)
-          user[0].save((err, user) => {
-            if (err) {
-              console.log(err)
-              next(err)
-            }
-            console.log('user[0] ' + user)
-            let userAndLists = { user: user, lists: board.lists }
-            return res.json(userAndLists)
+          User.findById(currentUser._id, (err, user) => {
+            let modifiedBoardIndex
+            user.boards.forEach((userBoard, index) => {
+              if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
+                modifiedBoardIndex = index
+              }
+            })
+            user.boards.splice(modifiedBoardIndex, 1, board)
+            user.save((err, user) => {
+              if (err) {
+                console.log(err)
+                next(err)
+              }
+              let userAndLists = { user: user, lists: board.lists }
+              return res.json(userAndLists)
+            })
           })
         })
       })
@@ -447,7 +450,7 @@ router.delete('/deleteCard', (req, res, next) => {
       console.error(err)
       next(err)
     }
-    card.delete(err => {
+    card.delete((err) => {
       if (err) {
         console.error(err)
         next(err)
@@ -870,7 +873,7 @@ router.post('/addBoardToMember', (req, res, next) => {
       }
       let repeat = false
       console.log(user)
-      user[0].boards.forEach(userBoard => {
+      user[0].boards.forEach((userBoard) => {
         if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
           repeat = true
         }
@@ -879,7 +882,7 @@ router.post('/addBoardToMember', (req, res, next) => {
         user[0].boards = [...user[0].boards, board]
       }
 
-      user[0].save(err => {
+      user[0].save((err) => {
         if (err) {
           console.error(err)
           next(err)
@@ -1731,8 +1734,8 @@ router.delete('/deleteChecklist', (req, res, next) => {
   })
 })
 
-router.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname, './client/build/index.html'), function(
+router.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, './client/build/index.html'), function (
     err,
   ) {
     if (err) {

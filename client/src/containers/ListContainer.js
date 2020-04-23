@@ -59,38 +59,38 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    deleteList: listId => {
+    deleteList: (listId) => {
       dispatch(deleteList(listId))
       dispatch(closeDeleteListWarningModal())
     },
 
-    handleListNameChange: e => {
+    handleListNameChange: (e) => {
       let componentName = e.target.value
       dispatch(changeName(e, componentName, '/changeListName'))
     },
 
-    handleShowCardForm: e => {
+    handleShowCardForm: (e) => {
       let listId = e.target.parentElement.id
       dispatch(createCardForm(listId))
     },
 
-    handleHideCardForm: e => {
+    handleHideCardForm: (e) => {
       dispatch(hideCardForm())
     },
 
-    handleSaveCard: e => {
+    handleSaveCard: (e) => {
       dispatch(saveCard(e))
     },
 
-    handleTitleChange: e => {
+    handleTitleChange: (e) => {
       let title = e.target.value
       console.log(title)
       dispatch(changeTitle(title))
     },
 
-    handleShowDeleteListWarningModal: listId => {
+    handleShowDeleteListWarningModal: (listId) => {
       dispatch(showDeleteListWarningModal(listId))
     },
 

@@ -317,7 +317,7 @@ export function handleSubmit(e, route) {
         'Content-type': 'application/json',
       },
     })
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
           console.log('Yay!')
           return res.json()
@@ -328,11 +328,11 @@ export function handleSubmit(e, route) {
           throw error
         }
       })
-      .then(json => {
+      .then((json) => {
         console.log('submit ' + JSON.stringify(json))
         dispatch(getDataSuccess(json))
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         dispatch(getDataFailure(err))
         alert('Error logging in')
@@ -341,12 +341,12 @@ export function handleSubmit(e, route) {
 }
 
 export function handleLogOut(e) {
-  return dispatch => {
+  return (dispatch) => {
     fetch('/logout', {
       method: 'POST',
     })
       .then(() => dispatch(redirectAfterLogout()))
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         dispatch(getDataFailure(err))
         alert('Error logging out')
@@ -365,15 +365,15 @@ export function createBoard(e) {
         'Content-type': 'application/json',
       },
     })
-      .then(res => {
+      .then((res) => {
         console.log(res)
         return res.json()
       })
-      .then(json => {
+      .then((json) => {
         dispatch(updateActiveBoardLists(json.lists))
         dispatch(updateCurrentUser(json.user))
       })
-      .catch(err => {
+      .catch((err) => {
         alert(err)
       })
   }
@@ -391,17 +391,17 @@ export function createList(e) {
         'Content-type': 'application/json',
       },
     })
-      .then(res => {
+      .then((res) => {
         console.log('json ' + JSON.stringify(res))
         return res.json()
       })
-      .then(json => {
+      .then((json) => {
         console.log('json ' + JSON.stringify(json))
         //console.log('create list ' + JSON.stringify(json))
         dispatch(updateActiveBoardLists(json.lists))
         dispatch(updateCurrentUser(json.user))
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         dispatch(getDataFailure(err))
         alert('hmmmm')
@@ -410,25 +410,27 @@ export function createList(e) {
 }
 
 export function deleteList(listId) {
-  return dispatch => {
+  return (dispatch, getState) => {
     //let listId = e.target.parentElement.id
+    let state = getState()
+    let currentUser = state.currentUser
     fetch('/deleteList', {
       method: 'DELETE',
-      body: JSON.stringify({ listId }),
+      body: JSON.stringify({ listId, currentUser }),
       headers: {
         'content-type': 'application/json',
       },
     })
-      .then(res => {
+      .then((res) => {
         console.log(JSON.stringify(res))
         return res.json()
       })
-      .then(json => {
+      .then((json) => {
         console.log(json)
         dispatch(updateActiveBoardLists(json.lists))
         dispatch(updateCurrentUser(json.user))
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         dispatch(getDataFailure(err))
         alert('hmmmm')
@@ -448,14 +450,14 @@ export function deleteBoard(id) {
         'Content-type': 'application/json',
       },
     })
-      .then(res => {
+      .then((res) => {
         return res.json()
       })
-      .then(json => {
+      .then((json) => {
         console.log('current User ' + JSON.stringify(json))
         dispatch(updateCurrentUser(json))
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         dispatch(getDataFailure(err))
         alert('hmmmm')
@@ -483,10 +485,10 @@ export function changeName(e, componentName, route) {
         'Content-type': 'application/json',
       },
     })
-      .then(res => {
+      .then((res) => {
         return res.json()
       })
-      .then(json => {
+      .then((json) => {
         console.log('change name ' + JSON.stringify(json))
         if (route === '/changeListName') {
           dispatch(updateActiveBoardLists(json.lists))
@@ -495,7 +497,7 @@ export function changeName(e, componentName, route) {
           dispatch(updateCurrentUser(json.user))
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         alert('hmmmm')
       })
@@ -518,10 +520,10 @@ export function saveCard(e) {
         'Content-type': 'application/json',
       },
     })
-      .then(res => {
+      .then((res) => {
         return res.json()
       })
-      .then(json => {
+      .then((json) => {
         if (json.error) {
           alert(JSON.stringify(json.error))
         } else {
@@ -529,7 +531,7 @@ export function saveCard(e) {
           dispatch(updateCurrentUser(json.user))
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         alert('hmmmm')
       })
@@ -547,14 +549,14 @@ export function deleteCard(cardId, listId) {
         'Content-type': 'application/json',
       },
     })
-      .then(res => {
+      .then((res) => {
         return res.json()
       })
-      .then(json => {
+      .then((json) => {
         dispatch(updateActiveBoardLists(json.lists))
         dispatch(updateCurrentUser(json.user))
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         alert('hmmmm')
       })
@@ -574,14 +576,14 @@ export function switchActiveBoard(e) {
         'Content-type': 'application/json',
       },
     })
-      .then(res => {
+      .then((res) => {
         return res.json()
       })
-      .then(json => {
+      .then((json) => {
         dispatch(updateActiveBoardLists(json.lists))
         dispatch(updateCurrentUser(json.user))
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         alert('hmmmm')
       })
@@ -611,14 +613,14 @@ export function updateCardTitle(e, listId, cardId) {
         'Content-type': 'application/json',
       },
     })
-      .then(res => {
+      .then((res) => {
         return res.json()
       })
-      .then(json => {
+      .then((json) => {
         dispatch(updateActiveBoardLists(json.lists))
         dispatch(updateCurrentUser(json.user))
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         alert('hmmmm')
       })
@@ -649,14 +651,14 @@ export function updateCardDescription(e) {
         'Content-type': 'application/json',
       },
     })
-      .then(res => {
+      .then((res) => {
         return res.json()
       })
-      .then(json => {
+      .then((json) => {
         dispatch(updateActiveBoardLists(json.lists))
         dispatch(updateCurrentUser(json.user))
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         alert('hmmmm')
       })
@@ -689,7 +691,7 @@ export function addMemberToCard(e) {
         'Content-type': 'application/json',
       },
     })
-      .then(res => {
+      .then((res) => {
         console.log('res ' + JSON.stringify(res))
         if (res.status === 500) {
           return res
@@ -697,7 +699,7 @@ export function addMemberToCard(e) {
           return res.json()
         }
       })
-      .then(json => {
+      .then((json) => {
         if (json.status === 500) {
           dispatch(displayDuplicateMemberWarning())
         } else {
@@ -706,7 +708,7 @@ export function addMemberToCard(e) {
           dispatch(addBoardToMember())
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         alert('hmmmm')
       })
@@ -714,15 +716,15 @@ export function addMemberToCard(e) {
 }
 
 export function getAllUsers() {
-  return dispatch => {
+  return (dispatch) => {
     fetch('/getAllUsers')
-      .then(res => {
+      .then((res) => {
         return res.json()
       })
-      .then(json => {
+      .then((json) => {
         dispatch(updateUserList(json))
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         alert('hmmmm')
       })
@@ -741,7 +743,7 @@ export function addBoardToMember() {
       headers: {
         'Content-type': 'application/json',
       },
-    }).catch(err => {
+    }).catch((err) => {
       console.log(err)
       alert('hmmmm')
     })
@@ -769,14 +771,14 @@ export function deleteMemberFromCard(e) {
         'Content-type': 'application/json',
       },
     })
-      .then(res => {
+      .then((res) => {
         return res.json()
       })
-      .then(json => {
+      .then((json) => {
         dispatch(updateActiveBoardLists(json.lists))
         dispatch(updateCurrentUser(json.user))
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         alert('hmmmm')
       })
@@ -794,7 +796,7 @@ export function changeActiveBoardLists(
   sourceListIndex,
   destinationListIndex,
 ) {
-  return dispatch => {
+  return (dispatch) => {
     let lists = stateLists
 
     if (
@@ -834,7 +836,7 @@ export function onDragEnd(result) {
     let draggedCard
 
     Promise.resolve(
-      (sourceList = lists.filter(list => {
+      (sourceList = lists.filter((list) => {
         return JSON.stringify(source.droppableId) === JSON.stringify(list._id)
       })[0]),
       lists.forEach((list, index) => {
@@ -842,7 +844,7 @@ export function onDragEnd(result) {
           sourceListIndex = index
         }
       }),
-      (destinationList = lists.filter(list => {
+      (destinationList = lists.filter((list) => {
         return (
           JSON.stringify(destination.droppableId) === JSON.stringify(list._id)
         )
@@ -854,7 +856,7 @@ export function onDragEnd(result) {
           destinationListIndex = index
         }
       }),
-      (draggedCard = sourceList.cards.filter(card => {
+      (draggedCard = sourceList.cards.filter((card) => {
         return JSON.stringify(card._id) === JSON.stringify(draggableId)
       })[0]),
     ).then(() => {
@@ -900,13 +902,13 @@ export function onDragEnd(result) {
         'Content-type': 'application/json',
       },
     })
-      .then(res => {
+      .then((res) => {
         return res.json()
       })
-      .then(json => {
+      .then((json) => {
         dispatch(updateCurrentUser(json))
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         alert('hmmmm')
       })
@@ -932,14 +934,14 @@ export function createChecklist(cardId, listId) {
         'Content-type': 'application/json',
       },
     })
-      .then(res => {
+      .then((res) => {
         return res.json()
       })
-      .then(json => {
+      .then((json) => {
         dispatch(updateActiveBoardLists(json.lists))
         dispatch(updateCurrentUser(json.user))
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         alert('hmmmm')
       })
@@ -971,10 +973,10 @@ export function addChecklistItem(e) {
         'Content-type': 'application/json',
       },
     })
-      .then(res => {
+      .then((res) => {
         return res.json()
       })
-      .then(json => {
+      .then((json) => {
         if (json.error) {
           alert(
             'Uh oh, something went wrong: ' +
@@ -985,7 +987,7 @@ export function addChecklistItem(e) {
           dispatch(updateCurrentUser(json.user))
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         alert('hmmmm')
       })
@@ -1022,14 +1024,14 @@ export function checkChecklistItem(e) {
         'Content-type': 'application/json',
       },
     })
-      .then(res => {
+      .then((res) => {
         return res.json()
       })
-      .then(json => {
+      .then((json) => {
         dispatch(updateActiveBoardLists(json.lists))
         dispatch(updateCurrentUser(json.user))
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         alert('hmmmm')
       })
@@ -1055,14 +1057,14 @@ export function updateChecklistTitle(e) {
         'Content-type': 'application/json',
       },
     })
-      .then(res => {
+      .then((res) => {
         return res.json()
       })
-      .then(json => {
+      .then((json) => {
         dispatch(updateActiveBoardLists(json.lists))
         dispatch(updateCurrentUser(json.user))
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         alert('hmmmm')
       })
@@ -1088,14 +1090,14 @@ export function deleteChecklist(e) {
         'Content-type': 'application/json',
       },
     })
-      .then(res => {
+      .then((res) => {
         return res.json()
       })
-      .then(json => {
+      .then((json) => {
         dispatch(updateActiveBoardLists(json.lists))
         dispatch(updateCurrentUser(json.user))
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         alert('hmmmm')
       })

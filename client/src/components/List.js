@@ -18,14 +18,15 @@ const List = ({
   handleShowDeleteListWarningModal,
   handleCloseDeleteListWarningModal,
 }) => {
-  let currentBoard = currentUser.boards.filter(board => {
+  let currentBoard = currentUser.boards.filter((board) => {
     return board._id === currentUser.activeBoard
   })
 
   console.log(currentBoard)
   console.log('list lists ' + JSON.stringify(lists))
+  console.log(id)
 
-  let currentList = lists.filter(list => {
+  let currentList = lists.filter((list) => {
     return id === list._id
   })
 
@@ -62,9 +63,13 @@ const List = ({
     cardForm = null
   }
 
-  let deleteListWarningModalClasses = showDeleteListWarningModal
-    ? 'modal delete-warning is-active'
-    : 'modal delete-warning'
+  let deleteListWarningModalClasses
+  if (showDeleteListWarningModal === id) {
+    console.log(id)
+    deleteListWarningModalClasses = 'modal delete-warning is-active'
+  } else {
+    deleteListWarningModalClasses = 'modal delete-warning'
+  }
 
   let deleteListWarningModal = (
     <div class={deleteListWarningModalClasses}>
@@ -81,7 +86,7 @@ const List = ({
                 className="button is-primary is-light is-outlined"
                 onClick={() => deleteList(id)}
               >
-                Yes, delete the list
+                Yes, delete the list {id}
               </button>
             </div>
             <div className="control">
@@ -118,7 +123,7 @@ const List = ({
         >
           <a
             className="delete-list delete is-medium"
-            onClick={handleShowDeleteListWarningModal}
+            onClick={() => handleShowDeleteListWarningModal(id)}
           ></a>
           <div id={id}>
             <div className="list-name is-size-5">
