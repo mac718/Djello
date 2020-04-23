@@ -18,7 +18,7 @@ const Show = ({
   let boardNames = []
   let dropdownItems
   if (currentUser.boards) {
-    boards = currentUser.boards.map(board => {
+    boards = currentUser.boards.map((board) => {
       boardNames.push(board.name)
       return <BoardContainer />
     })
@@ -40,7 +40,7 @@ const Show = ({
 
   var activeBoard
   if (currentUser.activeBoard) {
-    activeBoard = currentUser.boards.filter(board => {
+    activeBoard = currentUser.boards.filter((board) => {
       return board._id === currentUser.activeBoard
     })
   }
@@ -52,9 +52,12 @@ const Show = ({
     return <Redirect to={redirect} />
   }
 
-  let deleteBoardWarningModalClasses = showDeleteBoardWarningModal
-    ? 'modal delete-warning is-active'
-    : 'modal delete-warning'
+  let deleteBoardWarningModalClasses
+  if (showDeleteBoardWarningModal === currentUser.activeBoard) {
+    deleteBoardWarningModalClasses = 'modal delete-warning is-active'
+  } else {
+    deleteBoardWarningModalClasses = 'modal delete-warning'
+  }
 
   let deleteBoardWarningModal = (
     <div class={deleteBoardWarningModalClasses}>
@@ -141,7 +144,9 @@ const Show = ({
                 <button
                   className="button is-danger is-light delete-board-button"
                   title="delete current board"
-                  onClick={handleShowDeleteBoardWarningModal}
+                  onClick={() =>
+                    handleShowDeleteBoardWarningModal(currentUser.activeBoard)
+                  }
                 >
                   <span className="icon is-small">
                     <i className="fas fa-minus-circle"></i>
