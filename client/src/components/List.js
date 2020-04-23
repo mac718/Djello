@@ -86,7 +86,7 @@ const List = ({
                 className="button is-primary is-light is-outlined"
                 onClick={() => deleteList(id)}
               >
-                Yes, delete the list {id}
+                Yes, delete the list
               </button>
             </div>
             <div className="control">
