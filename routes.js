@@ -418,7 +418,7 @@ router.post('/createCard', (req, res, next) => {
   let title = req.body.title
   let currentUser = req.body.currentUser
   let date = new Date()
-  let activity = [`${currentUser.username} creaated card at ${date.toString()}`]
+  let activity = [`${currentUser.username} created card at ${date.toString()}`]
   let card = new Card({ title, activity })
 
   card.save((err, card) => {

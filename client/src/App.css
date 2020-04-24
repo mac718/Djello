@@ -1,6 +1,12 @@
-#login,
-#register {
-  margin: 50px auto;
+.login-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.login-djello {
+  text-align: center;
 }
 
 .form-card {
