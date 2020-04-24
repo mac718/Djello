@@ -450,10 +450,11 @@ export function deleteBoard(id) {
   return (dispatch, getState) => {
     console.log('butts')
     let state = getState()
+    let currentUser = state.currentUser
     //let id = state.currentUser.activeBoard
     fetch('/deleteBoard', {
       method: 'DELETE',
-      body: JSON.stringify({ board: id }),
+      body: JSON.stringify({ board: id, currentUser }),
       headers: {
         'Content-type': 'application/json',
       },
@@ -462,8 +463,12 @@ export function deleteBoard(id) {
         return res.json()
       })
       .then((json) => {
-        console.log('current User ' + JSON.stringify(json))
-        dispatch(updateCurrentUser(json))
+        if (json.error) {
+          alert(JSON.stringify(json.error))
+        } else {
+          console.log('current User ' + JSON.stringify(json))
+          dispatch(updateCurrentUser(json))
+        }
       })
       .catch((err) => {
         console.log(err)

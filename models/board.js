@@ -5,6 +5,7 @@ const BoardSchema = new Schema(
   {
     name: { type: String },
     lists: { type: Array, required: true },
+    members: { type: Array },
   },
   { timestamps: true },
 )

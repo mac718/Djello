@@ -119,37 +119,90 @@ router.post('/createBoard', (req, res, next) => {
 })
 
 router.delete('/deleteBoard', (req, res, next) => {
-  let board = req.body['board']
-  console.log('delete board ' + board)
+  let boardId = req.body.board
+  let currentUser = req.body.currentUser
 
-  Board.findById(board, (err) => {
+  Board.findById(boardId, (err, board) => {
     if (err) {
       console.log(err)
       res.status(401).json({ error: err })
     }
-    User.find({ username: req.cookies['user'] }, (err, user) => {
-      console.log('jser ' + user[0].boards)
+    board.delete((err, board) => {
       if (err) {
         console.log(err)
         res.status(401).json({ error: err })
       }
-      let index = user[0].boards.indexOf(board)
-      user[0].boards.splice(index, 1)
-      user[0].activeBoard = null
-      console.log(user[0])
-      user[0].save((err) => {
+      board.members.forEach((member) => {
+        User.find({ username: member }, (err, user) => {
+          let deletedBoardIndex
+          user[0].boards.forEach((userBoard, index) => {
+            if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
+              deletedBoardIndex = index
+            }
+          })
+          user[0].boards.splice(deletedBoardIndex, 1)
+          user[0].save((err) => {
+            if (err) {
+              console.log(err)
+              res.status(401).json({ error: err })
+            }
+          })
+        })
+      })
+      User.findById(currentUser._id, (err, user) => {
         if (err) {
           console.log(err)
           res.status(401).json({ error: err })
         }
-        Board.findByIdAndDelete(board, (err) => {
-          if (err) console.log(err)
-          console.log('hoooray ' + board)
-          res.json(user[0])
+        if (board.members.includes(user.username)) {
+          let deletedBoardIndex
+          user.boards.forEach((userBoard, index) => {
+            if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
+              deletedBoardIndex = index
+            }
+          })
+          user.boards.splice(deletedBoardIndex, 1)
+        }
+        user.save((err, user) => {
+          if (err) {
+            console.log(err)
+            res.status(401).json({ error: err })
+          }
+          let userAndLists = { user: user, lists: board.lists }
+          return res.json(userAndLists)
         })
       })
     })
   })
+
+  // Board.findById(board, (err) => {
+  //   if (err) {
+  //     console.log(err)
+  //     res.status(401).json({ error: err })
+  //   }
+  //   User.find({ username: req.cookies['user'] }, (err, user) => {
+  //     console.log('jser ' + user[0].boards)
+  //     if (err) {
+  //       console.log(err)
+  //       res.status(401).json({ error: err })
+  //     }
+  //     let index = user[0].boards.indexOf(board)
+  //     user[0].boards.splice(index, 1)
+  //     user[0].activeBoard = null
+  //     console.log(user[0])
+  //     user[0].save((err) => {
+  //       if (err) {
+  //         console.log(err)
+  //         res.status(401).json({ error: err })
+  //       }
+  //       Board.findByIdAndDelete(board, (err) => {
+  //         if (err) console.log(err)
+  //         console.log('hoooray ' + board)
+  //         res.json(user[0])
+  //       })
+  //     })
+  //   })
+  // })
 })
 
 router.post('/createList', (req, res, next) => {
@@ -551,7 +604,6 @@ router.patch('/switchActiveBoard', (req, res, next) => {
   })
 })
 
-//handles updates card title, card description, and card members list
 router.put('/updateCardTitle', (req, res, next) => {
   let { listId, cardId, cardTitle, currentUser } = req.body
 
@@ -797,6 +849,7 @@ router.put('/addMemberToCard', (req, res, next) => {
               console.error(err)
               next(err)
             }
+            board.members = [...board.members, memberUsername]
             let modifiedListIndex
             board.lists.forEach((boardList, index) => {
               if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
