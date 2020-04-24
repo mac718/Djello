@@ -45,6 +45,7 @@ export const CLOSE_DELETE_BOARD_WARNING_MODAL =
   'CLOSE_DELETE_BOARD_WARNING_MODAL'
 export const SHOW_DELETE_CARD_WARNING_MODAL = 'SHOW_DELETE_CARD_WARNING_MODAL'
 export const CLOSE_DELETE_CARD_WARNING_MODAL = 'CLOSE_DELETE_CARD_WARNING_MODAL'
+export const EDIT_CHECKLIST_TITLE_FORM = 'EDIT_CHECKLIST_TITLE_FORM'
 
 export function getDataRequest() {
   return {
@@ -298,6 +299,13 @@ export function showDeleteCardWarningModal(cardId) {
 export function closeDeleteCardWarningModal() {
   return {
     type: CLOSE_DELETE_CARD_WARNING_MODAL,
+  }
+}
+
+export function editChecklistTitleForm(checklistTitle) {
+  return {
+    type: EDIT_CHECKLIST_TITLE_FORM,
+    checklistTitle,
   }
 }
 
@@ -1048,7 +1056,7 @@ export function updateChecklistTitle(e) {
     let listId =
       e.target.parentElement.parentElement.parentElement.parentElement
         .firstChild.id
-    let title = state.cardAttributeContent
+    let title = state.checklistTitle
 
     fetch('/updateChecklistTitle', {
       method: 'PATCH',

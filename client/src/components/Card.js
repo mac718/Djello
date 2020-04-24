@@ -54,6 +54,7 @@ const Card = ({
   handleShowDeleteCardWarningModal,
   handleCloseDeleteCardWarningModal,
   showDeleteCardWarningModal,
+  handleEditChecklistTitleForm,
 }) => {
   let classes
   if (activeCardModal === cardId) {
@@ -62,7 +63,7 @@ const Card = ({
     classes = `modal ${cardId}`
   }
 
-  let currentBoard = currentUser.boards.filter(board => {
+  let currentBoard = currentUser.boards.filter((board) => {
     return JSON.stringify(board._id) === JSON.stringify(currentUser.activeBoard)
   })[0]
 
@@ -76,12 +77,12 @@ const Card = ({
 
   console.log(JSON.stringify(currentList))
 
-  let currentCard = currentList.cards.filter(listCard => {
+  let currentCard = currentList.cards.filter((listCard) => {
     return JSON.stringify(listCard._id) === JSON.stringify(cardId)
   })[0]
 
   if (currentCard.members) {
-    membersList = currentCard.members.map(member => {
+    membersList = currentCard.members.map((member) => {
       return (
         <div className="member" key={member}>
           {member}
@@ -165,6 +166,7 @@ const Card = ({
               handleCloseDeleteCardWarningModal
             }
             showDeleteCardWarningModal={showDeleteCardWarningModal}
+            handleEditChecklistTitleForm={handleEditChecklistTitleForm}
           />
         </div>
       )}

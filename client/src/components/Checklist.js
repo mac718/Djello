@@ -22,8 +22,9 @@ const Checklist = ({
   handleUpdateChecklistTitle,
   handleDeleteChecklist,
   handleEditChecklistItemForm,
+  handleEditChecklistTitleForm,
 }) => {
-  let listItems = items.map(item => {
+  let listItems = items.map((item) => {
     let labelClasses = item.checked
       ? 'checklist-item-label checked'
       : 'checklist-item-label'
@@ -43,7 +44,7 @@ const Checklist = ({
     )
   })
 
-  let checkedItemLength = items.filter(item => {
+  let checkedItemLength = items.filter((item) => {
     return item.checked
   }).length
 
@@ -77,7 +78,7 @@ const Checklist = ({
     checklistTitleComponent = (
       <ChecklistTitleForm
         title={title}
-        //handleCardAttributeEdit={handleCardAttributeEdit}
+        handleEditChecklistTitleForm={handleEditChecklistTitleForm}
         handleHideChecklistTitleForm={handleHideChecklistTitleForm}
         handleUpdateChecklistTitle={handleUpdateChecklistTitle}
       />

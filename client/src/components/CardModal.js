@@ -54,10 +54,11 @@ const CardModal = ({
   handleShowDeleteCardWarningModal,
   handleCloseDeleteCardWarningModal,
   showDeleteCardWarningModal,
+  handleEditChecklistTitleForm,
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
-  let currentBoard = currentUser.boards.filter(board => {
+  let currentBoard = currentUser.boards.filter((board) => {
     return JSON.stringify(board._id) === JSON.stringify(currentUser.activeBoard)
   })[0]
 
@@ -83,13 +84,13 @@ const CardModal = ({
   // })[0]
 
   if (currentCard.activity) {
-    cardActivity = currentCard.activity.map(action => {
+    cardActivity = currentCard.activity.map((action) => {
       return <li key={action}>{action}</li>
     })
   }
 
   if (currentCard.checklists) {
-    checklists = currentCard.checklists.map(checklist => {
+    checklists = currentCard.checklists.map((checklist) => {
       return (
         <Checklist
           items={checklist.items}
@@ -109,6 +110,7 @@ const CardModal = ({
           handleUpdateChecklistTitle={handleUpdateChecklistTitle}
           handleDeleteChecklist={handleDeleteChecklist}
           handleEditChecklistItemForm={handleEditChecklistItemForm}
+          handleEditChecklistTitleForm={handleEditChecklistTitleForm}
         />
       )
     })
@@ -151,7 +153,7 @@ const CardModal = ({
     ? descriptionForm
     : descriptionDisplay
 
-  addedMembersList = currentCard.members.map(member => {
+  addedMembersList = currentCard.members.map((member) => {
     return (
       <li className="member" key={member}>
         <div className="member-username">{member}</div>
@@ -163,7 +165,7 @@ const CardModal = ({
   })
 
   if (members) {
-    memberList = members.map(member => {
+    memberList = members.map((member) => {
       return (
         <a
           href="#"

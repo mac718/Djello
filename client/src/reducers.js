@@ -34,6 +34,7 @@ const initialState = {
   showDeleteListWarningModal: false,
   showDeleteBoardWarningModal: false,
   showDeleteCardWarningModal: false,
+  checklistTitle: '',
 }
 
 export function djello(state = initialState, action) {
@@ -250,6 +251,11 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         showDeleteCardWarningModal: false,
+      }
+    case Actions.EDIT_CHECKLIST_TITLE_FORM:
+      return {
+        ...state,
+        checklistTitle: action.checklistTitle,
       }
     default:
       return state

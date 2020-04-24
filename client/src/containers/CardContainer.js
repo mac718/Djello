@@ -32,6 +32,7 @@ import {
   editChecklistItemForm,
   showDeleteCardWarningModal,
   closeDeleteCardWarningModal,
+  editChecklistTitleForm,
 } from '../actions'
 
 class CardContainer extends Component {
@@ -87,6 +88,7 @@ class CardContainer extends Component {
       handleShowDeleteCardWarningModal,
       handleCloseDeleteCardWarningModal,
       showDeleteCardWarningModal,
+      handleEditChecklistTitleForm,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -142,6 +144,7 @@ class CardContainer extends Component {
         handleShowDeleteCardWarningModal={handleShowDeleteCardWarningModal}
         handleCloseDeleteCardWarningModal={handleCloseDeleteCardWarningModal}
         showDeleteCardWarningModal={showDeleteCardWarningModal}
+        handleEditChecklistTitleForm={handleEditChecklistTitleForm}
       />
     )
   }
@@ -165,7 +168,7 @@ const mapStateToProps = (state, ownProps) => {
     showDuplicateMemberWarning: state.showDuplicateMemberWarning,
     index: ownProps.index,
     lists: state.activeBoardLists,
-    currentList: (currentList = state.activeBoardLists.filter(boardList => {
+    currentList: (currentList = state.activeBoardLists.filter((boardList) => {
       return JSON.stringify(boardList._id) === JSON.stringify(ownProps.listId)
     })[0]),
     showChecklistItemForm: state.showChecklistItemForm,
@@ -179,9 +182,9 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    handleActiveCardModal: e => {
+    handleActiveCardModal: (e) => {
       let id = e.target.parentElement.id
       dispatch(changeActiveCardModal(id))
       dispatch(getAllUsers())
@@ -197,7 +200,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(changeActiveCardModal())
     },
 
-    handleUpdateCardTitle: e => {
+    handleUpdateCardTitle: (e) => {
       e.preventDefault()
       let cardId =
         e.target.parentElement.parentElement.parentElement.parentElement.id
@@ -207,12 +210,12 @@ const mapDispatchToProps = dispatch => {
       dispatch(updateCardTitle(e, listId, cardId))
     },
 
-    handleUpdateCardDescription: e => {
+    handleUpdateCardDescription: (e) => {
       e.preventDefault()
       dispatch(updateCardDescription(e))
     },
 
-    handleAddMemberToCard: e => {
+    handleAddMemberToCard: (e) => {
       e.preventDefault()
       dispatch(addMemberToCard(e))
     },
@@ -225,12 +228,12 @@ const mapDispatchToProps = dispatch => {
       dispatch(switchToCardDescriptionDisplay())
     },
 
-    handleEditCardTitle: e => {
+    handleEditCardTitle: (e) => {
       let title = e.target.value
       dispatch(editCardTitle(title))
     },
 
-    handleEditCardDescription: e => {
+    handleEditCardDescription: (e) => {
       let description = e.target.value
       dispatch(editCardDescription(description))
     },
@@ -243,7 +246,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(switchToCardTItleDisplay())
     },
 
-    handleSelectMemberFromDropdown: e => {
+    handleSelectMemberFromDropdown: (e) => {
       let member = e.target.innerHTML
       //document.getElementById('dropdown-selection').innerHTML = member
       dispatch(selectMemberFromDropdown(member))
@@ -254,11 +257,11 @@ const mapDispatchToProps = dispatch => {
       dispatch(closeDuplicateMemberWarning())
     },
 
-    handleDeleteMemberFromCard: e => {
+    handleDeleteMemberFromCard: (e) => {
       dispatch(deleteMemberFromCard(e))
     },
 
-    handleShowAddItemForm: e => {
+    handleShowAddItemForm: (e) => {
       let checklistId = e.target.parentElement.id
       dispatch(showAddItemForm(checklistId))
     },
@@ -279,35 +282,35 @@ const mapDispatchToProps = dispatch => {
       dispatch(createChecklist(cardId, listId))
     },
 
-    handleAddChecklistItem: e => {
+    handleAddChecklistItem: (e) => {
       e.preventDefault()
       dispatch(addChecklistItem(e))
       dispatch(hideAddItemForm())
     },
 
-    handleCheckItem: e => {
+    handleCheckItem: (e) => {
       console.log(e.target.parentElement.id)
       dispatch(checkChecklistItem(e))
     },
 
-    handleDisplayChecklistTitleForm: e => {
+    handleDisplayChecklistTitleForm: (e) => {
       console.log(e.target.parentElement.id)
       let checklistId = e.target.parentElement.id
       dispatch(displayChecklistTitleForm(checklistId))
     },
 
-    handleHideChecklistTitleForm: e => {
+    handleHideChecklistTitleForm: (e) => {
       e.preventDefault()
       dispatch(HideChecklistTitleForm())
     },
 
-    handleUpdateChecklistTitle: e => {
+    handleUpdateChecklistTitle: (e) => {
       e.preventDefault()
       dispatch(HideChecklistTitleForm())
       dispatch(updateChecklistTitle(e))
     },
 
-    handleDeleteChecklist: e => {
+    handleDeleteChecklist: (e) => {
       e.preventDefault()
       console.log(e.target.parentElement.parentElement.parentElement.id)
       dispatch(deleteChecklist(e))
@@ -321,16 +324,21 @@ const mapDispatchToProps = dispatch => {
       dispatch(activateMemberListDropdown())
     },
 
-    handleEditChecklistItemForm: e => {
+    handleEditChecklistItemForm: (e) => {
       let item = e.target.value
       dispatch(editChecklistItemForm(item))
     },
 
-    handleShowDeleteCardWarningModal: cardId => {
+    handleEditChecklistTitleForm: (e) => {
+      let checklistTitle = e.target.value
+      dispatch(editChecklistTitleForm(checklistTitle))
+    },
+
+    handleShowDeleteCardWarningModal: (cardId) => {
       dispatch(showDeleteCardWarningModal(cardId))
     },
 
-    handleCloseDeleteCardWarningModal: e => {
+    handleCloseDeleteCardWarningModal: (e) => {
       e.preventDefault()
       dispatch(closeDeleteCardWarningModal())
     },

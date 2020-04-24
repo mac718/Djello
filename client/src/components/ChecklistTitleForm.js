@@ -2,9 +2,9 @@ import React from 'react'
 
 const ChecklistTitleForm = ({
   title,
-  handleCardAttributeEdit,
   handleHideChecklistTitleForm,
   handleUpdateChecklistTitle,
+  handleEditChecklistTitleForm,
   checklistId,
   listId,
   cardId,
@@ -14,7 +14,7 @@ const ChecklistTitleForm = ({
       <input
         className="input"
         type="text"
-        onChange={handleCardAttributeEdit}
+        onChange={handleEditChecklistTitleForm}
         defaultValue={title}
       ></input>
       <div id="checklist-title-buttons" className="field is-grouped">
