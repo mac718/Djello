@@ -1,3 +1,4 @@
+require('dotenv').config()
 require('es6-promise').polyfill()
 require('isomorphic-fetch')
 
@@ -38,8 +39,8 @@ const User = require('./models/user')
 const LocalStrategy = require('passport-local').Strategy
 
 passport.use(
-  new LocalStrategy(function(username, password, done) {
-    User.findOne({ username }, function(err, user) {
+  new LocalStrategy(function (username, password, done) {
+    User.findOne({ username }, function (err, user) {
       console.log(user)
       if (err) return done(err)
       if (!user || !user.validPassword(password)) {
@@ -55,12 +56,12 @@ passport.serializeUser((user, done) => {
 })
 
 passport.deserializeUser((user, done) => {
-  User.findById(user.id, function(err, user) {
+  User.findById(user.id, function (err, user) {
     done(err, user)
   })
 })
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.locals.currentUser = req.user
   next()
 })

@@ -9,6 +9,7 @@ const Card = require('./models/card')
 const Checklist = require('./models/checklist')
 const ChecklistItem = require('./models/checklistItem')
 var path = require('path')
+const FileUpload = require('./services/file_upload')
 
 router.get('/checkForCurrentUser', withAuth, (req, res) => {
   res.status(200).send()
@@ -1785,6 +1786,22 @@ router.delete('/deleteChecklist', (req, res, next) => {
       })
     })
   })
+})
+
+const mw = FileUpload.single('photo')
+router.post('/uploadPhoto', mw, (req, res, next) => {
+  console.log(req.body)
+
+  FileUpload.upload({
+    data: req.file.buffer,
+    name: req.file.originalname,
+    mimetype: req.file.mimetype,
+  })
+    .then((data) => {
+      console.log(data)
+      return res.send(data)
+    })
+    .catch(next)
 })
 
 router.get('/*', function (req, res) {

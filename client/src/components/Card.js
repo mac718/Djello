@@ -55,6 +55,10 @@ const Card = ({
   handleCloseDeleteCardWarningModal,
   showDeleteCardWarningModal,
   handleEditChecklistTitleForm,
+  handleToggleAddAttachmentDropdown,
+  handleCloseAddAttachmentDropdown,
+  showAddAttachmentDropdown,
+  handleUploadFile,
 }) => {
   let classes
   if (activeCardModal === cardId) {
@@ -167,6 +171,12 @@ const Card = ({
             }
             showDeleteCardWarningModal={showDeleteCardWarningModal}
             handleEditChecklistTitleForm={handleEditChecklistTitleForm}
+            handleToggleAddAttachmentDropdown={
+              handleToggleAddAttachmentDropdown
+            }
+            handleCloseAddAttachmentDropdown={handleCloseAddAttachmentDropdown}
+            showAddAttachmentDropdown={showAddAttachmentDropdown}
+            handleUploadFile={handleUploadFile}
           />
         </div>
       )}

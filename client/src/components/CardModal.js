@@ -5,6 +5,7 @@ import CardTitleForm from './CardTitleForm'
 import CardTitleDisplay from './CardTitleDisplay'
 import MemberSelectionDropdown from './MemberSelectionDropdown'
 import Checklist from './Checklist'
+import AttachmentForm from './AttachmentForm'
 
 const CardModal = ({
   currentUser,
@@ -55,6 +56,10 @@ const CardModal = ({
   handleCloseDeleteCardWarningModal,
   showDeleteCardWarningModal,
   handleEditChecklistTitleForm,
+  handleToggleAddAttachmentDropdown,
+  handleCloseAddAttachmentDropdown,
+  showAddAttachmentDropdown,
+  handleUploadFile,
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
@@ -246,6 +251,15 @@ const CardModal = ({
     </div>
   )
 
+  let addAttachmentDropdownClasses
+
+  if (showAddAttachmentDropdown === cardId) {
+    addAttachmentDropdownClasses =
+      'dropdown add-attachment-dropdown is-right is-active'
+  } else {
+    addAttachmentDropdownClasses = 'dropdown add-attachment-dropdown is-right'
+  }
+
   return (
     <div id={cardId} className={classes}>
       <span id={listId}></span>
@@ -272,11 +286,11 @@ const CardModal = ({
               onClick={() => handleCreateChecklist(cardId, listId)}
             >
               <span className="icon action-button-icon is-small">
-                <i class="far fa-check-square"></i>
+                <i className="far fa-check-square"></i>
               </span>
               <span>Checklist</span>
             </button>
-            <div class={memberDropdownClasses}>
+            <div className={memberDropdownClasses}>
               <div
                 class="dropdown-trigger member-dropdown-trigger"
                 onClick={handleOpenAddMemberDropdown}
@@ -287,36 +301,35 @@ const CardModal = ({
                   aria-controls="dropdown-menu2"
                 >
                   <span className="icon action-button-icon is-small">
-                    <i class="fas fa-user-plus"></i>
+                    <i className="fas fa-user-plus"></i>
                   </span>
                   <span>Member</span>
                 </button>
               </div>
-              <div class="dropdown-menu" id="dropdown-menu2" role="menu">
-                <div class="dropdown-content">
-                  {memberList}
-                  {/* <div class="dropdown-item"> */}
-                  {/* <MemberSelectionDropdown
-                    members={members}
-                    handleSelectMemberFromDropdown={
-                      handleSelectMemberFromDropdown
-                    }
-                    handleCardAttributeUpdate={handleCardAttributeUpdate}
-                    handleActivateMemberListDropdown={
-                      handleActivateMemberListDropdown
-                    }
-                    showMemberListDropdown={showMemberListDropdown}
-                  /> */}
-                  {/* </div> */}
+              <div className="dropdown-menu" id="dropdown-menu3" role="menu">
+                <div className="dropdown-content">{memberList}</div>
+              </div>
+            </div>
+            <div className={addAttachmentDropdownClasses}>
+              <div className="dropdown-trigger member-dropdown-trigger">
+                <button
+                  className="button is-fullwidth is-light"
+                  aria-haspopup="true"
+                  aria-controls="dropdown-menu3"
+                  onClick={() => handleToggleAddAttachmentDropdown(cardId)}
+                >
+                  <span className="icon action-button-icon is-small">
+                    <i class="fas fa-paperclip"></i>
+                  </span>
+                  <span>Attachment</span>
+                </button>
+              </div>
+              <div className="dropdown-menu" id="dropdown-menu3" role="menu">
+                <div className="dropdown-content">
+                  <AttachmentForm handleUploadFile={handleUploadFile} />
                 </div>
               </div>
             </div>
-            <button className="button is-fullwidth is-light">
-              <span className="icon action-button-icon is-small">
-                <i class="fas fa-paperclip"></i>
-              </span>
-              <span>Attachment</span>
-            </button>
           </div>
           <button
             className="button is-link is-light is-outlined mark-as-complete"

@@ -1,5 +1,7 @@
 import { get } from 'mongoose'
+import { readSync } from 'fs'
 var _ = require('lodash')
+let fs = require('fs')
 
 export const GET_DATA_REQUEST = 'GET_DATA_REQUEST'
 export const GET_DATA_SUCCESS = 'GET_DATA_SUCCESS'
@@ -46,6 +48,8 @@ export const CLOSE_DELETE_BOARD_WARNING_MODAL =
 export const SHOW_DELETE_CARD_WARNING_MODAL = 'SHOW_DELETE_CARD_WARNING_MODAL'
 export const CLOSE_DELETE_CARD_WARNING_MODAL = 'CLOSE_DELETE_CARD_WARNING_MODAL'
 export const EDIT_CHECKLIST_TITLE_FORM = 'EDIT_CHECKLIST_TITLE_FORM'
+export const TOGGLE_ADD_ATTACHMENT_DROPDOWN = 'TOGGLE_ADD_ATTACHMENT_DROPDOWN'
+export const CLOSE_ADD_ATTACHMENT_DROPDOWN = 'CLOSE_ADD_ATTACHMENT_DROPDOWN'
 
 export function getDataRequest() {
   return {
@@ -306,6 +310,19 @@ export function editChecklistTitleForm(checklistTitle) {
   return {
     type: EDIT_CHECKLIST_TITLE_FORM,
     checklistTitle,
+  }
+}
+
+export function toggleAddAttachmentDropdown(cardId) {
+  return {
+    type: TOGGLE_ADD_ATTACHMENT_DROPDOWN,
+    cardId,
+  }
+}
+
+export function closeAddAttachmentDropdown() {
+  return {
+    type: CLOSE_ADD_ATTACHMENT_DROPDOWN,
   }
 }
 
@@ -1113,6 +1130,23 @@ export function deleteChecklist(e) {
       .catch((err) => {
         console.log(err)
         alert('hmmmm')
+      })
+  }
+}
+
+export function uploadFile(files) {
+  return (dispatch, getState) => {
+    let formData = new FormData()
+    formData.append('photo', files[0])
+    fetch('/uploadPhoto', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((res) => {
+        return res
+      })
+      .then((json) => {
+        console.log(json)
       })
   }
 }

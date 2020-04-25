@@ -1,4 +1,5 @@
 import * as Actions from './actions'
+import { stat } from 'fs'
 
 const initialState = {
   username: '',
@@ -35,6 +36,7 @@ const initialState = {
   showDeleteBoardWarningModal: false,
   showDeleteCardWarningModal: false,
   checklistTitle: '',
+  showAddAttachmentDropdown: false,
 }
 
 export function djello(state = initialState, action) {
@@ -256,6 +258,18 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         checklistTitle: action.checklistTitle,
+      }
+    case Actions.TOGGLE_ADD_ATTACHMENT_DROPDOWN:
+      return {
+        ...state,
+        showAddAttachmentDropdown: state.showAddAttachmentDropdown
+          ? false
+          : action.cardId,
+      }
+    case Actions.CLOSE_ADD_ATTACHMENT_DROPDOWN:
+      return {
+        ...state,
+        showAddAttachmentDropdown: false,
       }
     default:
       return state

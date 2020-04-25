@@ -33,6 +33,9 @@ import {
   showDeleteCardWarningModal,
   closeDeleteCardWarningModal,
   editChecklistTitleForm,
+  toggleAddAttachmentDropdown,
+  closeAddAttachmentDropdown,
+  uploadFile,
 } from '../actions'
 
 class CardContainer extends Component {
@@ -89,6 +92,10 @@ class CardContainer extends Component {
       handleCloseDeleteCardWarningModal,
       showDeleteCardWarningModal,
       handleEditChecklistTitleForm,
+      handleToggleAddAttachmentDropdown,
+      handleCloseAddAttachmentDropdown,
+      showAddAttachmentDropdown,
+      handleUploadFile,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -145,6 +152,10 @@ class CardContainer extends Component {
         handleCloseDeleteCardWarningModal={handleCloseDeleteCardWarningModal}
         showDeleteCardWarningModal={showDeleteCardWarningModal}
         handleEditChecklistTitleForm={handleEditChecklistTitleForm}
+        handleToggleAddAttachmentDropdown={handleToggleAddAttachmentDropdown}
+        handleCloseAddAttachmentDropdown={handleCloseAddAttachmentDropdown}
+        showAddAttachmentDropdown={showAddAttachmentDropdown}
+        handleUploadFile={handleUploadFile}
       />
     )
   }
@@ -176,6 +187,7 @@ const mapStateToProps = (state, ownProps) => {
     showAddMemberDropdown: state.showAddMemberDropdown,
     showMemberListDropdown: state.showMemberListDropdown,
     showDeleteCardWarningModal: state.showDeleteCardWarningModal,
+    showAddAttachmentDropdown: state.showAddAttachmentDropdown,
     // currentCard: currentList.cards.filter(listCard => {
     //   return JSON.stringify(listCard._id) === JSON.stringify(ownProps.cardId)
     // })[0],
@@ -341,6 +353,22 @@ const mapDispatchToProps = (dispatch) => {
     handleCloseDeleteCardWarningModal: (e) => {
       e.preventDefault()
       dispatch(closeDeleteCardWarningModal())
+    },
+
+    handleToggleAddAttachmentDropdown: (cardId) => {
+      dispatch(toggleAddAttachmentDropdown(cardId))
+    },
+
+    handleCloseAddAttachmentDropdown: () => {
+      dispatch(closeAddAttachmentDropdown)
+    },
+
+    handleUploadFile: (e) => {
+      e.preventDefault()
+
+      const files = e.target.files
+
+      dispatch(uploadFile(files))
     },
   }
 }
