@@ -260,6 +260,13 @@ const CardModal = ({
     addAttachmentDropdownClasses = 'dropdown add-attachment-dropdown is-right'
   }
 
+  let attachments = null
+  if (currentCard.attachments) {
+    attachments = currentCard.attachments.map((attachment) => {
+      return <img src={attachment} />
+    })
+  }
+
   return (
     <div id={cardId} className={classes}>
       <span id={listId}></span>
@@ -357,14 +364,13 @@ const CardModal = ({
               ></button>
               Member already added to card!
             </div>
-            {/* <MemberSelectionDropdown
-              members={members}
-              handleSelectMemberFromDropdown={handleSelectMemberFromDropdown}
-              handleCardAttributeUpdate={handleCardAttributeUpdate}
-            /> */}
           </div>
           <div className="content addedMembersList-container">
             <ul className="addedMembersList">{addedMembersList}</ul>
+          </div>
+          <div className="attachments">
+            <p className="is-size-4">Attachments</p>
+            {attachments}
           </div>
           <div className="modal-card-footer">
             <p className="is-size-4">Activity</p>

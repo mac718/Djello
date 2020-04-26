@@ -1138,7 +1138,7 @@ export function addAttachmentUrlToCard(url, cardId, listId) {
   return (dispatch, getState) => {
     let state = getState()
     let currentUser = state.currentUser
-
+    console.log(url)
     fetch('/addAttachmentUrlToCard', {
       method: 'POST',
       body: JSON.stringify({ url, cardId, listId, currentUser }),
@@ -1165,6 +1165,7 @@ export function uploadFile(files, cardId, listId) {
       body: formData,
     })
       .then((res) => {
+        console.log('mCres ' + res)
         return res.json()
       })
       .then((json) => {

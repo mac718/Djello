@@ -1877,8 +1877,8 @@ router.post('/uploadPhoto', mw, (req, res, next) => {
     mimetype: req.file.mimetype,
   })
     .then((data) => {
-      console.log(data)
-      return res.json
+      console.log(JSON.stringify(data))
+      return res.json(data)
     })
     .catch(next)
 })
