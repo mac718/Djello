@@ -1134,7 +1134,29 @@ export function deleteChecklist(e) {
   }
 }
 
-export function uploadFile(files) {
+export function addAttachmentUrlToCard(url, cardId, listId) {
+  return (dispatch, getState) => {
+    let state = getState()
+    let currentUser = state.currentUser
+
+    fetch('/addAttachmentUrlToCard', {
+      method: 'POST',
+      body: JSON.stringify({ url, cardId, listId, currentUser }),
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then((res) => {
+        return res.json()
+      })
+      .then((json) => {
+        dispatch(updateCurrentUser(json.user))
+        dispatch(updateActiveBoardLists(json.lists))
+      })
+  }
+}
+
+export function uploadFile(files, cardId, listId) {
   return (dispatch, getState) => {
     let formData = new FormData()
     formData.append('photo', files[0])
@@ -1143,10 +1165,10 @@ export function uploadFile(files) {
       body: formData,
     })
       .then((res) => {
-        return res
+        return res.json()
       })
       .then((json) => {
-        console.log(json)
+        dispatch(addAttachmentUrlToCard(json.url, cardId, listId))
       })
   }
 }

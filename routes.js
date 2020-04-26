@@ -1788,6 +1788,85 @@ router.delete('/deleteChecklist', (req, res, next) => {
   })
 })
 
+router.post('/addAttachmentUrlToCard', (req, res, next) => {
+  let { cardId, listId, url, currentUser } = req.body
+
+  Card.findById(cardId, (err, card) => {
+    if (err) {
+      console.error(err)
+      next(err)
+    }
+    card.attachments = [...card.attachments, url]
+    card.save((err, card) => {
+      if (err) {
+        console.error(err)
+        next(err)
+      }
+      List.findById(listId, (err, list) => {
+        if (err) {
+          console.error(err)
+          next(err)
+        }
+        let modifiedCardIndex
+        list.cards.forEach((listCard, index) => {
+          if (JSON.stringify(listCard._id) === JSON.stringify(card._id)) {
+            modifiedCardIndex = index
+          }
+        })
+        list.cards.splice(modifiedCardIndex, 1, card)
+        list.save((err, list) => {
+          if (err) {
+            console.error(err)
+            next(err)
+          }
+          Board.findById(currentUser.activeBoard, (err, board) => {
+            if (err) {
+              console.error(err)
+              next(err)
+            }
+            let modifiedListIndex
+            board.lists.forEach((boardList, index) => {
+              if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
+                modifiedListIndex = index
+              }
+            })
+            board.lists.splice(modifiedListIndex, 1, list)
+            board.save((err, board) => {
+              if (err) {
+                console.error(err)
+                next(err)
+              }
+              User.findById(currentUser._id, (err, user) => {
+                if (err) {
+                  console.error(err)
+                  next(err)
+                }
+                let modifiedBoardIndex
+                user.boards.forEach((userBoard, index) => {
+                  if (
+                    JSON.stringify(userBoard._id) === JSON.stringify(board._id)
+                  ) {
+                    modifiedBoardIndex = index
+                  }
+                })
+                user.boards.splice(modifiedBoardIndex, 1, board)
+                user.save((err, user) => {
+                  if (err) {
+                    console.error(err)
+                    next(err)
+                  }
+                  let userAndLists = { user: user, lists: board.lists }
+                  return res.json(userAndLists)
+                })
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+})
+
 const mw = FileUpload.single('photo')
 router.post('/uploadPhoto', mw, (req, res, next) => {
   console.log(req.body)
@@ -1799,7 +1878,7 @@ router.post('/uploadPhoto', mw, (req, res, next) => {
   })
     .then((data) => {
       console.log(data)
-      return res.send(data)
+      return res.json
     })
     .catch(next)
 })

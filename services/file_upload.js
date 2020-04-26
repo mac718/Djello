@@ -27,10 +27,6 @@ FileUploader.upload = (file) => {
 
   const filename = path.parse(file.name).name
 
-  //var base64data = new Buffer(file, 'binary')
-
-  //console.log(JSON.stringify(file))
-
   return new Promise((resolve, reject) => {
     const options = {
       Bucket: bucket,
@@ -44,7 +40,7 @@ FileUploader.upload = (file) => {
       } else {
         const photos = require(PHOTO_DATA_PATH)
         const photo = {
-          url: data.location,
+          url: data.Location,
           name: data.key,
         }
         photos[data.key] = photo

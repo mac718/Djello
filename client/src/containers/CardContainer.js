@@ -363,12 +363,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(closeAddAttachmentDropdown)
     },
 
-    handleUploadFile: (e) => {
+    handleUploadFile: (e, cardId, listId) => {
       e.preventDefault()
 
       const files = e.target.files
 
-      dispatch(uploadFile(files))
+      dispatch(uploadFile(files, cardId, listId))
     },
   }
 }

@@ -1,5 +1,20 @@
 {
   "photo-56c0f3b6a377f6fc3a59866af3713f11.jpeg": {
     "name": "photo-56c0f3b6a377f6fc3a59866af3713f11.jpeg"
+  },
+  "curl_bar-a820d4e50b0914b0e821e0f9e963c8a7.jpeg": {
+    "name": "curl_bar-a820d4e50b0914b0e821e0f9e963c8a7.jpeg"
+  },
+  "Maui-522c502de92ad88e970c6813c6659bc4.jpeg": {
+    "url": "https://djello.s3.amazonaws.com/Maui-522c502de92ad88e970c6813c6659bc4.jpeg",
+    "name": "Maui-522c502de92ad88e970c6813c6659bc4.jpeg"
+  },
+  "Maui-a863a6c9a98e0824c0fd7ee113dabba7.jpeg": {
+    "url": "https://djello.s3.amazonaws.com/Maui-a863a6c9a98e0824c0fd7ee113dabba7.jpeg",
+    "name": "Maui-a863a6c9a98e0824c0fd7ee113dabba7.jpeg"
+  },
+  "Maui-df7c60378669d7e0b3dccb381ed99c7b.jpeg": {
+    "url": "https://djello.s3.amazonaws.com/Maui-df7c60378669d7e0b3dccb381ed99c7b.jpeg",
+    "name": "Maui-df7c60378669d7e0b3dccb381ed99c7b.jpeg"
   }
 }

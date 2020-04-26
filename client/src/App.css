@@ -272,7 +272,8 @@
 }
 
 .member-dropdown,
-.member-dropdown-trigger {
+.member-dropdown-trigger,
+.add-attachment-dropdown {
   width: 100% !important;
 }
 
