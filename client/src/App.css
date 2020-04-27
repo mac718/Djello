@@ -296,10 +296,35 @@
 .image-div {
   height: 100px;
   width: 100px;
+  margin: 10px;
+  border-radius: 10px;
 }
 
 .attachment-images {
   display: flex;
+}
+
+.attachment-dropdown-content {
+  width: 350px;
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+}
+
+input[type='file'] {
+  height: 50px;
+}
+
+label[for='attachment'] {
+  text-align: center;
+}
+
+.upload-attachment {
+  display: flex;
+  justify-content: center;
+}
+
+.upload-attachment-button {
+  margin-top: 10px;
 }
 
 @media screen and (max-width: 1750px) {

@@ -362,7 +362,7 @@ const CardModal = ({
                 </button>
               </div>
               <div className="dropdown-menu" id="dropdown-menu3" role="menu">
-                <div className="dropdown-content">
+                <div className="dropdown-content attachment-dropdown-content">
                   <AttachmentForm
                     handleUploadFile={handleUploadFile}
                     cardId={cardId}

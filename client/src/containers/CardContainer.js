@@ -372,7 +372,7 @@ const mapDispatchToProps = (dispatch) => {
     handleUploadFile: (e, cardId, listId) => {
       e.preventDefault()
 
-      const files = e.target.files
+      const files = e.target.firstChild.files
 
       dispatch(uploadFile(files, cardId, listId))
     },
