@@ -97,6 +97,53 @@ const Card = ({
     })
   }
 
+  let totalChecklistItems = 0
+  let checkedChecklistItems = 0
+
+  if (currentCard.checklists) {
+    currentCard.checklists.forEach((checklist) => {
+      totalChecklistItems += checklist.items.length
+
+      checkedChecklistItems += checklist.items.filter((item) => {
+        return item.checked
+      }).length
+    })
+  }
+
+  let checklistIcon
+
+  if (totalChecklistItems > 0) {
+    checklistIcon = (
+      <span className="card-icon has-text-grey">
+        <i class="far fa-check-square"></i> {checkedChecklistItems}/
+        {totalChecklistItems}
+      </span>
+    )
+  } else {
+    checklistIcon = null
+  }
+
+  let totalAttachments = 0
+
+  if (currentCard.attachments) {
+    totalAttachments = currentCard.attachments.length
+  }
+
+  let attachmentIcon
+
+  if (totalAttachments > 0) {
+    attachmentIcon = (
+      <span className="card-icon has-text-grey">
+        <i class="fas fa-paperclip"></i> {totalAttachments}
+      </span>
+    )
+  } else {
+    totalAttachments = null
+  }
+
+  console.log('totalChecklistItems ' + totalChecklistItems)
+  console.log('checkedCheklist ' + checkedChecklistItems)
+
   return (
     <Draggable draggableId={cardId} index={index}>
       {(provided, snapshot) => (
@@ -115,6 +162,9 @@ const Card = ({
           >
             <CardMemberList members={membersList} />
             <div className="card-content task is-hovered">{title}</div>
+            <div className="card-icons">
+              {checklistIcon} {attachmentIcon}
+            </div>
           </div>
           <CardModal
             currentUser={currentUser}

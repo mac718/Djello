@@ -327,6 +327,22 @@ label[for='attachment'] {
   margin-top: 10px;
 }
 
+.card {
+  margin-bottom: 10px;
+}
+
+.card-icons {
+  padding-left: 5px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  display: flex;
+  justify-content: start;
+}
+
+.card-icon {
+  margin-left: 10px;
+}
+
 @media screen and (max-width: 1750px) {
   .modal-card {
     width: 60%;
