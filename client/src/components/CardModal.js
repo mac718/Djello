@@ -60,6 +60,8 @@ const CardModal = ({
   handleCloseAddAttachmentDropdown,
   showAddAttachmentDropdown,
   handleUploadFile,
+  handleOpenAttachmentModal,
+  showAttachmentModal,
 }) => {
   console.log('listId ' + listId)
   console.log('carId ' + cardId)
@@ -263,7 +265,35 @@ const CardModal = ({
   let attachments = null
   if (currentCard.attachments) {
     attachments = currentCard.attachments.map((attachment) => {
-      return <img src={attachment} />
+      console.log(showAttachmentModal)
+      let attachmentModalClasses
+      if (showAttachmentModal === attachment) {
+        attachmentModalClasses = 'modal is-active'
+      } else {
+        attachmentModalClasses = 'modal'
+      }
+      return (
+        <div className="image-div" id={attachment}>
+          <img
+            className="attachment"
+            src={attachment}
+            onClick={handleOpenAttachmentModal}
+          />
+          <div class={attachmentModalClasses}>
+            <div class="modal-background"></div>
+            <div class="modal-content">
+              <p class="image is-4by3">
+                <img src={attachment} alt="" />
+              </p>
+            </div>
+            <button
+              class="modal-close is-large"
+              aria-label="close"
+              onClick={handleOpenAttachmentModal}
+            ></button>
+          </div>
+        </div>
+      )
     })
   }
 
@@ -370,7 +400,7 @@ const CardModal = ({
           </div>
           <div className="attachments">
             <p className="is-size-4">Attachments</p>
-            {attachments}
+            <div className="attachment-images">{attachments}</div>
           </div>
           <div className="modal-card-footer">
             <p className="is-size-4">Activity</p>

@@ -59,6 +59,8 @@ const Card = ({
   handleCloseAddAttachmentDropdown,
   showAddAttachmentDropdown,
   handleUploadFile,
+  handleOpenAttachmentModal,
+  showAttachmentModal,
 }) => {
   let classes
   if (activeCardModal === cardId) {
@@ -177,6 +179,8 @@ const Card = ({
             handleCloseAddAttachmentDropdown={handleCloseAddAttachmentDropdown}
             showAddAttachmentDropdown={showAddAttachmentDropdown}
             handleUploadFile={handleUploadFile}
+            handleOpenAttachmentModal={handleOpenAttachmentModal}
+            showAttachmentModal={showAttachmentModal}
           />
         </div>
       )}

@@ -1791,6 +1791,8 @@ router.delete('/deleteChecklist', (req, res, next) => {
 router.post('/addAttachmentUrlToCard', (req, res, next) => {
   let { cardId, listId, url, currentUser } = req.body
 
+  console.log('myeeerrrp')
+
   Card.findById(cardId, (err, card) => {
     if (err) {
       console.error(err)
@@ -1884,7 +1886,7 @@ router.post('/uploadPhoto', mw, (req, res, next) => {
 })
 
 router.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, './client/build/index.html'), function (
+  res.sendFile(path.join(__dirname, './client/public/index.html'), function (
     err,
   ) {
     if (err) {

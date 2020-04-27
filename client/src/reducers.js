@@ -37,6 +37,7 @@ const initialState = {
   showDeleteCardWarningModal: false,
   checklistTitle: '',
   showAddAttachmentDropdown: false,
+  showAttachmentModal: false,
 }
 
 export function djello(state = initialState, action) {
@@ -270,6 +271,11 @@ export function djello(state = initialState, action) {
       return {
         ...state,
         showAddAttachmentDropdown: false,
+      }
+    case Actions.OPEN_ATTACHEMENT_MODAL:
+      return {
+        ...state,
+        showAttachmentModal: state.showAttachmentModal ? false : action.url,
       }
     default:
       return state

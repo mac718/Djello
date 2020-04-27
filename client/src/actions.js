@@ -1,7 +1,4 @@
-import { get } from 'mongoose'
-import { readSync } from 'fs'
 var _ = require('lodash')
-let fs = require('fs')
 
 export const GET_DATA_REQUEST = 'GET_DATA_REQUEST'
 export const GET_DATA_SUCCESS = 'GET_DATA_SUCCESS'
@@ -50,6 +47,7 @@ export const CLOSE_DELETE_CARD_WARNING_MODAL = 'CLOSE_DELETE_CARD_WARNING_MODAL'
 export const EDIT_CHECKLIST_TITLE_FORM = 'EDIT_CHECKLIST_TITLE_FORM'
 export const TOGGLE_ADD_ATTACHMENT_DROPDOWN = 'TOGGLE_ADD_ATTACHMENT_DROPDOWN'
 export const CLOSE_ADD_ATTACHMENT_DROPDOWN = 'CLOSE_ADD_ATTACHMENT_DROPDOWN'
+export const OPEN_ATTACHEMENT_MODAL = 'OPEN_ATTACHEMENT_MODAL'
 
 export function getDataRequest() {
   return {
@@ -323,6 +321,13 @@ export function toggleAddAttachmentDropdown(cardId) {
 export function closeAddAttachmentDropdown() {
   return {
     type: CLOSE_ADD_ATTACHMENT_DROPDOWN,
+  }
+}
+
+export function openAttachmentModal(url) {
+  return {
+    type: OPEN_ATTACHEMENT_MODAL,
+    url,
   }
 }
 
@@ -1139,17 +1144,21 @@ export function addAttachmentUrlToCard(url, cardId, listId) {
     let state = getState()
     let currentUser = state.currentUser
     console.log(url)
-    fetch('/addAttachmentUrlToCard', {
+    console.log(cardId)
+    console.log(listId)
+    fetch('http://localhost:3000/addAttachmentUrlToCard', {
       method: 'POST',
       body: JSON.stringify({ url, cardId, listId, currentUser }),
       headers: {
-        'content-type': 'application/json',
+        'Content-type': 'application/json',
       },
     })
       .then((res) => {
+        console.log(res)
         return res.json()
       })
       .then((json) => {
+        console.log(JSON.stringify(json))
         dispatch(updateCurrentUser(json.user))
         dispatch(updateActiveBoardLists(json.lists))
       })
@@ -1165,7 +1174,7 @@ export function uploadFile(files, cardId, listId) {
       body: formData,
     })
       .then((res) => {
-        console.log('mCres ' + res)
+        console.log('mCres ' + JSON.stringify(res))
         return res.json()
       })
       .then((json) => {

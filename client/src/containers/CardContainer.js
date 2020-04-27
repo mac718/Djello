@@ -36,6 +36,7 @@ import {
   toggleAddAttachmentDropdown,
   closeAddAttachmentDropdown,
   uploadFile,
+  openAttachmentModal,
 } from '../actions'
 
 class CardContainer extends Component {
@@ -96,6 +97,8 @@ class CardContainer extends Component {
       handleCloseAddAttachmentDropdown,
       showAddAttachmentDropdown,
       handleUploadFile,
+      handleOpenAttachmentModal,
+      showAttachmentModal,
     } = this.props
     console.log(activeCardModal)
     return (
@@ -156,6 +159,8 @@ class CardContainer extends Component {
         handleCloseAddAttachmentDropdown={handleCloseAddAttachmentDropdown}
         showAddAttachmentDropdown={showAddAttachmentDropdown}
         handleUploadFile={handleUploadFile}
+        handleOpenAttachmentModal={handleOpenAttachmentModal}
+        showAttachmentModal={showAttachmentModal}
       />
     )
   }
@@ -188,6 +193,7 @@ const mapStateToProps = (state, ownProps) => {
     showMemberListDropdown: state.showMemberListDropdown,
     showDeleteCardWarningModal: state.showDeleteCardWarningModal,
     showAddAttachmentDropdown: state.showAddAttachmentDropdown,
+    showAttachmentModal: state.showAttachmentModal,
     // currentCard: currentList.cards.filter(listCard => {
     //   return JSON.stringify(listCard._id) === JSON.stringify(ownProps.cardId)
     // })[0],
@@ -369,6 +375,11 @@ const mapDispatchToProps = (dispatch) => {
       const files = e.target.files
 
       dispatch(uploadFile(files, cardId, listId))
+    },
+
+    handleOpenAttachmentModal: (e) => {
+      let url = e.target.parentElement.id
+      dispatch(openAttachmentModal(url))
     },
   }
 }
