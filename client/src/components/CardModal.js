@@ -282,7 +282,7 @@ const CardModal = ({
           <div class={attachmentModalClasses}>
             <div class="modal-background"></div>
             <div class="modal-content">
-              <p class="image is-4by3">
+              <p class="image">
                 <img src={attachment} alt="" />
               </p>
             </div>

@@ -1146,7 +1146,7 @@ export function addAttachmentUrlToCard(url, cardId, listId) {
     console.log(url)
     console.log(cardId)
     console.log(listId)
-    fetch('http://localhost:3000/addAttachmentUrlToCard', {
+    fetch('/addAttachmentUrlToCard', {
       method: 'POST',
       body: JSON.stringify({ url, cardId, listId, currentUser }),
       headers: {
