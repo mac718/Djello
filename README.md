@@ -10,7 +10,12 @@ https://intense-woodland-98650.herokuapp.com/
 
 - Create and delete boards and lists with draggable/droppable cards (react-beautiful-dnd)
 
-- Modals for each card with the following features: - Editable title and description fields - Member adding capability - Checklists - Image attachments - Activity feed
+- Modals for each card with the following features:
+  - Editable title and description fields
+  - Member adding capability
+  - Checklists
+  - Image attachments
+  - Activity feed
 
 **Still to Come:**
 
