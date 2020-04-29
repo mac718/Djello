@@ -4,13 +4,20 @@ const ChecklistTitleDisplay = ({
   title,
   handleDisplayChecklistTitleForm,
   handleDeleteChecklist,
+  checklistId,
 }) => {
+  console.log(checklistId)
   return (
     <div
       className="checklist-title-display"
-      onClick={handleDisplayChecklistTitleForm}
+      onClick={() => handleDisplayChecklistTitleForm(checklistId)}
     >
-      <p className="checklist-title">{title}</p>
+      <p
+        className="checklist-title"
+        onClick={() => handleDisplayChecklistTitleForm(checklistId)}
+      >
+        {title}
+      </p>
       <div className="delete-checklist">
         <button
           className="button is-small is-danger is-light"

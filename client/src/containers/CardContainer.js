@@ -205,11 +205,6 @@ const mapDispatchToProps = (dispatch) => {
     },
 
     handleDeleteCard: (cardId, listId) => {
-      // let cardId =
-      //   e.target.parentElement.parentElement.parentElement.parentElement.id
-      // let listId =
-      //   e.target.parentElement.parentElement.parentElement.parentElement
-      //     .firstChild.id
       dispatch(deleteCard(cardId, listId))
       dispatch(changeActiveCardModal())
     },
@@ -262,7 +257,6 @@ const mapDispatchToProps = (dispatch) => {
 
     handleSelectMemberFromDropdown: (e) => {
       let member = e.target.innerHTML
-      //document.getElementById('dropdown-selection').innerHTML = member
       dispatch(selectMemberFromDropdown(member))
       dispatch(addMemberToCard(e))
     },
@@ -285,14 +279,6 @@ const mapDispatchToProps = (dispatch) => {
     },
 
     handleCreateChecklist: (cardId, listId) => {
-      // console.log(
-      //   e.target.parentElement.parentElement.parentElement.parentElement.id,
-      // )
-      // let cardId =
-      //   e.target.parentElement.parentElement.parentElement.parentElement.id
-      // let listId =
-      //   e.target.parentElement.parentElement.parentElement.parentElement
-      //     .firstChild.id
       dispatch(createChecklist(cardId, listId))
     },
 
@@ -307,9 +293,9 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(checkChecklistItem(e))
     },
 
-    handleDisplayChecklistTitleForm: (e) => {
-      console.log(e.target.parentElement.id)
-      let checklistId = e.target.parentElement.id
+    handleDisplayChecklistTitleForm: (checklistId) => {
+      //console.log(e.target.parentElement.id)
+      //let checklistId = e.target.parentElement.id
       dispatch(displayChecklistTitleForm(checklistId))
     },
 

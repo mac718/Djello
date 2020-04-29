@@ -21,6 +21,7 @@ const Checklist = ({
   handleEditChecklistItemForm,
   handleEditChecklistTitleForm,
 }) => {
+  console.log(checklistId)
   let listItems = items.map((item) => {
     let labelClasses = item.checked
       ? 'checklist-item-label checked'
@@ -87,6 +88,7 @@ const Checklist = ({
         handleDisplayChecklistTitleForm={handleDisplayChecklistTitleForm}
         showChecklistTitleForm={showChecklistTitleForm}
         handleDeleteChecklist={handleDeleteChecklist}
+        checklistId={checklistId}
       />
     )
   }

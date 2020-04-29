@@ -379,6 +379,12 @@ label[for='attachment'] {
   }
 }
 
+@media screen and (max-width: 550px) {
+  .list {
+    width: 85% !important;
+  }
+}
+
 @media screen and (max-width: 800px) {
   .modal-card {
     width: 90%;
@@ -390,5 +396,9 @@ label[for='attachment'] {
     float: none;
     height: 40%;
     width: 100%;
+  }
+
+  .board {
+    flex-wrap: nowrap;
   }
 }

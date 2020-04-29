@@ -14,12 +14,12 @@ const Board = ({
 }) => {
   let boardLists
   if (lists) {
-    boardLists = lists.map(list => {
+    boardLists = lists.map((list) => {
       return <ListContainer id={list._id} key={list._id} />
     })
   }
 
-  let activeBoard = currentUser.boards.filter(board => {
+  let activeBoard = currentUser.boards.filter((board) => {
     return JSON.stringify(board._id) === JSON.stringify(currentUser.activeBoard)
   })
 
