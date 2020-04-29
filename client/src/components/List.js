@@ -72,9 +72,9 @@ const List = ({
   }
 
   let deleteListWarningModal = (
-    <div class={deleteListWarningModalClasses}>
-      <div class="modal-background"></div>
-      <div class="modal-content">
+    <div className={deleteListWarningModalClasses}>
+      <div className="modal-background"></div>
+      <div className="modal-content">
         <div className="box">
           <p className="delete-warning-message">
             This action will permantly delete this list. Are you sure you want
@@ -101,7 +101,7 @@ const List = ({
         </div>
       </div>
       <button
-        class="modal-close is-large"
+        className="modal-close is-large"
         aria-label="close"
         onClick={handleCloseDeleteListWarningModal}
       ></button>

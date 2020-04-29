@@ -115,7 +115,7 @@ const Card = ({
   if (totalChecklistItems > 0) {
     checklistIcon = (
       <span className="card-icon has-text-grey">
-        <i class="far fa-check-square"></i> {checkedChecklistItems}/
+        <i className="far fa-check-square"></i> {checkedChecklistItems}/
         {totalChecklistItems}
       </span>
     )
@@ -134,7 +134,7 @@ const Card = ({
   if (totalAttachments > 0) {
     attachmentIcon = (
       <span className="card-icon has-text-grey">
-        <i class="fas fa-paperclip"></i> {totalAttachments}
+        <i className="fas fa-paperclip"></i> {totalAttachments}
       </span>
     )
   } else {

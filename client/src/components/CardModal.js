@@ -3,7 +3,6 @@ import CardDescriptionForm from './CardDescriptionForm'
 import CardDescriptionDisplay from './CardDescriptionDisplay'
 import CardTitleForm from './CardTitleForm'
 import CardTitleDisplay from './CardTitleDisplay'
-import MemberSelectionDropdown from './MemberSelectionDropdown'
 import Checklist from './Checklist'
 import AttachmentForm from './AttachmentForm'
 
@@ -118,6 +117,7 @@ const CardModal = ({
           handleDeleteChecklist={handleDeleteChecklist}
           handleEditChecklistItemForm={handleEditChecklistItemForm}
           handleEditChecklistTitleForm={handleEditChecklistTitleForm}
+          key={checklist._id}
         />
       )
     })
@@ -186,7 +186,6 @@ const CardModal = ({
     })
   }
   titleComponent = showCardTitleForm ? titleForm : titleDisplay
-  //})
 
   let notificationClasses = showDuplicateMemberWarning
     ? 'notification is-danger is-light'
@@ -217,9 +216,9 @@ const CardModal = ({
   }
 
   let deleteCardWarningModal = (
-    <div class={deleteCardWarningModalClasses}>
-      <div class="modal-background"></div>
-      <div class="modal-content">
+    <div className={deleteCardWarningModalClasses}>
+      <div className="modal-background"></div>
+      <div className="modal-content">
         <div className="box">
           <p className="delete-warning-message">
             This action will permantly delete this card. Are you sure you want
@@ -246,7 +245,7 @@ const CardModal = ({
         </div>
       </div>
       <button
-        class="modal-close is-large"
+        className="modal-close is-large"
         aria-label="close"
         onClick={handleCloseDeleteCardWarningModal}
       ></button>
@@ -273,21 +272,21 @@ const CardModal = ({
         attachmentModalClasses = 'modal'
       }
       return (
-        <div className="image-div" id={attachment}>
+        <div key={attachment} className="image-div" id={attachment}>
           <img
             className="attachment"
             src={attachment}
             onClick={handleOpenAttachmentModal}
           />
-          <div class={attachmentModalClasses}>
-            <div class="modal-background"></div>
-            <div class="modal-content">
-              <p class="image">
+          <div className={attachmentModalClasses}>
+            <div className="modal-background"></div>
+            <div className="modal-content">
+              <p className="image">
                 <img src={attachment} alt="" />
               </p>
             </div>
             <button
-              class="modal-close is-large"
+              className="modal-close is-large"
               aria-label="close"
               onClick={handleOpenAttachmentModal}
             ></button>
@@ -329,7 +328,7 @@ const CardModal = ({
             </button>
             <div className={memberDropdownClasses}>
               <div
-                class="dropdown-trigger member-dropdown-trigger"
+                className="dropdown-trigger member-dropdown-trigger"
                 onClick={handleOpenAddMemberDropdown}
               >
                 <button
@@ -356,7 +355,7 @@ const CardModal = ({
                   onClick={() => handleToggleAddAttachmentDropdown(cardId)}
                 >
                   <span className="icon action-button-icon is-small">
-                    <i class="fas fa-paperclip"></i>
+                    <i className="fas fa-paperclip"></i>
                   </span>
                   <span>Attachment</span>
                 </button>

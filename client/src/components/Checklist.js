@@ -29,14 +29,14 @@ const Checklist = ({
       ? 'checklist-item-label checked'
       : 'checklist-item-label'
     return (
-      <div className="checklistItem" id={item._id}>
+      <div className="checklistItem" key={item._id} id={item._id}>
         <input
           type="checkbox"
           value={item.content}
           name={item.content}
           onClick={handleCheckItem}
         />
-        <label className={labelClasses} for={item.content}>
+        <label className={labelClasses} htmlFor={item.content}>
           {' '}
           {item.content}
         </label>
@@ -98,7 +98,7 @@ const Checklist = ({
       {checklistTitleComponent}
       <span>{progressValue}%</span>
       <progress
-        class="progress is-primary is-small"
+        className="progress is-primary is-small"
         value={progressValue}
         max="100"
       >

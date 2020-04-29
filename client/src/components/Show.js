@@ -60,9 +60,9 @@ const Show = ({
   }
 
   let deleteBoardWarningModal = (
-    <div class={deleteBoardWarningModalClasses}>
-      <div class="modal-background"></div>
-      <div class="modal-content">
+    <div className={deleteBoardWarningModalClasses}>
+      <div className="modal-background"></div>
+      <div className="modal-content">
         <div className="box">
           <p className="delete-warning-message">
             This action will permantly delete this board. Are you sure you want
@@ -89,7 +89,7 @@ const Show = ({
         </div>
       </div>
       <button
-        class="modal-close is-large"
+        className="modal-close is-large"
         aria-label="close"
         onClick={handleCloseDeleteBoardWarningModal}
       ></button>
@@ -111,22 +111,22 @@ const Show = ({
           </div>
           <div className="navbar-end">
             <div id="board-dropdown-board-buttons-container">
-              <div class="dropdown board-dropdown is-hoverable is-right">
-                <div class="dropdown-trigger">
+              <div className="dropdown board-dropdown is-hoverable is-right">
+                <div className="dropdown-trigger">
                   <button
-                    class="button"
+                    className="button"
                     aria-haspopup="true"
                     aria-controls="dropdown-menu4"
                   >
                     <span>Boards</span>
-                    <span class="icon is-small">
-                      <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    <span className="icon is-small">
+                      <i className="fas fa-angle-down" aria-hidden="true"></i>
                     </span>
                   </button>
                 </div>
-                <div class="dropdown-menu" id="dropdown-menu4" role="menu">
-                  <div class="dropdown-content">
-                    <div class="dropdown-item">{dropdownItems}</div>
+                <div className="dropdown-menu" id="dropdown-menu4" role="menu">
+                  <div className="dropdown-content">
+                    <div className="dropdown-item">{dropdownItems}</div>
                   </div>
                 </div>
               </div>

@@ -468,7 +468,6 @@ export function deleteList(listId) {
 
 export function deleteBoard(id) {
   return (dispatch, getState) => {
-    console.log('butts')
     let state = getState()
     let currentUser = state.currentUser
     fetch('/deleteBoard', {
