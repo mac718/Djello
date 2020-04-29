@@ -426,15 +426,13 @@ export function createList(e) {
         return res.json()
       })
       .then((json) => {
-        console.log('json ' + JSON.stringify(json))
-        //console.log('create list ' + JSON.stringify(json))
         dispatch(updateActiveBoardLists(json.lists))
         dispatch(updateCurrentUser(json.user))
       })
       .catch((err) => {
         console.log(err)
         dispatch(getDataFailure(err))
-        alert('hmmmm')
+        alert(err)
       })
   }
 }
@@ -463,7 +461,7 @@ export function deleteList(listId) {
       .catch((err) => {
         console.log(err)
         dispatch(getDataFailure(err))
-        alert('hmmmm')
+        alert(err)
       })
   }
 }
@@ -473,7 +471,6 @@ export function deleteBoard(id) {
     console.log('butts')
     let state = getState()
     let currentUser = state.currentUser
-    //let id = state.currentUser.activeBoard
     fetch('/deleteBoard', {
       method: 'DELETE',
       body: JSON.stringify({ board: id, currentUser }),
@@ -495,7 +492,7 @@ export function deleteBoard(id) {
       .catch((err) => {
         console.log(err)
         dispatch(getDataFailure(err))
-        alert('hmmmm')
+        alert(err)
       })
   }
 }
@@ -534,7 +531,7 @@ export function changeName(e, componentName, route) {
       })
       .catch((err) => {
         console.log(err)
-        alert('hmmmm')
+        alert(err)
       })
   }
 }
@@ -559,16 +556,12 @@ export function saveCard(e) {
         return res.json()
       })
       .then((json) => {
-        if (json.error) {
-          alert(JSON.stringify(json.error))
-        } else {
-          dispatch(updateActiveBoardLists(json.lists))
-          dispatch(updateCurrentUser(json.user))
-        }
+        dispatch(updateActiveBoardLists(json.lists))
+        dispatch(updateCurrentUser(json.user))
       })
       .catch((err) => {
         console.log(err)
-        alert('hmmmm')
+        alert(err)
       })
   }
 }
@@ -593,7 +586,7 @@ export function deleteCard(cardId, listId) {
       })
       .catch((err) => {
         console.log(err)
-        alert('hmmmm')
+        alert(err)
       })
   }
 }
@@ -620,7 +613,7 @@ export function switchActiveBoard(e) {
       })
       .catch((err) => {
         console.log(err)
-        alert('hmmmm')
+        alert(err)
       })
   }
 }
@@ -630,8 +623,6 @@ export function updateCardTitle(e, listId, cardId) {
     dispatch(toggleIsLoading())
 
     let state = getState()
-    console.log(state.cardTitle)
-    //let attributeType = state.attributeType
     let cardTitle = state.cardTitle
     let currentUser = state.currentUser
     dispatch(switchToCardTItleDisplay())
@@ -657,7 +648,7 @@ export function updateCardTitle(e, listId, cardId) {
       })
       .catch((err) => {
         console.log(err)
-        alert('hmmmm')
+        alert(err)
       })
   }
 }
@@ -695,7 +686,7 @@ export function updateCardDescription(e) {
       })
       .catch((err) => {
         console.log(err)
-        alert('hmmmm')
+        alert(err)
       })
   }
 }
@@ -745,7 +736,7 @@ export function addMemberToCard(e) {
       })
       .catch((err) => {
         console.log(err)
-        alert('hmmmm')
+        alert(err)
       })
   }
 }
@@ -761,7 +752,7 @@ export function getAllUsers() {
       })
       .catch((err) => {
         console.log(err)
-        alert('hmmmm')
+        alert(err)
       })
   }
 }
@@ -780,7 +771,7 @@ export function addBoardToMember() {
       },
     }).catch((err) => {
       console.log(err)
-      alert('hmmmm')
+      alert(err)
     })
   }
 }
@@ -815,7 +806,7 @@ export function deleteMemberFromCard(e) {
       })
       .catch((err) => {
         console.log(err)
-        alert('hmmmm')
+        alert(err)
       })
   }
 }
@@ -945,7 +936,7 @@ export function onDragEnd(result) {
       })
       .catch((err) => {
         console.log(err)
-        alert('hmmmm')
+        alert(err)
       })
   }
 }
@@ -978,7 +969,7 @@ export function createChecklist(cardId, listId) {
       })
       .catch((err) => {
         console.log(err)
-        alert('hmmmm')
+        alert(err)
       })
   }
 }
@@ -1024,7 +1015,7 @@ export function addChecklistItem(e) {
       })
       .catch((err) => {
         console.log(err)
-        alert('hmmmm')
+        alert(err)
       })
   }
 }
@@ -1068,7 +1059,7 @@ export function checkChecklistItem(e) {
       })
       .catch((err) => {
         console.log(err)
-        alert('hmmmm')
+        alert(err)
       })
   }
 }
@@ -1101,7 +1092,7 @@ export function updateChecklistTitle(e) {
       })
       .catch((err) => {
         console.log(err)
-        alert('hmmmm')
+        alert(err)
       })
   }
 }
@@ -1134,7 +1125,7 @@ export function deleteChecklist(e) {
       })
       .catch((err) => {
         console.log(err)
-        alert('hmmmm')
+        alert(err)
       })
   }
 }

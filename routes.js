@@ -96,26 +96,25 @@ router.post('/createBoard', (req, res, next) => {
   board.save((err, board) => {
     if (err) {
       console.error(err)
-      res.status(401).json({ error: err })
+      return next(err)
     }
     User.findById(currentUser._id, (err, user) => {
       if (err) {
         console.log(err)
-        res.json({ error: 'Error saving board' })
+        return next(err)
       }
       user.boards.push(board)
       user.activeBoard = board._id
       user.save((err, user) => {
         if (err) {
           console.log(err)
-          res.json({ error: 'Error saving board' })
+          return next(err)
         }
         console.log('user[0] ' + user)
         let userAndLists = { user: user, lists: board.lists }
         return res.json(userAndLists)
       })
     })
-    console.log('board ' + board)
   })
 })
 
@@ -126,12 +125,12 @@ router.delete('/deleteBoard', (req, res, next) => {
   Board.findById(boardId, (err, board) => {
     if (err) {
       console.log(err)
-      res.status(401).json({ error: err })
+      return next(err)
     }
     board.delete((err, board) => {
       if (err) {
         console.log(err)
-        res.status(401).json({ error: err })
+        return next(err)
       }
       board.members.forEach((member) => {
         User.find({ username: member }, (err, user) => {
@@ -145,7 +144,7 @@ router.delete('/deleteBoard', (req, res, next) => {
           user[0].save((err) => {
             if (err) {
               console.log(err)
-              res.status(401).json({ error: err })
+              return next(err)
             }
           })
         })
@@ -153,7 +152,7 @@ router.delete('/deleteBoard', (req, res, next) => {
       User.findById(currentUser._id, (err, user) => {
         if (err) {
           console.log(err)
-          res.status(401).json({ error: err })
+          return next(err)
         }
         if (board.members.includes(user.username)) {
           let deletedBoardIndex
@@ -167,7 +166,7 @@ router.delete('/deleteBoard', (req, res, next) => {
         user.save((err, user) => {
           if (err) {
             console.log(err)
-            res.status(401).json({ error: err })
+            return next(err)
           }
           let userAndLists = { user: user, lists: board.lists }
           return res.json(userAndLists)
@@ -175,35 +174,6 @@ router.delete('/deleteBoard', (req, res, next) => {
       })
     })
   })
-
-  // Board.findById(board, (err) => {
-  //   if (err) {
-  //     console.log(err)
-  //     res.status(401).json({ error: err })
-  //   }
-  //   User.find({ username: req.cookies['user'] }, (err, user) => {
-  //     console.log('jser ' + user[0].boards)
-  //     if (err) {
-  //       console.log(err)
-  //       res.status(401).json({ error: err })
-  //     }
-  //     let index = user[0].boards.indexOf(board)
-  //     user[0].boards.splice(index, 1)
-  //     user[0].activeBoard = null
-  //     console.log(user[0])
-  //     user[0].save((err) => {
-  //       if (err) {
-  //         console.log(err)
-  //         res.status(401).json({ error: err })
-  //       }
-  //       Board.findByIdAndDelete(board, (err) => {
-  //         if (err) console.log(err)
-  //         console.log('hoooray ' + board)
-  //         res.json(user[0])
-  //       })
-  //     })
-  //   })
-  // })
 })
 
 router.post('/createList', (req, res, next) => {
@@ -221,8 +191,11 @@ router.post('/createList', (req, res, next) => {
       return next(err)
     }
     Board.findById(activeBoard, (err, board) => {
-      console.log('191 ' + board)
-      //board.lists.push(list)
+      if (err) {
+        console.log('goodbye')
+        console.error(err)
+        return next(err)
+      }
       board.lists = [...board.lists, list]
       board.save((err, board) => {
         if (err) {
@@ -271,17 +244,17 @@ router.delete('/deleteList', (req, res, next) => {
   List.findById(listId, (err, list) => {
     if (err) {
       console.log(err)
-      next(err)
+      return next(err)
     }
     list.delete((err, list) => {
       if (err) {
         console.log(err)
-        next(err)
+        return next(err)
       }
       Board.findById(currentUser.activeBoard, (err, board) => {
         if (err) {
           console.log(err)
-          next(err)
+          return next(err)
         }
         let deletedListIndex
         board.lists.forEach((boardList, index) => {
@@ -293,7 +266,7 @@ router.delete('/deleteList', (req, res, next) => {
         board.save((err, board) => {
           if (err) {
             console.log(err)
-            next(err)
+            return next(err)
           }
           User.findById(currentUser._id, (err, user) => {
             let modifiedBoardIndex
@@ -306,7 +279,7 @@ router.delete('/deleteList', (req, res, next) => {
             user.save((err, user) => {
               if (err) {
                 console.log(err)
-                next(err)
+                return next(err)
               }
               let userAndLists = { user: user, lists: board.lists }
               return res.json(userAndLists)
@@ -326,19 +299,19 @@ router.put('/changeBoardName', (req, res, next) => {
   Board.findById(activeBoardId, (err, board) => {
     if (err) {
       console.log(err)
-      next(err)
+      return next(err)
     }
     board.name = name
     board.save((err, board) => {
       if (err) {
         console.log(err)
-        next(err)
+        return next(err)
       }
 
       User.findById(currentUser._id, (err, user) => {
         if (err) {
           console.log(err)
-          next(err)
+          return next(err)
         }
         let modifiedBoardIndex
         user.boards.forEach((userBoard, index) => {
@@ -351,7 +324,7 @@ router.put('/changeBoardName', (req, res, next) => {
         user.save((err, user) => {
           if (err) {
             console.log(err)
-            next(err)
+            return next(err)
           }
           let userAndLists = { user: user, lists: board.lists }
           return res.json(userAndLists)
@@ -370,7 +343,7 @@ router.put('/changeListName', (req, res, next) => {
   List.findById(listId, (err, list) => {
     if (err) {
       console.log(err)
-      next(err)
+      return next(err)
     }
 
     list.name = name
@@ -379,7 +352,7 @@ router.put('/changeListName', (req, res, next) => {
       Board.findById(activeBoardId, (err, board) => {
         if (err) {
           console.log(err)
-          next(err)
+          return next(err)
         }
         let modifiedListIndex
         board.lists.forEach((boardList, index) => {
@@ -391,7 +364,7 @@ router.put('/changeListName', (req, res, next) => {
         User.findById(currentUser._id, (err, user) => {
           if (err) {
             console.log(err)
-            next(err)
+            return next(err)
           }
           let modifiedBoardIndex
           user.boards.forEach((userBoard, index) => {
@@ -403,7 +376,7 @@ router.put('/changeListName', (req, res, next) => {
           user.save((err, user) => {
             if (err) {
               console.log(err)
-              next(err)
+              return next(err)
             }
             let userAndLists = { user: user, lists: board.lists }
             return res.json(userAndLists)
@@ -425,27 +398,25 @@ router.post('/createCard', (req, res, next) => {
   card.save((err, card) => {
     if (err) {
       console.error(err)
-      return res.json({ error: err })
-      //next(err)
+      return next(err)
     }
     List.findById(listId, (err, list) => {
       console.log('list id ' + listId)
       if (err) {
         console.error(err)
-        return res.json({ error: err })
-        //next(err)
+        return next(err)
       }
       console.log('cards ' + list)
       list.cards = [...list.cards, card]
       list.save((err, list) => {
         if (err) {
           console.error(err)
-          next(err)
+          return next(err)
         }
         Board.findById(currentUser.activeBoard, (err, board) => {
           if (err) {
             console.error(err)
-            next(err)
+            return next(err)
           }
           let modifiedListIndex
           board.lists.forEach((boardList, index) => {
@@ -460,12 +431,12 @@ router.post('/createCard', (req, res, next) => {
           board.save((err, board) => {
             if (err) {
               console.error(err)
-              next(err)
+              return next(err)
             }
             User.findById(currentUser._id, (err, user) => {
               if (err) {
                 console.error(err)
-                next(err)
+                return next(err)
               }
               let modifiedBoardIndex
               user.boards.forEach((userBoard, index) => {
@@ -479,7 +450,7 @@ router.post('/createCard', (req, res, next) => {
               user.save((err, user) => {
                 if (err) {
                   console.error(err)
-                  next(err)
+                  return next(err)
                 }
                 console.log('butts ' + JSON.stringify(user.boards))
                 let userAndLists = { user: user, lists: board.lists }
@@ -502,17 +473,17 @@ router.delete('/deleteCard', (req, res, next) => {
   Card.findById(cardId, (err, card) => {
     if (err) {
       console.error(err)
-      next(err)
+      return next(err)
     }
     card.delete((err) => {
       if (err) {
         console.error(err)
-        next(err)
+        return next(err)
       }
       List.findById(listId, (err, list) => {
         if (err) {
           console.error(err)
-          next(err)
+          return next(err)
         }
         console.log('cards' + list.cards)
         let deletedCardIndex
@@ -526,12 +497,12 @@ router.delete('/deleteCard', (req, res, next) => {
         list.save((err, list) => {
           if (err) {
             console.error(err)
-            next(err)
+            return next(err)
           }
           Board.findById(currentUser.activeBoard, (err, board) => {
             if (err) {
               console.error(err)
-              next(err)
+              return next(err)
             }
 
             let modifiedListIndex
@@ -544,12 +515,12 @@ router.delete('/deleteCard', (req, res, next) => {
             board.save((err, board) => {
               if (err) {
                 console.error(err)
-                next(err)
+                return next(err)
               }
               User.findById(currentUser._id, (err, user) => {
                 if (err) {
                   console.error(err)
-                  next(err)
+                  return next(err)
                 }
                 let modifiedBoardIndex
                 user.boards.forEach((userBoard, index) => {
@@ -564,7 +535,7 @@ router.delete('/deleteCard', (req, res, next) => {
                 user.save((err, user) => {
                   if (err) {
                     console.error(err)
-                    next(err)
+                    return next(err)
                   }
                   let userAndLists = { user: user, lists: board.lists }
                   return res.json(userAndLists)
@@ -585,18 +556,18 @@ router.patch('/switchActiveBoard', (req, res, next) => {
   User.findById(currentUser._id, (err, user) => {
     if (err) {
       console.error(err)
-      next(err)
+      return next(err)
     }
     user.activeBoard = boardId
     Board.findById(boardId, (err, board) => {
       if (err) {
         console.error(err)
-        next(err)
+        return next(err)
       }
       user.save((err, user) => {
         if (err) {
           console.error(err)
-          next(err)
+          return next(err)
         }
         let userAndLists = { user: user, lists: board.lists }
         return res.json(userAndLists)
@@ -611,7 +582,7 @@ router.put('/updateCardTitle', (req, res, next) => {
   Card.findById(cardId, (err, card) => {
     if (err) {
       console.error(err)
-      next(err)
+      return next(err)
     }
 
     if (cardTitle === '') {
@@ -628,14 +599,14 @@ router.put('/updateCardTitle', (req, res, next) => {
     card.save((err, card) => {
       if (err) {
         console.error(err)
-        next(err)
+        return next(err)
       }
       console.log(JSON.stringify(card))
       List.findById(listId, (err, list) => {
         console.log('list id ' + listId)
         if (err) {
           console.error(err)
-          next(err)
+          return next(err)
         }
         let modifiedCardIndex
         list.cards.forEach((listCard, index) => {
@@ -648,12 +619,12 @@ router.put('/updateCardTitle', (req, res, next) => {
         list.save((err, list) => {
           if (err) {
             console.error(err)
-            next(err)
+            return next(err)
           }
           Board.findById(currentUser.activeBoard, (err, board) => {
             if (err) {
               console.error(err)
-              next(err)
+              return next(err)
             }
             let modifiedListIndex
             board.lists.forEach((boardList, index) => {
@@ -668,12 +639,12 @@ router.put('/updateCardTitle', (req, res, next) => {
             board.save((err, board) => {
               if (err) {
                 console.error(err)
-                next(err)
+                return next(err)
               }
               User.findById(currentUser._id, (err, user) => {
                 if (err) {
                   console.error(err)
-                  next(err)
+                  return next(err)
                 }
                 let modifiedBoardIndex
                 user.boards.forEach((userBoard, index) => {
@@ -687,7 +658,7 @@ router.put('/updateCardTitle', (req, res, next) => {
                 user.save((err, user) => {
                   if (err) {
                     console.error(err)
-                    next(err)
+                    return next(err)
                   }
                   console.log('butts ' + JSON.stringify(user.boards))
 
@@ -710,7 +681,7 @@ router.put('/updateCardDescription', (req, res, next) => {
   Card.findById(cardId, (err, card) => {
     if (err) {
       console.error(err)
-      next(err)
+      return next(err)
     }
 
     card.description = cardDescription
@@ -723,13 +694,13 @@ router.put('/updateCardDescription', (req, res, next) => {
     card.save((err, card) => {
       if (err) {
         console.error(err)
-        next(err)
+        return next(err)
       }
       List.findById(listId, (err, list) => {
         console.log('list id ' + listId)
         if (err) {
           console.error(err)
-          next(err)
+          return next(err)
         }
         let modifiedCardIndex
         list.cards.forEach((listCard, index) => {
@@ -742,12 +713,12 @@ router.put('/updateCardDescription', (req, res, next) => {
         list.save((err, list) => {
           if (err) {
             console.error(err)
-            next(err)
+            return next(err)
           }
           Board.findById(currentUser.activeBoard, (err, board) => {
             if (err) {
               console.error(err)
-              next(err)
+              return next(err)
             }
             let modifiedListIndex
             board.lists.forEach((boardList, index) => {
@@ -762,12 +733,12 @@ router.put('/updateCardDescription', (req, res, next) => {
             board.save((err, board) => {
               if (err) {
                 console.error(err)
-                next(err)
+                return next(err)
               }
               User.findById(currentUser._id, (err, user) => {
                 if (err) {
                   console.error(err)
-                  next(err)
+                  return next(err)
                 }
                 let modifiedBoardIndex
                 user.boards.forEach((userBoard, index) => {
@@ -781,7 +752,7 @@ router.put('/updateCardDescription', (req, res, next) => {
                 user.save((err, user) => {
                   if (err) {
                     console.error(err)
-                    next(err)
+                    return next(err)
                   }
                   console.log('butts ' + JSON.stringify(user.boards))
 
@@ -803,7 +774,7 @@ router.put('/addMemberToCard', (req, res, next) => {
   Card.findById(cardId, (err, card) => {
     if (err) {
       console.error(err)
-      next(err)
+      return next(err)
     }
 
     if (!card.members.includes(memberUsername)) {
@@ -824,13 +795,13 @@ router.put('/addMemberToCard', (req, res, next) => {
     card.save((err, card) => {
       if (err) {
         console.error(err)
-        next(err)
+        return next(err)
       }
       List.findById(listId, (err, list) => {
         console.log('list id ' + listId)
         if (err) {
           console.error(err)
-          next(err)
+          return next(err)
         }
         let modifiedCardIndex
         list.cards.forEach((listCard, index) => {
@@ -843,12 +814,12 @@ router.put('/addMemberToCard', (req, res, next) => {
         list.save((err, list) => {
           if (err) {
             console.error(err)
-            next(err)
+            return next(err)
           }
           Board.findById(currentUser.activeBoard, (err, board) => {
             if (err) {
               console.error(err)
-              next(err)
+              return next(err)
             }
             board.members = [...board.members, memberUsername]
             let modifiedListIndex
@@ -864,12 +835,12 @@ router.put('/addMemberToCard', (req, res, next) => {
             board.save((err, board) => {
               if (err) {
                 console.error(err)
-                next(err)
+                return next(err)
               }
               User.findById(currentUser._id, (err, user) => {
                 if (err) {
                   console.error(err)
-                  next(err)
+                  return next(err)
                 }
                 let modifiedBoardIndex
                 user.boards.forEach((userBoard, index) => {
@@ -883,7 +854,7 @@ router.put('/addMemberToCard', (req, res, next) => {
                 user.save((err, user) => {
                   if (err) {
                     console.error(err)
-                    next(err)
+                    return next(err)
                   }
                   console.log('butts ' + JSON.stringify(user.boards))
 
@@ -903,7 +874,7 @@ router.get('/getAllUsers', (req, res, next) => {
   User.find((err, users) => {
     if (err) {
       console.error(err)
-      next(err)
+      return next(err)
     }
     return res.json(users)
   })
@@ -918,12 +889,12 @@ router.post('/addBoardToMember', (req, res, next) => {
   User.find({ username }, (err, user) => {
     if (err) {
       console.error(err)
-      next(err)
+      return next(err)
     }
     Board.findById(boardId, (err, board) => {
       if (err) {
         console.error(err)
-        next(err)
+        return next(err)
       }
       let repeat = false
       console.log(user)
@@ -939,7 +910,7 @@ router.post('/addBoardToMember', (req, res, next) => {
       user[0].save((err) => {
         if (err) {
           console.error(err)
-          next(err)
+          return next(err)
         }
         res.status(200).send()
       })
@@ -958,7 +929,7 @@ router.delete('/deleteMemberFromCard', (req, res, next) => {
   Card.findById(cardId, (err, card) => {
     if (err) {
       console.error(err)
-      next(err)
+      return next(err)
     }
     console.log('yayayya!!!!')
     let deletedMemberIndex
@@ -978,13 +949,13 @@ router.delete('/deleteMemberFromCard', (req, res, next) => {
     card.save((err, card) => {
       if (err) {
         console.error(err)
-        next(err)
+        return next(err)
       }
       List.findById(listId, (err, list) => {
         console.log('list id ' + listId)
         if (err) {
           console.error(err)
-          next(err)
+          return next(err)
         }
         let modifiedCardIndex
         list.cards.forEach((listCard, index) => {
@@ -997,12 +968,12 @@ router.delete('/deleteMemberFromCard', (req, res, next) => {
         list.save((err, list) => {
           if (err) {
             console.error(err)
-            next(err)
+            return next(err)
           }
           Board.findById(currentUser.activeBoard, (err, board) => {
             if (err) {
               console.error(err)
-              next(err)
+              return next(err)
             }
 
             let modifiedListIndex
@@ -1018,12 +989,12 @@ router.delete('/deleteMemberFromCard', (req, res, next) => {
             board.save((err, board) => {
               if (err) {
                 console.error(err)
-                next(err)
+                return next(err)
               }
               User.findById(currentUser._id, (err, user) => {
                 if (err) {
                   console.error(err)
-                  next(err)
+                  return next(err)
                 }
                 let modifiedBoardIndex
                 user.boards.forEach((userBoard, index) => {
@@ -1037,7 +1008,7 @@ router.delete('/deleteMemberFromCard', (req, res, next) => {
                 user.save((err, user) => {
                   if (err) {
                     console.error(err)
-                    next(err)
+                    return next(err)
                   }
                   console.log('butts ' + JSON.stringify(user.boards))
                   let userAndLists = { user: user, lists: board.lists }
@@ -1062,13 +1033,13 @@ router.put('/updateListAfterDnd', (req, res, next) => {
     Card.findById(cardId, (err, card) => {
       if (err) {
         console.error(err)
-        next(err)
+        return next(err)
       }
 
       List.findById(source.droppableId, (err, list) => {
         if (err) {
           console.error(err)
-          next(err)
+          return next(err)
         }
         list.cards.splice(source.index, 1)
         list.cards.splice(destination.index, 0, card)
@@ -1076,7 +1047,7 @@ router.put('/updateListAfterDnd', (req, res, next) => {
         list.save((err, list) => {
           if (err) {
             console.error(err)
-            next(err)
+            return next(err)
           }
           Board.findById(currentUser.activeBoard, (err, board) => {
             let modifiedLisIndex
@@ -1089,12 +1060,12 @@ router.put('/updateListAfterDnd', (req, res, next) => {
             board.save((err, board) => {
               if (err) {
                 console.error(err)
-                next(err)
+                return next(err)
               }
               User.findById(currentUser._id, (err, user) => {
                 if (err) {
                   console.error(err)
-                  next(err)
+                  return next(err)
                 }
                 let modifiedBoardIndex
                 user.boards.forEach((userBoard, index) => {
@@ -1108,7 +1079,7 @@ router.put('/updateListAfterDnd', (req, res, next) => {
                 user.save((err, user) => {
                   if (err) {
                     console.error(err)
-                    next(err)
+                    return next(err)
                   }
                   return res.json(user)
                 })
@@ -1122,19 +1093,19 @@ router.put('/updateListAfterDnd', (req, res, next) => {
     Card.findById(cardId, (err, card) => {
       if (err) {
         console.error(err)
-        next(err)
+        return next(err)
       }
       List.findById(source.droppableId, (err, sourceList) => {
         if (err) {
           console.error(err)
-          next(err)
+          return next(err)
         }
         sourceList.cards.splice(source.index, 1)
         sourceList.save((err, sourceList) => {
           List.findById(destination.droppableId, (err, destinationList) => {
             if (err) {
               console.error(err)
-              next(err)
+              return next(err)
             }
             destinationList.cards.splice(destination.index, 0, card)
             destinationList.save((err, destinationList) => {
@@ -1165,12 +1136,12 @@ router.put('/updateListAfterDnd', (req, res, next) => {
                 board.save((err, board) => {
                   if (err) {
                     console.error(err)
-                    next(err)
+                    return next(err)
                   }
                   User.findById(currentUser._id, (err, user) => {
                     if (err) {
                       console.error(err)
-                      next(err)
+                      return next(err)
                     }
                     let modifiedBoardIndex
                     user.boards.forEach((userBoard, index) => {
@@ -1186,7 +1157,7 @@ router.put('/updateListAfterDnd', (req, res, next) => {
                     user.save((err, user) => {
                       if (err) {
                         console.error(err)
-                        next(err)
+                        return next(err)
                       }
                       return res.json(user)
                     })
@@ -1203,17 +1174,17 @@ router.put('/updateListAfterDnd', (req, res, next) => {
 
 router.post('/createChecklist', (req, res, next) => {
   let { currentUser, cardId, listId } = req.body
-  let checklist = new Checklist({ title: '', items: [] })
+  let checklist = new Checklist({ title: 'Enter title...', items: [] })
 
   checklist.save((err, checklist) => {
     if (err) {
       console.error(err)
-      next(err)
+      return next(err)
     }
     Card.findById(cardId, (err, card) => {
       if (err) {
         console.error(err)
-        next(err)
+        return next(err)
       }
       card.checklists = [...card.checklists, checklist]
       let date = new Date()
@@ -1225,12 +1196,12 @@ router.post('/createChecklist', (req, res, next) => {
       card.save((err, card) => {
         if (err) {
           console.error(err)
-          next(err)
+          return next(err)
         }
         List.findById(listId, (err, list) => {
           if (err) {
             console.error(err)
-            next(err)
+            return next(err)
           }
           let modifiedCardIndex
           list.cards.forEach((listCard, index) => {
@@ -1242,12 +1213,12 @@ router.post('/createChecklist', (req, res, next) => {
           list.save((err, list) => {
             if (err) {
               console.error(err)
-              next(err)
+              return next(err)
             }
             Board.findById(currentUser.activeBoard, (err, board) => {
               if (err) {
                 console.error(err)
-                next(err)
+                return next(err)
               }
               let modifiedListIndex
               board.lists.forEach((boardList, index) => {
@@ -1261,12 +1232,12 @@ router.post('/createChecklist', (req, res, next) => {
               board.save((err, board) => {
                 if (err) {
                   console.error(err)
-                  next(err)
+                  return next(err)
                 }
                 User.findById(currentUser._id, (err, user) => {
                   if (err) {
                     console.error(err)
-                    next(err)
+                    return next(err)
                   }
                   let modifiedBoardIndex
                   user.boards.forEach((userBoard, index) => {
@@ -1311,7 +1282,7 @@ router.post('/addChecklistItem', (req, res, next) => {
   checklistItem.save((err, checklistItem) => {
     if (err) {
       console.error(err)
-      next(err)
+      return next(err)
     }
     Checklist.findById(checklistId, (err, checklist) => {
       if (err) {
@@ -1322,12 +1293,12 @@ router.post('/addChecklistItem', (req, res, next) => {
         checklist.save((err, checklist) => {
           if (err) {
             console.error(err)
-            next(err)
+            return next(err)
           }
           Card.findById(cardId, (err, card) => {
             if (err) {
               console.error(err)
-              next(err)
+              return next(err)
             }
             let modifiedChecklistIndex
             card.checklists.forEach((cardChecklist, index) => {
@@ -1349,12 +1320,12 @@ router.post('/addChecklistItem', (req, res, next) => {
             card.save((err, card) => {
               if (err) {
                 console.error(err)
-                next(err)
+                return next(err)
               }
               List.findById(listId, (err, list) => {
                 if (err) {
                   console.error(err)
-                  next(err)
+                  return next(err)
                 }
                 let modifiedCardIndex
                 list.cards.forEach((listCard, index) => {
@@ -1368,12 +1339,12 @@ router.post('/addChecklistItem', (req, res, next) => {
                 list.save((err, list) => {
                   if (err) {
                     console.error(err)
-                    next(err)
+                    return next(err)
                   }
                   Board.findById(currentUser.activeBoard, (err, board) => {
                     if (err) {
                       console.error(err)
-                      next(err)
+                      return next(err)
                     }
                     let modifiedListIndex
                     board.lists.forEach((boardList, index) => {
@@ -1388,12 +1359,12 @@ router.post('/addChecklistItem', (req, res, next) => {
                     board.save((err, board) => {
                       if (err) {
                         console.error(err)
-                        next(err)
+                        return next(err)
                       }
                       User.findById(currentUser._id, (err, user) => {
                         if (err) {
                           console.error(err)
-                          next(err)
+                          return next(err)
                         }
                         let modifiedBoardIndex
                         user.boards.forEach((userBoard, index) => {
@@ -1407,7 +1378,7 @@ router.post('/addChecklistItem', (req, res, next) => {
                         user.save((err, user) => {
                           if (err) {
                             console.error(err)
-                            next(err)
+                            return next(err)
                           }
                           let userAndLists = { user: user, lists: board.lists }
                           return res.json(userAndLists)
@@ -1439,7 +1410,7 @@ router.patch('/checkChecklistItem', (req, res, next) => {
   ChecklistItem.findById(checklistItemId, (err, checklistItem) => {
     if (err) {
       console.error(err)
-      next(err)
+      return next(err)
     }
 
     checklistItem.checked
@@ -1451,12 +1422,12 @@ router.patch('/checkChecklistItem', (req, res, next) => {
     checklistItem.save((err, checklistItem) => {
       if (err) {
         console.error(err)
-        next(err)
+        return next(err)
       }
       Checklist.findById(checklistId, (err, checklist) => {
         if (err) {
           console.error(err)
-          next(err)
+          return next(err)
         }
         let modifiedChecklistIndex
         checklist.items.forEach((item, index) => {
@@ -1468,12 +1439,12 @@ router.patch('/checkChecklistItem', (req, res, next) => {
         checklist.save((err, checklist) => {
           if (err) {
             console.error(err)
-            next(err)
+            return next(err)
           }
           Card.findById(cardId, (err, card) => {
             if (err) {
               console.error(err)
-              next(err)
+              return next(err)
             }
             let modifiedChecklistIndex
             card.checklists.forEach((cardChecklist, index) => {
@@ -1495,12 +1466,12 @@ router.patch('/checkChecklistItem', (req, res, next) => {
             card.save((err, card) => {
               if (err) {
                 console.error(err)
-                next(err)
+                return next(err)
               }
               List.findById(listId, (err, list) => {
                 if (err) {
                   console.error(err)
-                  next(err)
+                  return next(err)
                 }
                 let modifiedCardIndex
                 list.cards.forEach((listCard, index) => {
@@ -1514,12 +1485,12 @@ router.patch('/checkChecklistItem', (req, res, next) => {
                 list.save((err, list) => {
                   if (err) {
                     console.error(err)
-                    next(err)
+                    return next(err)
                   }
                   Board.findById(currentUser.activeBoard, (err, board) => {
                     if (err) {
                       console.error(err)
-                      next(err)
+                      return next(err)
                     }
                     let modifiedListIndex
                     board.lists.forEach((boardList, index) => {
@@ -1534,12 +1505,12 @@ router.patch('/checkChecklistItem', (req, res, next) => {
                     board.save((err, board) => {
                       if (err) {
                         console.error(err)
-                        next(err)
+                        return next(err)
                       }
                       User.findById(currentUser._id, (err, user) => {
                         if (err) {
                           console.error(err)
-                          next(err)
+                          return next(err)
                         }
                         let modifiedBoardIndex
                         user.boards.forEach((userBoard, index) => {
@@ -1553,7 +1524,7 @@ router.patch('/checkChecklistItem', (req, res, next) => {
                         user.save((err, user) => {
                           if (err) {
                             console.error(err)
-                            next(err)
+                            return next(err)
                           }
                           let userAndLists = { user: user, lists: board.lists }
                           return res.json(userAndLists)
@@ -1577,18 +1548,18 @@ router.patch('/updateChecklistTitle', (req, res, next) => {
   Checklist.findById(checklistId, (err, checklist) => {
     if (err) {
       console.error(err)
-      next(err)
+      return next(err)
     }
     checklist.title = title
     checklist.save((err, checklist) => {
       if (err) {
         console.error(err)
-        next(err)
+        return next(err)
       }
       Card.findById(cardId, (err, card) => {
         if (err) {
           console.error(err)
-          next(err)
+          return next(err)
         }
         let modifiedChecklistIndex
         card.checklists.forEach((cardChecklist, index) => {
@@ -1602,12 +1573,12 @@ router.patch('/updateChecklistTitle', (req, res, next) => {
         card.save((err, card) => {
           if (err) {
             console.error(err)
-            next(err)
+            return next(err)
           }
           List.findById(listId, (err, list) => {
             if (err) {
               console.error(err)
-              next(err)
+              return next(err)
             }
             let modifiedCardIndex
             list.cards.forEach((listCard, index) => {
@@ -1626,12 +1597,12 @@ router.patch('/updateChecklistTitle', (req, res, next) => {
             list.save((err, list) => {
               if (err) {
                 console.error(err)
-                next(err)
+                return next(err)
               }
               Board.findById(currentUser.activeBoard, (err, board) => {
                 if (err) {
                   console.error(err)
-                  next(err)
+                  return next(err)
                 }
                 let modifiedListIndex
                 board.lists.forEach((boardList, index) => {
@@ -1645,12 +1616,12 @@ router.patch('/updateChecklistTitle', (req, res, next) => {
                 board.save((err, board) => {
                   if (err) {
                     console.error(err)
-                    next(err)
+                    return next(err)
                   }
                   User.findById(currentUser._id, (err, user) => {
                     if (err) {
                       console.error(err)
-                      next(err)
+                      return next(err)
                     }
                     let modifiedBoardIndex
                     user.boards.forEach((userBoard, index) => {
@@ -1664,7 +1635,7 @@ router.patch('/updateChecklistTitle', (req, res, next) => {
                     user.save((err, user) => {
                       if (err) {
                         console.error(err)
-                        next(err)
+                        return next(err)
                       }
                       let userAndLists = { user: user, lists: board.lists }
                       return res.json(userAndLists)
@@ -1686,17 +1657,17 @@ router.delete('/deleteChecklist', (req, res, next) => {
   Checklist.findById(checklistId, (err, checklist) => {
     if (err) {
       console.error(err)
-      next(err)
+      return next(err)
     }
     checklist.delete((err, checklist) => {
       if (err) {
         console.error(err)
-        next(err)
+        return next(err)
       }
       Card.findById(cardId, (err, card) => {
         if (err) {
           console.error(err)
-          next(err)
+          return next(err)
         }
         let modifiedChecklistIndex
         card.checklists.forEach((cardChecklist, index) => {
@@ -1717,12 +1688,12 @@ router.delete('/deleteChecklist', (req, res, next) => {
         card.save((err, card) => {
           if (err) {
             console.error(err)
-            next(err)
+            return next(err)
           }
           List.findById(listId, (err, list) => {
             if (err) {
               console.error(err)
-              next(err)
+              return next(err)
             }
             let modifiedCardIndex
             list.cards.forEach((listCard, index) => {
@@ -1734,12 +1705,12 @@ router.delete('/deleteChecklist', (req, res, next) => {
             list.save((err, list) => {
               if (err) {
                 console.error(err)
-                next(err)
+                return next(err)
               }
               Board.findById(currentUser.activeBoard, (err, board) => {
                 if (err) {
                   console.error(err)
-                  next(err)
+                  return next(err)
                 }
                 let modifiedListIndex
                 board.lists.forEach((boardList, index) => {
@@ -1753,12 +1724,12 @@ router.delete('/deleteChecklist', (req, res, next) => {
                 board.save((err, board) => {
                   if (err) {
                     console.error(err)
-                    next(err)
+                    return next(err)
                   }
                   User.findById(currentUser._id, (err, user) => {
                     if (err) {
                       console.error(err)
-                      next(err)
+                      return next(err)
                     }
                     let modifiedBoardIndex
                     user.boards.forEach((userBoard, index) => {
@@ -1772,7 +1743,7 @@ router.delete('/deleteChecklist', (req, res, next) => {
                     user.save((err, user) => {
                       if (err) {
                         console.error(err)
-                        next(err)
+                        return next(err)
                       }
                       let userAndLists = { user: user, lists: board.lists }
                       return res.json(userAndLists)
@@ -1796,18 +1767,18 @@ router.post('/addAttachmentUrlToCard', (req, res, next) => {
   Card.findById(cardId, (err, card) => {
     if (err) {
       console.error(err)
-      next(err)
+      return next(err)
     }
     card.attachments = [...card.attachments, url]
     card.save((err, card) => {
       if (err) {
         console.error(err)
-        next(err)
+        return next(err)
       }
       List.findById(listId, (err, list) => {
         if (err) {
           console.error(err)
-          next(err)
+          return next(err)
         }
         let modifiedCardIndex
         list.cards.forEach((listCard, index) => {
@@ -1819,12 +1790,12 @@ router.post('/addAttachmentUrlToCard', (req, res, next) => {
         list.save((err, list) => {
           if (err) {
             console.error(err)
-            next(err)
+            return next(err)
           }
           Board.findById(currentUser.activeBoard, (err, board) => {
             if (err) {
               console.error(err)
-              next(err)
+              return next(err)
             }
             let modifiedListIndex
             board.lists.forEach((boardList, index) => {
@@ -1836,12 +1807,12 @@ router.post('/addAttachmentUrlToCard', (req, res, next) => {
             board.save((err, board) => {
               if (err) {
                 console.error(err)
-                next(err)
+                return next(err)
               }
               User.findById(currentUser._id, (err, user) => {
                 if (err) {
                   console.error(err)
-                  next(err)
+                  return next(err)
                 }
                 let modifiedBoardIndex
                 user.boards.forEach((userBoard, index) => {
@@ -1855,7 +1826,7 @@ router.post('/addAttachmentUrlToCard', (req, res, next) => {
                 user.save((err, user) => {
                   if (err) {
                     console.error(err)
-                    next(err)
+                    return next(err)
                   }
                   let userAndLists = { user: user, lists: board.lists }
                   return res.json(userAndLists)
