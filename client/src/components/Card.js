@@ -2,7 +2,6 @@ import React from 'react'
 import CardModal from './CardModal'
 import CardMemberList from './CardMemberList'
 import { Draggable } from 'react-beautiful-dnd'
-import { is } from 'bluebird'
 
 const Card = ({
   currentUser,

@@ -13,7 +13,6 @@ const Show = ({
   handleCloseDeleteBoardWarningModal,
   showDeleteBoardWarningModal,
 }) => {
-  console.log('active ' + JSON.stringify(currentUser))
   let boards = []
   let boardNames = []
   let dropdownItems

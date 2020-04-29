@@ -7,7 +7,6 @@ import {
   changeShowBoardNameDisplay,
   onDragEnd,
 } from '../actions'
-import { DragDropContext } from 'react-beautiful-dnd'
 
 class BoardContainer extends Component {
   render() {
@@ -21,18 +20,12 @@ class BoardContainer extends Component {
       handleOnDragEnd,
       lists,
     } = this.props
-    let name
-    //let lists
-    //console.log(currentBoard)
-    if (currentBoard && currentBoard[0]) {
-      //name = currentBoard[0].name
-      //lists = currentBoard[0].lists
 
+    if (currentBoard && currentBoard[0]) {
       console.log('BoardContainer ' + JSON.stringify(currentBoard))
       return (
         <Board
           handleClick={handleClick}
-          //name={name}
           lists={lists}
           currentBoard={currentBoard}
           handleBoardNameChange={handleBoardNameChange}
@@ -60,13 +53,13 @@ const mapStateToProps = (state, ownProps) => {
     lists: state.activeBoardLists,
   }
 }
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    handleClick: e => {
+    handleClick: (e) => {
       dispatch(createList(e))
     },
 
-    handleBoardNameChange: e => {
+    handleBoardNameChange: (e) => {
       let componentName = e.target.value
       e.target.value = ''
 
@@ -78,7 +71,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(changeShowBoardNameDisplay())
     },
 
-    handleOnDragEnd: result => {
+    handleOnDragEnd: (result) => {
       dispatch(onDragEnd(result))
     },
   }

@@ -17,7 +17,6 @@ import {
   selectMemberFromDropdown,
   closeDuplicateMemberWarning,
   deleteMemberFromCard,
-  setCurrentListAndCard,
   showAddItemForm,
   hideAddItemForm,
   createChecklist,
@@ -50,7 +49,6 @@ class CardContainer extends Component {
       handleDeleteCard,
       listId,
       listName,
-      handleCardAttributeEdit,
       handleUpdateCardTitle,
       handleUpdateCardDescription,
       handleAddMemberToCard,
@@ -167,8 +165,6 @@ class CardContainer extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  let currentList
-  // let currentCard
   return {
     currentUser: state.currentUser,
     title: ownProps.title,
@@ -184,9 +180,9 @@ const mapStateToProps = (state, ownProps) => {
     showDuplicateMemberWarning: state.showDuplicateMemberWarning,
     index: ownProps.index,
     lists: state.activeBoardLists,
-    currentList: (currentList = state.activeBoardLists.filter((boardList) => {
+    currentList: state.activeBoardLists.filter((boardList) => {
       return JSON.stringify(boardList._id) === JSON.stringify(ownProps.listId)
-    })[0]),
+    })[0],
     showChecklistItemForm: state.showChecklistItemForm,
     showChecklistTitleForm: state.showChecklistTitleForm,
     showAddMemberDropdown: state.showAddMemberDropdown,

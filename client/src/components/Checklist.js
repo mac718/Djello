@@ -1,8 +1,6 @@
 import React from 'react'
 import ChecklistItemForm from './ChecklistItemForm'
 import ChecklistTitleForm from './ChecklistTitleForm'
-import CheclistTitleDisplay from './ChecklistTitleDisplay'
-//import { showChecklistTitleForm } from '../actions'
 import ChecklistTitleDisplay from './ChecklistTitleDisplay'
 
 const Checklist = ({
@@ -11,7 +9,6 @@ const Checklist = ({
   handleShowAddItemForm,
   handleHideAddItemForm,
   showChecklistItemForm,
-  //handleCardAttributeEdit,
   handleAddChecklistItem,
   handleDisplayChecklistTitleForm,
   handleHideChecklistTitleForm,

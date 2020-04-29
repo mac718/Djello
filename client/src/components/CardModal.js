@@ -112,7 +112,6 @@ const CardModal = ({
           handleCheckItem={handleCheckItem}
           title={checklist.title}
           showChecklistTitleForm={showChecklistTitleForm}
-          handleCheckItem={handleCheckItem}
           handleUpdateChecklistTitle={handleUpdateChecklistTitle}
           handleDeleteChecklist={handleDeleteChecklist}
           handleEditChecklistItemForm={handleEditChecklistItemForm}
@@ -197,8 +196,6 @@ const CardModal = ({
       <p className="is-size-4">Checklists</p>
     ) : null
 
-  let memberDropdown
-
   console.log(showAddMemberDropdown)
 
   let memberDropdownClasses = showAddMemberDropdown
@@ -277,6 +274,7 @@ const CardModal = ({
             className="attachment"
             src={attachment}
             onClick={handleOpenAttachmentModal}
+            alt=""
           />
           <div className={attachmentModalClasses}>
             <div className="modal-background"></div>

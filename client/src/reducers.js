@@ -1,5 +1,4 @@
 import * as Actions from './actions'
-import { stat } from 'fs'
 
 const initialState = {
   username: '',
