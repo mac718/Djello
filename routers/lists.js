@@ -1,0 +1,325 @@
+const express = require('express')
+const router = express.Router()
+const User = require('../models/user')
+const Board = require('../models/board')
+const List = require('../models/list')
+const Card = require('../models/card')
+
+router.post('/createList', (req, res, next) => {
+  console.log('hi')
+  let list = new List({ name: '', cards: [] })
+  let activeBoard = req.body['activeBoard']
+  let username = req.cookies['user']
+  console.log('activeBoard ' + JSON.stringify(req.body))
+
+  list.save((err, list) => {
+    console.log('hello')
+    if (err) {
+      alert('goodbye')
+      console.error(err)
+      return next(err)
+    }
+    Board.findById(activeBoard, (err, board) => {
+      if (err) {
+        console.log('goodbye')
+        console.error(err)
+        return next(err)
+      }
+      board.lists = [...board.lists, list]
+      board.save((err, board) => {
+        if (err) {
+          console.log('goodbye')
+          console.error(err)
+          return next(err)
+        }
+        User.find({ username: username }, (err, user) => {
+          console.log('user ' + JSON.stringify(user[0].boards[0]._id))
+          console.log(JSON.stringify(board._id))
+          if (err) {
+            alert('goodbye')
+            console.error(err)
+            return next(err)
+          }
+          let oldBoard = user[0].boards.filter((json) => {
+            return JSON.stringify(json._id) == JSON.stringify(board._id)
+          })[0]
+
+          console.log('oldBOard ' + JSON.stringify(oldBoard))
+          let oldBoardIndex = user[0].boards.indexOf(oldBoard)
+
+          user[0].boards.splice(oldBoardIndex, 1, board)
+
+          console.log('user boards ' + JSON.stringify(user[0].boards))
+          user[0].save((err, user) => {
+            if (err) {
+              alert('goodbye')
+              console.error(err)
+              return next(err)
+            }
+            console.log('server user ' + user)
+            console.log('board.lists ' + board.lists)
+            let userAndLists = { user: user, lists: board.lists }
+            return res.json(userAndLists)
+          })
+        })
+      })
+    })
+  })
+})
+
+router.delete('/deleteList', (req, res, next) => {
+  let { listId, currentUser } = req.body
+
+  List.findById(listId, (err, list) => {
+    if (err) {
+      console.log(err)
+      return next(err)
+    }
+    list.delete((err, list) => {
+      if (err) {
+        console.log(err)
+        return next(err)
+      }
+      Board.findById(currentUser.activeBoard, (err, board) => {
+        if (err) {
+          console.log(err)
+          return next(err)
+        }
+        let deletedListIndex
+        board.lists.forEach((boardList, index) => {
+          if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
+            deletedListIndex = index
+          }
+        })
+        board.lists.splice(deletedListIndex, 1)
+        board.save((err, board) => {
+          if (err) {
+            console.log(err)
+            return next(err)
+          }
+          User.findById(currentUser._id, (err, user) => {
+            let modifiedBoardIndex
+            user.boards.forEach((userBoard, index) => {
+              if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
+                modifiedBoardIndex = index
+              }
+            })
+            user.boards.splice(modifiedBoardIndex, 1, board)
+            user.save((err, user) => {
+              if (err) {
+                console.log(err)
+                return next(err)
+              }
+              let userAndLists = { user: user, lists: board.lists }
+              return res.json(userAndLists)
+            })
+          })
+        })
+      })
+    })
+  })
+})
+
+router.put('/changeListName', (req, res, next) => {
+  let name = req.body.componentName
+  let currentUser = req.body.currentUser
+  let activeBoardId = currentUser.activeBoard
+  let listId = req.body.listId
+
+  List.findById(listId, (err, list) => {
+    if (err) {
+      console.log(err)
+      return next(err)
+    }
+
+    list.name = name
+    console.log(list.name)
+    list.save((err, list) => {
+      Board.findById(activeBoardId, (err, board) => {
+        if (err) {
+          console.log(err)
+          return next(err)
+        }
+        let modifiedListIndex
+        board.lists.forEach((boardList, index) => {
+          if (JSON.stringify(boardList._id) === JSON.stringify(listId)) {
+            modifiedListIndex = index
+          }
+        })
+        board.lists.splice(modifiedListIndex, 1, list)
+        User.findById(currentUser._id, (err, user) => {
+          if (err) {
+            console.log(err)
+            return next(err)
+          }
+          let modifiedBoardIndex
+          user.boards.forEach((userBoard, index) => {
+            if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
+              modifiedBoardIndex = index
+            }
+          })
+          user.boards.splice(modifiedBoardIndex, 1, board)
+          user.save((err, user) => {
+            if (err) {
+              console.log(err)
+              return next(err)
+            }
+            let userAndLists = { user: user, lists: board.lists }
+            return res.json(userAndLists)
+          })
+        })
+      })
+    })
+  })
+})
+
+router.put('/updateListAfterDnd', (req, res, next) => {
+  let currentUser = req.body.currentUser
+  let source = req.body.source
+  let destination = req.body.destination
+  let cardId = req.body.draggableId
+
+  if (source.droppableId === destination.droppableId) {
+    Card.findById(cardId, (err, card) => {
+      if (err) {
+        console.error(err)
+        return next(err)
+      }
+
+      List.findById(source.droppableId, (err, list) => {
+        if (err) {
+          console.error(err)
+          return next(err)
+        }
+        list.cards.splice(source.index, 1)
+        list.cards.splice(destination.index, 0, card)
+
+        list.save((err, list) => {
+          if (err) {
+            console.error(err)
+            return next(err)
+          }
+          Board.findById(currentUser.activeBoard, (err, board) => {
+            let modifiedLisIndex
+            board.lists.forEach((boardList, index) => {
+              if (JSON.stringify(list._id) === JSON.stringify(boardList._id)) {
+                modifiedLisIndex = index
+              }
+            })
+            board.lists.splice(modifiedLisIndex, 1, list)
+            board.save((err, board) => {
+              if (err) {
+                console.error(err)
+                return next(err)
+              }
+              User.findById(currentUser._id, (err, user) => {
+                if (err) {
+                  console.error(err)
+                  return next(err)
+                }
+                let modifiedBoardIndex
+                user.boards.forEach((userBoard, index) => {
+                  if (
+                    JSON.stringify(board._id) === JSON.stringify(userBoard._id)
+                  ) {
+                    modifiedBoardIndex = index
+                  }
+                })
+                user.boards.splice(modifiedBoardIndex, 1, board)
+                user.save((err, user) => {
+                  if (err) {
+                    console.error(err)
+                    return next(err)
+                  }
+                  return res.json(user)
+                })
+              })
+            })
+          })
+        })
+      })
+    })
+  } else {
+    Card.findById(cardId, (err, card) => {
+      if (err) {
+        console.error(err)
+        return next(err)
+      }
+      List.findById(source.droppableId, (err, sourceList) => {
+        if (err) {
+          console.error(err)
+          return next(err)
+        }
+        sourceList.cards.splice(source.index, 1)
+        sourceList.save((err, sourceList) => {
+          List.findById(destination.droppableId, (err, destinationList) => {
+            if (err) {
+              console.error(err)
+              return next(err)
+            }
+            destinationList.cards.splice(destination.index, 0, card)
+            destinationList.save((err, destinationList) => {
+              Board.findById(currentUser.activeBoard, (err, board) => {
+                let modifiedListIndex_1
+                board.lists.forEach((sourceBoardList, index) => {
+                  if (
+                    JSON.stringify(sourceBoardList._id) ===
+                    JSON.stringify(sourceList._id)
+                  ) {
+                    modifiedListIndex_1 = index
+                  }
+                })
+                board.lists.splice(modifiedListIndex_1, 1, sourceList)
+
+                let modifiedListIndex_2
+                board.lists.forEach((destinationBoardList, index) => {
+                  if (
+                    JSON.stringify(destinationBoardList._id) ===
+                    JSON.stringify(destinationList._id)
+                  ) {
+                    modifiedListIndex_2 = index
+                  }
+                })
+
+                board.lists.splice(modifiedListIndex_2, 1, destinationList)
+
+                board.save((err, board) => {
+                  if (err) {
+                    console.error(err)
+                    return next(err)
+                  }
+                  User.findById(currentUser._id, (err, user) => {
+                    if (err) {
+                      console.error(err)
+                      return next(err)
+                    }
+                    let modifiedBoardIndex
+                    user.boards.forEach((userBoard, index) => {
+                      if (
+                        JSON.stringify(userBoard._id) ===
+                        JSON.stringify(board._id)
+                      ) {
+                        modifiedBoardIndex = index
+                      }
+                    })
+
+                    user.boards.splice(modifiedBoardIndex, 1, board)
+                    user.save((err, user) => {
+                      if (err) {
+                        console.error(err)
+                        return next(err)
+                      }
+                      return res.json(user)
+                    })
+                  })
+                })
+              })
+            })
+          })
+        })
+      })
+    })
+  }
+})
+
+module.exports = router

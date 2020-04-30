@@ -8,7 +8,12 @@ const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const expressSession = require('express-session')
-const routes = require('./routes')
+const users = require('./routers/users')
+const boards = require('./routers/boards')
+const lists = require('./routers/lists')
+const cards = require('./routers/cards')
+const checklists = require('./routers/checklists')
+const checklistItems = require('./routers/checklistItems')
 
 app.use((req, res, next) => {
   if (mongoose.connection.readyState) {
@@ -86,7 +91,12 @@ function parseJSON(response) {
   return response.json()
 }
 
-app.use('/', routes)
+app.use('/', users)
+app.use('/', boards)
+app.use('/', lists)
+app.use('/', cards)
+app.use('/', checklists)
+app.use('/', checklistItems)
 
 function errorHandler(err, req, res, next) {
   console.error('Error: ', err.stack)

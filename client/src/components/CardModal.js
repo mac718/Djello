@@ -83,12 +83,6 @@ const CardModal = ({
   let checklists
   let memberList
 
-  console.log(currentList)
-
-  // currentCard = currentList.cards.filter(listCard => {
-  //   return JSON.stringify(listCard._id) === JSON.stringify(cardId)
-  // })[0]
-
   if (currentCard.activity) {
     cardActivity = currentCard.activity.map((action) => {
       return <li key={action}>{action}</li>
@@ -103,7 +97,6 @@ const CardModal = ({
           handleShowAddItemForm={handleShowAddItemForm}
           handleHideAddItemForm={handleHideAddItemForm}
           showChecklistItemForm={showChecklistItemForm}
-          //handleCardAttributeEdit={handleCardAttributeEdit}
           handleAddChecklistItem={handleAddChecklistItem}
           handleDisplayChecklistTitleForm={handleDisplayChecklistTitleForm}
           handleHideChecklistTitleForm={handleHideChecklistTitleForm}
@@ -170,7 +163,7 @@ const CardModal = ({
     )
   })
 
-  if (members) {
+  if (members.length > 0) {
     memberList = members.map((member) => {
       return (
         <a
