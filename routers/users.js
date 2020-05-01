@@ -5,6 +5,8 @@ const User = require('../models/user')
 const Board = require('../models/board')
 const withAuth = require('./middleware')
 const path = require('path')
+const RouterHelpers = require('./RouterHelpers')
+const routeHelper = new RouterHelpers()
 
 router.get('/checkForCurrentUser', withAuth, (req, res) => {
   res.status(200).send()
@@ -54,12 +56,22 @@ router.post('/register', (req, res, next) => {
   })
 
   user.save((err, user) => {
+    if (err) {
+      console.error(err)
+      return res.json({
+        err: 'Error: not able to register.',
+      })
+    }
     req.login(user, function (err) {
       console.log(user)
+
       if (err) {
-        console.log(err)
-        return next(err)
+        console.error(err)
+        return res.json({
+          err: 'Error: not able to log in.',
+        })
       }
+
       res.cookie('user', req.user.username)
       var info = {
         user: user,
@@ -84,9 +96,11 @@ router.get('/getAllUsers', (req, res, next) => {
   User.find((err, users) => {
     if (err) {
       console.error(err)
-      return next(err)
+      return res.json({
+        err: 'Error: could not retrieve usernames for member list.',
+      })
     }
-    console.log(JSON.stringify('snyarff ' + users))
+
     return res.json(users)
   })
 })

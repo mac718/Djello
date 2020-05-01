@@ -13,12 +13,16 @@ router.post('/createChecklist', (req, res, next) => {
   checklist.save((err, checklist) => {
     if (err) {
       console.error(err)
-      return next(err)
+      return res.json({
+        err: 'Error: could not save checklist.',
+      })
     }
     Card.findById(cardId, (err, card) => {
       if (err) {
         console.error(err)
-        return next(err)
+        return res.json({
+          err: 'Error: could not save checklist.',
+        })
       }
       card.checklists = [...card.checklists, checklist]
       let date = new Date()
@@ -26,16 +30,19 @@ router.post('/createChecklist', (req, res, next) => {
         ...card.activity,
         `${currentUser.username} created a checklist at ${date.toString()}`,
       ]
-      console.log(JSON.stringify(card.checklists))
       card.save((err, card) => {
         if (err) {
           console.error(err)
-          return next(err)
+          return res.json({
+            err: 'Error: could not save checklist.',
+          })
         }
         List.findById(listId, (err, list) => {
           if (err) {
             console.error(err)
-            return next(err)
+            return res.json({
+              err: 'Error: could not update list.',
+            })
           }
           let modifiedCardIndex
           list.cards.forEach((listCard, index) => {
@@ -47,12 +54,16 @@ router.post('/createChecklist', (req, res, next) => {
           list.save((err, list) => {
             if (err) {
               console.error(err)
-              return next(err)
+              return res.json({
+                err: 'Error: could not update list.',
+              })
             }
             Board.findById(currentUser.activeBoard, (err, board) => {
               if (err) {
                 console.error(err)
-                return next(err)
+                return res.json({
+                  err: 'Error: could not update board.',
+                })
               }
               let modifiedListIndex
               board.lists.forEach((boardList, index) => {
@@ -66,12 +77,16 @@ router.post('/createChecklist', (req, res, next) => {
               board.save((err, board) => {
                 if (err) {
                   console.error(err)
-                  return next(err)
+                  return res.json({
+                    err: 'Error: could not update board.',
+                  })
                 }
                 User.findById(currentUser._id, (err, user) => {
                   if (err) {
                     console.error(err)
-                    return next(err)
+                    return res.json({
+                      err: 'Error: could not update current user.',
+                    })
                   }
                   let modifiedBoardIndex
                   user.boards.forEach((userBoard, index) => {
@@ -101,18 +116,24 @@ router.patch('/updateChecklistTitle', (req, res, next) => {
   Checklist.findById(checklistId, (err, checklist) => {
     if (err) {
       console.error(err)
-      return next(err)
+      return res.json({
+        err: 'Error: could not update checklist title.',
+      })
     }
     checklist.title = title
     checklist.save((err, checklist) => {
       if (err) {
         console.error(err)
-        return next(err)
+        return res.json({
+          err: 'Error: could not update checklist title.',
+        })
       }
       Card.findById(cardId, (err, card) => {
         if (err) {
           console.error(err)
-          return next(err)
+          return res.json({
+            err: 'Error: could not update card.',
+          })
         }
         let modifiedChecklistIndex
         card.checklists.forEach((cardChecklist, index) => {
@@ -126,12 +147,16 @@ router.patch('/updateChecklistTitle', (req, res, next) => {
         card.save((err, card) => {
           if (err) {
             console.error(err)
-            return next(err)
+            return res.json({
+              err: 'Error: could not update card.',
+            })
           }
           List.findById(listId, (err, list) => {
             if (err) {
               console.error(err)
-              return next(err)
+              return res.json({
+                err: 'Error: could not update list.',
+              })
             }
             let modifiedCardIndex
             list.cards.forEach((listCard, index) => {
@@ -150,12 +175,16 @@ router.patch('/updateChecklistTitle', (req, res, next) => {
             list.save((err, list) => {
               if (err) {
                 console.error(err)
-                return next(err)
+                return res.json({
+                  err: 'Error: could not update list.',
+                })
               }
               Board.findById(currentUser.activeBoard, (err, board) => {
                 if (err) {
                   console.error(err)
-                  return next(err)
+                  return res.json({
+                    err: 'Error: could not update board.',
+                  })
                 }
                 let modifiedListIndex
                 board.lists.forEach((boardList, index) => {
@@ -169,12 +198,16 @@ router.patch('/updateChecklistTitle', (req, res, next) => {
                 board.save((err, board) => {
                   if (err) {
                     console.error(err)
-                    return next(err)
+                    return res.json({
+                      err: 'Error: could not update board.',
+                    })
                   }
                   User.findById(currentUser._id, (err, user) => {
                     if (err) {
                       console.error(err)
-                      return next(err)
+                      return res.json({
+                        err: 'Error: could not update current user.',
+                      })
                     }
                     let modifiedBoardIndex
                     user.boards.forEach((userBoard, index) => {
@@ -188,7 +221,9 @@ router.patch('/updateChecklistTitle', (req, res, next) => {
                     user.save((err, user) => {
                       if (err) {
                         console.error(err)
-                        return next(err)
+                        return res.json({
+                          err: 'Error: could not update current user.',
+                        })
                       }
                       let userAndLists = { user: user, lists: board.lists }
                       return res.json(userAndLists)
@@ -210,17 +245,23 @@ router.delete('/deleteChecklist', (req, res, next) => {
   Checklist.findById(checklistId, (err, checklist) => {
     if (err) {
       console.error(err)
-      return next(err)
+      return res.json({
+        err: 'Error: could not delete checklist.',
+      })
     }
     checklist.delete((err, checklist) => {
       if (err) {
         console.error(err)
-        return next(err)
+        return res.json({
+          err: 'Error: could not delete checklist.',
+        })
       }
       Card.findById(cardId, (err, card) => {
         if (err) {
           console.error(err)
-          return next(err)
+          return res.json({
+            err: 'Error: could not update card.',
+          })
         }
         let modifiedChecklistIndex
         card.checklists.forEach((cardChecklist, index) => {
@@ -241,12 +282,16 @@ router.delete('/deleteChecklist', (req, res, next) => {
         card.save((err, card) => {
           if (err) {
             console.error(err)
-            return next(err)
+            return res.json({
+              err: 'Error: could not update card.',
+            })
           }
           List.findById(listId, (err, list) => {
             if (err) {
               console.error(err)
-              return next(err)
+              return res.json({
+                err: 'Error: could not update list.',
+              })
             }
             let modifiedCardIndex
             list.cards.forEach((listCard, index) => {
@@ -258,12 +303,16 @@ router.delete('/deleteChecklist', (req, res, next) => {
             list.save((err, list) => {
               if (err) {
                 console.error(err)
-                return next(err)
+                return res.json({
+                  err: 'Error: could not update list.',
+                })
               }
               Board.findById(currentUser.activeBoard, (err, board) => {
                 if (err) {
                   console.error(err)
-                  return next(err)
+                  return res.json({
+                    err: 'Error: could not update board.',
+                  })
                 }
                 let modifiedListIndex
                 board.lists.forEach((boardList, index) => {
@@ -277,12 +326,16 @@ router.delete('/deleteChecklist', (req, res, next) => {
                 board.save((err, board) => {
                   if (err) {
                     console.error(err)
-                    return next(err)
+                    return res.json({
+                      err: 'Error: could not update board.',
+                    })
                   }
                   User.findById(currentUser._id, (err, user) => {
                     if (err) {
                       console.error(err)
-                      return next(err)
+                      return res.json({
+                        err: 'Error: could not update current user.',
+                      })
                     }
                     let modifiedBoardIndex
                     user.boards.forEach((userBoard, index) => {
@@ -296,7 +349,9 @@ router.delete('/deleteChecklist', (req, res, next) => {
                     user.save((err, user) => {
                       if (err) {
                         console.error(err)
-                        return next(err)
+                        return res.json({
+                          err: 'Error: could not update current user.',
+                        })
                       }
                       let userAndLists = { user: user, lists: board.lists }
                       return res.json(userAndLists)

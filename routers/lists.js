@@ -4,41 +4,34 @@ const User = require('../models/user')
 const Board = require('../models/board')
 const List = require('../models/list')
 const Card = require('../models/card')
+const RouteHelpers = require('./RouterHelpers')
+const routeHelper = new RouteHelpers()
 
 router.post('/createList', (req, res, next) => {
-  console.log('hi')
   let list = new List({ name: '', cards: [] })
   let activeBoard = req.body['activeBoard']
   let username = req.cookies['user']
-  console.log('activeBoard ' + JSON.stringify(req.body))
 
   list.save((err, list) => {
-    console.log('hello')
-    if (err) {
-      alert('goodbye')
-      console.error(err)
-      return next(err)
-    }
+    routeHelper.handleErr(err, next)
     Board.findById(activeBoard, (err, board) => {
       if (err) {
-        console.log('goodbye')
         console.error(err)
-        return next(err)
+        return res.json({ err: 'Error: could not add new list.' })
       }
+
       board.lists = [...board.lists, list]
       board.save((err, board) => {
         if (err) {
-          console.log('goodbye')
           console.error(err)
-          return next(err)
+          return res.json({ err: 'Error: could not add new list.' })
         }
         User.find({ username: username }, (err, user) => {
           console.log('user ' + JSON.stringify(user[0].boards[0]._id))
           console.log(JSON.stringify(board._id))
           if (err) {
-            alert('goodbye')
             console.error(err)
-            return next(err)
+            return res.json({ err: 'Error: could not add new list.' })
           }
           let oldBoard = user[0].boards.filter((json) => {
             return JSON.stringify(json._id) == JSON.stringify(board._id)
@@ -52,9 +45,8 @@ router.post('/createList', (req, res, next) => {
           console.log('user boards ' + JSON.stringify(user[0].boards))
           user[0].save((err, user) => {
             if (err) {
-              alert('goodbye')
               console.error(err)
-              return next(err)
+              return res.json({ err: 'Error: could not add new list.' })
             }
             console.log('server user ' + user)
             console.log('board.lists ' + board.lists)
@@ -72,18 +64,18 @@ router.delete('/deleteList', (req, res, next) => {
 
   List.findById(listId, (err, list) => {
     if (err) {
-      console.log(err)
-      return next(err)
+      console.error(err)
+      return res.json({ err: 'Error: could not delete list.' })
     }
     list.delete((err, list) => {
       if (err) {
-        console.log(err)
-        return next(err)
+        console.error(err)
+        return res.json({ err: 'Error: could not delete list.' })
       }
       Board.findById(currentUser.activeBoard, (err, board) => {
         if (err) {
-          console.log(err)
-          return next(err)
+          console.error(err)
+          return res.json({ err: 'Error: could not delete list.' })
         }
         let deletedListIndex
         board.lists.forEach((boardList, index) => {
@@ -94,8 +86,8 @@ router.delete('/deleteList', (req, res, next) => {
         board.lists.splice(deletedListIndex, 1)
         board.save((err, board) => {
           if (err) {
-            console.log(err)
-            return next(err)
+            console.error(err)
+            return res.json({ err: 'Error: could not delete list.' })
           }
           User.findById(currentUser._id, (err, user) => {
             let modifiedBoardIndex
@@ -107,8 +99,8 @@ router.delete('/deleteList', (req, res, next) => {
             user.boards.splice(modifiedBoardIndex, 1, board)
             user.save((err, user) => {
               if (err) {
-                console.log(err)
-                return next(err)
+                console.error(err)
+                return res.json({ err: 'Error: could not delete list.' })
               }
               let userAndLists = { user: user, lists: board.lists }
               return res.json(userAndLists)
@@ -128,8 +120,8 @@ router.put('/changeListName', (req, res, next) => {
 
   List.findById(listId, (err, list) => {
     if (err) {
-      console.log(err)
-      return next(err)
+      console.error(err)
+      return res.json({ err: 'Error: could not save new list name' })
     }
 
     list.name = name
@@ -137,8 +129,8 @@ router.put('/changeListName', (req, res, next) => {
     list.save((err, list) => {
       Board.findById(activeBoardId, (err, board) => {
         if (err) {
-          console.log(err)
-          return next(err)
+          console.error(err)
+          return res.json({ err: 'Error: could not save new list name' })
         }
         let modifiedListIndex
         board.lists.forEach((boardList, index) => {
@@ -149,8 +141,8 @@ router.put('/changeListName', (req, res, next) => {
         board.lists.splice(modifiedListIndex, 1, list)
         User.findById(currentUser._id, (err, user) => {
           if (err) {
-            console.log(err)
-            return next(err)
+            console.error(err)
+            return res.json({ err: 'Error: could not save new list name' })
           }
           let modifiedBoardIndex
           user.boards.forEach((userBoard, index) => {
@@ -161,8 +153,8 @@ router.put('/changeListName', (req, res, next) => {
           user.boards.splice(modifiedBoardIndex, 1, board)
           user.save((err, user) => {
             if (err) {
-              console.log(err)
-              return next(err)
+              console.error(err)
+              return res.json({ err: 'Error: could not save new list name' })
             }
             let userAndLists = { user: user, lists: board.lists }
             return res.json(userAndLists)
@@ -183,13 +175,13 @@ router.put('/updateListAfterDnd', (req, res, next) => {
     Card.findById(cardId, (err, card) => {
       if (err) {
         console.error(err)
-        return next(err)
+        return res.json({ err: 'Error: change to lists not saved.' })
       }
 
       List.findById(source.droppableId, (err, list) => {
         if (err) {
           console.error(err)
-          return next(err)
+          return res.json({ err: 'Error: change to lists not saved.' })
         }
         list.cards.splice(source.index, 1)
         list.cards.splice(destination.index, 0, card)
@@ -197,7 +189,7 @@ router.put('/updateListAfterDnd', (req, res, next) => {
         list.save((err, list) => {
           if (err) {
             console.error(err)
-            return next(err)
+            return res.json({ err: 'Error: change to lists not saved.' })
           }
           Board.findById(currentUser.activeBoard, (err, board) => {
             let modifiedLisIndex
@@ -210,12 +202,12 @@ router.put('/updateListAfterDnd', (req, res, next) => {
             board.save((err, board) => {
               if (err) {
                 console.error(err)
-                return next(err)
+                return res.json({ err: 'Error: change to lists not saved.' })
               }
               User.findById(currentUser._id, (err, user) => {
                 if (err) {
                   console.error(err)
-                  return next(err)
+                  return res.json({ err: 'Error: change to lists not saved.' })
                 }
                 let modifiedBoardIndex
                 user.boards.forEach((userBoard, index) => {
@@ -229,7 +221,9 @@ router.put('/updateListAfterDnd', (req, res, next) => {
                 user.save((err, user) => {
                   if (err) {
                     console.error(err)
-                    return next(err)
+                    return res.json({
+                      err: 'Error: change to lists not saved.',
+                    })
                   }
                   return res.json(user)
                 })
@@ -243,19 +237,19 @@ router.put('/updateListAfterDnd', (req, res, next) => {
     Card.findById(cardId, (err, card) => {
       if (err) {
         console.error(err)
-        return next(err)
+        return res.json({ err: 'Error: change to lists not saved.' })
       }
       List.findById(source.droppableId, (err, sourceList) => {
         if (err) {
           console.error(err)
-          return next(err)
+          return res.json({ err: 'Error: change to lists not saved.' })
         }
         sourceList.cards.splice(source.index, 1)
         sourceList.save((err, sourceList) => {
           List.findById(destination.droppableId, (err, destinationList) => {
             if (err) {
               console.error(err)
-              return next(err)
+              return res.json({ err: 'Error: change to lists not saved.' })
             }
             destinationList.cards.splice(destination.index, 0, card)
             destinationList.save((err, destinationList) => {
@@ -286,12 +280,16 @@ router.put('/updateListAfterDnd', (req, res, next) => {
                 board.save((err, board) => {
                   if (err) {
                     console.error(err)
-                    return next(err)
+                    return res.json({
+                      err: 'Error: change to lists not saved.',
+                    })
                   }
                   User.findById(currentUser._id, (err, user) => {
                     if (err) {
                       console.error(err)
-                      return next(err)
+                      return res.json({
+                        err: 'Error: change to lists not saved.',
+                      })
                     }
                     let modifiedBoardIndex
                     user.boards.forEach((userBoard, index) => {
@@ -307,7 +305,9 @@ router.put('/updateListAfterDnd', (req, res, next) => {
                     user.save((err, user) => {
                       if (err) {
                         console.error(err)
-                        return next(err)
+                        return res.json({
+                          err: 'Error: change to lists not saved.',
+                        })
                       }
                       return res.json(user)
                     })

@@ -338,7 +338,6 @@ export function handleSubmit(e, route) {
     let state = getState()
     let username = state.username
     let password = state.password
-    console.log(JSON.stringify({ username: username, password: password }))
 
     fetch(route, {
       method: 'POST',
@@ -349,9 +348,7 @@ export function handleSubmit(e, route) {
     })
       .then((res) => {
         if (res.status === 200) {
-          console.log('Yay!')
           return res.json()
-          //this.props.history.push('/')
         } else {
           console.log('no')
           const error = new Error(res.error)
@@ -400,8 +397,12 @@ export function createBoard(e) {
         return res.json()
       })
       .then((json) => {
-        dispatch(updateActiveBoardLists(json.lists))
-        dispatch(updateCurrentUser(json.user))
+        if (json.err) {
+          alert(json.err)
+        } else {
+          dispatch(updateActiveBoardLists(json.lists))
+          dispatch(updateCurrentUser(json.user))
+        }
       })
       .catch((err) => {
         alert(err)
@@ -412,7 +413,6 @@ export function createBoard(e) {
 export function createList(e) {
   return (dispatch, getState) => {
     let state = getState()
-    console.log('state ' + JSON.stringify(state))
 
     fetch('/createList', {
       method: 'POST',
@@ -422,12 +422,15 @@ export function createList(e) {
       },
     })
       .then((res) => {
-        console.log('json ' + JSON.stringify(res))
         return res.json()
       })
       .then((json) => {
-        dispatch(updateActiveBoardLists(json.lists))
-        dispatch(updateCurrentUser(json.user))
+        if (json.err) {
+          alert(json.err)
+        } else {
+          dispatch(updateActiveBoardLists(json.lists))
+          dispatch(updateCurrentUser(json.user))
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -439,7 +442,6 @@ export function createList(e) {
 
 export function deleteList(listId) {
   return (dispatch, getState) => {
-    //let listId = e.target.parentElement.id
     let state = getState()
     let currentUser = state.currentUser
     fetch('/deleteList', {
@@ -450,17 +452,17 @@ export function deleteList(listId) {
       },
     })
       .then((res) => {
-        console.log(JSON.stringify(res))
         return res.json()
       })
       .then((json) => {
-        console.log(json)
-        dispatch(updateActiveBoardLists(json.lists))
-        dispatch(updateCurrentUser(json.user))
+        if (json.err) {
+          alert(json.err)
+        } else {
+          dispatch(updateActiveBoardLists(json.lists))
+          dispatch(updateCurrentUser(json.user))
+        }
       })
       .catch((err) => {
-        console.log(err)
-        dispatch(getDataFailure(err))
         alert(err)
       })
   }
@@ -508,7 +510,6 @@ export function changeName(e, componentName, route) {
     }
     let state = getState()
     let currentUser = state.currentUser
-    console.log('route ' + route)
     fetch(route, {
       method: 'PUT',
       body: JSON.stringify({ componentName, currentUser, listId }),
@@ -520,12 +521,15 @@ export function changeName(e, componentName, route) {
         return res.json()
       })
       .then((json) => {
-        console.log('change name ' + JSON.stringify(json))
-        if (route === '/changeListName') {
-          dispatch(updateActiveBoardLists(json.lists))
-          dispatch(updateCurrentUser(json.user))
+        if (json.err) {
+          alert(json.err)
         } else {
-          dispatch(updateCurrentUser(json.user))
+          if (route === '/changeListName') {
+            dispatch(updateActiveBoardLists(json.lists))
+            dispatch(updateCurrentUser(json.user))
+          } else {
+            dispatch(updateCurrentUser(json.user))
+          }
         }
       })
       .catch((err) => {
@@ -542,7 +546,6 @@ export function saveCard(e) {
     let state = getState()
     let currentUser = state.currentUser
     let listId = e.target.parentElement.id
-    console.log('list yo ' + listId)
     let title = state.cardTitle
     fetch('/createCard', {
       method: 'POST',
@@ -555,8 +558,12 @@ export function saveCard(e) {
         return res.json()
       })
       .then((json) => {
-        dispatch(updateActiveBoardLists(json.lists))
-        dispatch(updateCurrentUser(json.user))
+        if (json.err) {
+          alert(json.err)
+        } else {
+          dispatch(updateActiveBoardLists(json.lists))
+          dispatch(updateCurrentUser(json.user))
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -580,8 +587,12 @@ export function deleteCard(cardId, listId) {
         return res.json()
       })
       .then((json) => {
-        dispatch(updateActiveBoardLists(json.lists))
-        dispatch(updateCurrentUser(json.user))
+        if (json.err) {
+          alert(json.err)
+        } else {
+          dispatch(updateActiveBoardLists(json.lists))
+          dispatch(updateCurrentUser(json.user))
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -595,7 +606,7 @@ export function switchActiveBoard(e) {
     let state = getState()
     let currentUser = state.currentUser
     let boardId = e.target.id
-    console.log('boardId ' + boardId)
+
     fetch('switchActiveBoard', {
       method: 'PATCH',
       body: JSON.stringify({ boardId, currentUser }),
@@ -607,8 +618,12 @@ export function switchActiveBoard(e) {
         return res.json()
       })
       .then((json) => {
-        dispatch(updateActiveBoardLists(json.lists))
-        dispatch(updateCurrentUser(json.user))
+        if (json.err) {
+          alert(json.err)
+        } else {
+          dispatch(updateActiveBoardLists(json.lists))
+          dispatch(updateCurrentUser(json.user))
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -624,6 +639,7 @@ export function updateCardTitle(e, listId, cardId) {
     let state = getState()
     let cardTitle = state.cardTitle
     let currentUser = state.currentUser
+
     dispatch(switchToCardTItleDisplay())
 
     fetch('/updateCardTitle', {
@@ -642,8 +658,12 @@ export function updateCardTitle(e, listId, cardId) {
         return res.json()
       })
       .then((json) => {
-        dispatch(updateActiveBoardLists(json.lists))
-        dispatch(updateCurrentUser(json.user))
+        if (json.err) {
+          alert(json.err)
+        } else {
+          dispatch(updateActiveBoardLists(json.lists))
+          dispatch(updateCurrentUser(json.user))
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -656,8 +676,8 @@ export function updateCardDescription(e) {
   return (dispatch, getState) => {
     dispatch(toggleIsLoading())
     dispatch(switchToCardDescriptionDisplay())
+
     let state = getState()
-    //let attributeType = state.attributeType
     let cardDescription = state.cardDescription
     let currentUser = state.currentUser
     let cardId = e.target.parentElement.parentElement.parentElement.id
@@ -680,8 +700,12 @@ export function updateCardDescription(e) {
         return res.json()
       })
       .then((json) => {
-        dispatch(updateActiveBoardLists(json.lists))
-        dispatch(updateCurrentUser(json.user))
+        if (json.err) {
+          alert(json.err)
+        } else {
+          dispatch(updateActiveBoardLists(json.lists))
+          dispatch(updateCurrentUser(json.user))
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -693,8 +717,8 @@ export function updateCardDescription(e) {
 export function addMemberToCard(e) {
   return (dispatch, getState) => {
     dispatch(toggleIsLoading())
+
     let state = getState()
-    //let attributeType = state.attributeType
     let memberUsername = state.memberToAdd
     let currentUser = state.currentUser
     let cardId =
@@ -728,9 +752,13 @@ export function addMemberToCard(e) {
         if (json.status === 500) {
           dispatch(displayDuplicateMemberWarning())
         } else {
-          dispatch(updateActiveBoardLists(json.lists))
-          dispatch(updateCurrentUser(json.user))
-          dispatch(addBoardToMember())
+          if (json.err) {
+            alert(json.err)
+          } else {
+            dispatch(updateActiveBoardLists(json.lists))
+            dispatch(updateCurrentUser(json.user))
+            dispatch(addBoardToMember())
+          }
         }
       })
       .catch((err) => {
@@ -747,7 +775,11 @@ export function getAllUsers() {
         return res.json()
       })
       .then((json) => {
-        dispatch(updateUserList(json))
+        if (json.err) {
+          alert(json.err)
+        } else {
+          dispatch(updateUserList(json))
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -759,9 +791,9 @@ export function getAllUsers() {
 export function addBoardToMember() {
   return (dispatch, getState) => {
     let state = getState()
-    console.log('state' + JSON.stringify(state))
     let username = state.memberToAdd
     let boardId = state.currentUser.activeBoard
+
     fetch('/addBoardToMember', {
       method: 'POST',
       body: JSON.stringify({ username, boardId }),
@@ -787,8 +819,6 @@ export function deleteMemberFromCard(e) {
         .parentElement.parentElement.firstChild.id
     let username = e.target.previousSibling.innerHTML
 
-    console.log('username ' + username)
-
     fetch('/deleteMemberFromCard', {
       method: 'DELETE',
       body: JSON.stringify({ username, cardId, listId, currentUser }),
@@ -800,8 +830,12 @@ export function deleteMemberFromCard(e) {
         return res.json()
       })
       .then((json) => {
-        dispatch(updateActiveBoardLists(json.lists))
-        dispatch(updateCurrentUser(json.user))
+        if (json.err) {
+          alert(json.err)
+        } else {
+          dispatch(updateActiveBoardLists(json.lists))
+          dispatch(updateCurrentUser(json.user))
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -827,20 +861,28 @@ export function changeActiveBoardLists(
     if (
       JSON.stringify(sourceList._id) === JSON.stringify(destinationList._id)
     ) {
-      sourceList.cards.splice(source.index, 1)
+      if (json.err) {
+        alert(json.err)
+      } else {
+        sourceList.cards.splice(source.index, 1)
 
-      sourceList.cards.splice(destination.index, 0, draggedCard)
+        sourceList.cards.splice(destination.index, 0, draggedCard)
 
-      lists.splice(sourceListIndex, 1, sourceList)
-      dispatch(updateActiveBoardLists(lists))
+        lists.splice(sourceListIndex, 1, sourceList)
+        dispatch(updateActiveBoardLists(lists))
+      }
     } else {
-      sourceList.cards.splice(source.index, 1)
-      destinationList.cards.splice(destination.index, 0, draggedCard)
-      lists.splice(sourceListIndex, 1, sourceList)
+      if (json.err) {
+        alert(json.err)
+      } else {
+        sourceList.cards.splice(source.index, 1)
+        destinationList.cards.splice(destination.index, 0, draggedCard)
+        lists.splice(sourceListIndex, 1, sourceList)
 
-      lists.splice(destinationListIndex, 1, destinationList)
+        lists.splice(destinationListIndex, 1, destinationList)
 
-      dispatch(updateActiveBoardLists(lists))
+        dispatch(updateActiveBoardLists(lists))
+      }
     }
   }
 }
@@ -849,7 +891,6 @@ export function onDragEnd(result) {
   return (dispatch, getState) => {
     let state = getState()
     let lists = Array.from(state.activeBoardLists)
-    console.log(lists)
     let currentUser = state.currentUser
 
     const { destination, source, draggableId } = result
@@ -885,10 +926,6 @@ export function onDragEnd(result) {
         return JSON.stringify(card._id) === JSON.stringify(draggableId)
       })[0]),
     ).then(() => {
-      console.log(draggableId)
-      console.log('source ' + JSON.stringify(source))
-      console.log('destination ' + JSON.stringify(destination))
-
       if (!destination) {
         return
       }
@@ -931,7 +968,11 @@ export function onDragEnd(result) {
         return res.json()
       })
       .then((json) => {
-        dispatch(updateCurrentUser(json))
+        if (json.err) {
+          alert(json.err)
+        } else {
+          dispatch(updateCurrentUser(json))
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -944,13 +985,6 @@ export function createChecklist(cardId, listId) {
   return (dispatch, getState) => {
     let state = getState()
     let currentUser = state.currentUser
-    // let cardId =
-    //   e.target.parentElement.parentElement.parentElement.parentElement.id
-    // let listId =
-    //   e.target.parentElement.parentElement.parentElement.parentElement
-    //     .firstChild.id
-
-    console.log(cardId)
 
     fetch('/createChecklist', {
       method: 'POST',
@@ -963,8 +997,12 @@ export function createChecklist(cardId, listId) {
         return res.json()
       })
       .then((json) => {
-        dispatch(updateActiveBoardLists(json.lists))
-        dispatch(updateCurrentUser(json.user))
+        if (json.err) {
+          alert(json.err)
+        } else {
+          dispatch(updateActiveBoardLists(json.lists))
+          dispatch(updateCurrentUser(json.user))
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -1053,8 +1091,12 @@ export function checkChecklistItem(e) {
         return res.json()
       })
       .then((json) => {
-        dispatch(updateActiveBoardLists(json.lists))
-        dispatch(updateCurrentUser(json.user))
+        if (json.err) {
+          alert(json.err)
+        } else {
+          dispatch(updateActiveBoardLists(json.lists))
+          dispatch(updateCurrentUser(json.user))
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -1086,8 +1128,12 @@ export function updateChecklistTitle(e) {
         return res.json()
       })
       .then((json) => {
-        dispatch(updateActiveBoardLists(json.lists))
-        dispatch(updateCurrentUser(json.user))
+        if (json.err) {
+          alert(json.err)
+        } else {
+          dispatch(updateActiveBoardLists(json.lists))
+          dispatch(updateCurrentUser(json.user))
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -1119,8 +1165,12 @@ export function deleteChecklist(e) {
         return res.json()
       })
       .then((json) => {
-        dispatch(updateActiveBoardLists(json.lists))
-        dispatch(updateCurrentUser(json.user))
+        if (json.err) {
+          alert(json.err)
+        } else {
+          dispatch(updateActiveBoardLists(json.lists))
+          dispatch(updateCurrentUser(json.user))
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -1133,9 +1183,7 @@ export function addAttachmentUrlToCard(url, cardId, listId) {
   return (dispatch, getState) => {
     let state = getState()
     let currentUser = state.currentUser
-    console.log(url)
-    console.log(cardId)
-    console.log(listId)
+
     fetch('/addAttachmentUrlToCard', {
       method: 'POST',
       body: JSON.stringify({ url, cardId, listId, currentUser }),
@@ -1148,9 +1196,12 @@ export function addAttachmentUrlToCard(url, cardId, listId) {
         return res.json()
       })
       .then((json) => {
-        console.log(JSON.stringify(json))
-        dispatch(updateCurrentUser(json.user))
-        dispatch(updateActiveBoardLists(json.lists))
+        if (json.err) {
+          alert(json.err)
+        } else {
+          dispatch(updateCurrentUser(json.user))
+          dispatch(updateActiveBoardLists(json.lists))
+        }
       })
   }
 }
@@ -1164,11 +1215,14 @@ export function uploadFile(files, cardId, listId) {
       body: formData,
     })
       .then((res) => {
-        console.log('mCres ' + JSON.stringify(res))
         return res.json()
       })
       .then((json) => {
-        dispatch(addAttachmentUrlToCard(json.url, cardId, listId))
+        if (json.err) {
+          alert(json.err)
+        } else {
+          dispatch(addAttachmentUrlToCard(json.url, cardId, listId))
+        }
       })
   }
 }

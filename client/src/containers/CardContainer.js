@@ -294,8 +294,6 @@ const mapDispatchToProps = (dispatch) => {
     },
 
     handleDisplayChecklistTitleForm: (checklistId) => {
-      //console.log(e.target.parentElement.id)
-      //let checklistId = e.target.parentElement.id
       dispatch(displayChecklistTitleForm(checklistId))
     },
 
