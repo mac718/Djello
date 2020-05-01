@@ -861,28 +861,20 @@ export function changeActiveBoardLists(
     if (
       JSON.stringify(sourceList._id) === JSON.stringify(destinationList._id)
     ) {
-      if (json.err) {
-        alert(json.err)
-      } else {
-        sourceList.cards.splice(source.index, 1)
+      sourceList.cards.splice(source.index, 1)
 
-        sourceList.cards.splice(destination.index, 0, draggedCard)
+      sourceList.cards.splice(destination.index, 0, draggedCard)
 
-        lists.splice(sourceListIndex, 1, sourceList)
-        dispatch(updateActiveBoardLists(lists))
-      }
+      lists.splice(sourceListIndex, 1, sourceList)
+      dispatch(updateActiveBoardLists(lists))
     } else {
-      if (json.err) {
-        alert(json.err)
-      } else {
-        sourceList.cards.splice(source.index, 1)
-        destinationList.cards.splice(destination.index, 0, draggedCard)
-        lists.splice(sourceListIndex, 1, sourceList)
+      sourceList.cards.splice(source.index, 1)
+      destinationList.cards.splice(destination.index, 0, draggedCard)
+      lists.splice(sourceListIndex, 1, sourceList)
 
-        lists.splice(destinationListIndex, 1, destinationList)
+      lists.splice(destinationListIndex, 1, destinationList)
 
-        dispatch(updateActiveBoardLists(lists))
-      }
+      dispatch(updateActiveBoardLists(lists))
     }
   }
 }
