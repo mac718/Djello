@@ -25,6 +25,4 @@ https://intense-woodland-98650.herokuapp.com/
 **Issues to address:**
 
 - Dry up routes by encapsulating repeated code in functions
-- Break up routes file into separate files for each resource
 - Clean up comments/superfluous code
-- Enhance error handling on back end
