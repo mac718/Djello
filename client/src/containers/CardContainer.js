@@ -346,7 +346,7 @@ const mapDispatchToProps = (dispatch) => {
     },
 
     handleCloseAddAttachmentDropdown: () => {
-      dispatch(closeAddAttachmentDropdown)
+      dispatch(closeAddAttachmentDropdown())
     },
 
     handleUploadFile: (e, cardId, listId) => {

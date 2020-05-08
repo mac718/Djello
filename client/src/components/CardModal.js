@@ -290,7 +290,11 @@ const CardModal = ({
   return (
     <div id={cardId} className={classes}>
       <span id={listId}></span>
-      <div className="modal-background"></div>
+
+      <div
+        className="modal-background"
+        onClick={handleCloseAddAttachmentDropdown}
+      ></div>
       <div className="modal-card">
         <div className="modal-card-head">
           <div className="modal-card-title">
