@@ -3,38 +3,32 @@ const router = express.Router();
 const User = require("../models/user");
 const Board = require("../models/board");
 
-router.post("/createBoard", (req, res, next) => {
+router.post("/createBoard", (req, res) => {
   let board = new Board({
     name: "",
     lists: [],
   });
   let currentUser = req.body.currentUser;
 
-  function returnUserAndLists(err, user) {
+  function handleError(err, message) {
     if (err) {
       console.error(err);
       return res.json({
-        err: "Error: could not add board to current user.",
+        err: message,
       });
     }
+  }
+
+  function returnUserAndLists(err, user) {
+    handleError(err, "Error: could not add board to current user.");
     let userAndLists = { user: user, lists: board.lists };
     return res.json(userAndLists);
   }
 
   board.save((err, board) => {
-    if (err) {
-      console.error(err);
-      return res.json({
-        err: "Error: could not create board.",
-      });
-    }
+    handleError(err, "Error: could not create board.");
     User.findById(currentUser._id, (err, user) => {
-      if (err) {
-        console.error(err);
-        return res.json({
-          err: "Error: could not add board to current user.",
-        });
-      }
+      handleError(err, "Error: could not add board to current user.");
       user.boards.push(board);
       user.activeBoard = board._id;
       user.save(returnUserAndLists(err, user));
