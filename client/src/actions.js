@@ -401,8 +401,8 @@ export function createBoard(e) {
         return res.json();
       })
       .then((json) => {
-        if (json.err) {
-          alert(json.err);
+        if (json.msg) {
+          alert(json.msg);
         } else {
           dispatch(updateActiveBoardLists(json.lists));
           dispatch(updateCurrentUser(json.user));
