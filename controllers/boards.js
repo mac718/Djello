@@ -54,32 +54,34 @@ const deleteBoard = asyncWrapper(async (req, res, next) => {
     throw new NotFoundError("Error: could not delete board.");
   }
 
-  const deleteBoardFromMemberUsers = () => {
-    board.members.forEach(async (member) => {
-      let user = await User.find({ username: member })[0];
-      if (!user) {
-        throw new NotFoundError(
-          `Error: could not remove board from ${member}'s account`
-        );
-      }
+  // const deleteBoardFromMemberUsers = () => {
+  //   board.members.forEach(async (member) => {
+  //     let user = await User.find({ username: member })[0];
+  //     if (!user) {
+  //       throw new NotFoundError(
+  //         `Error: could not remove board from ${member}'s account`
+  //       );
+  //     }
 
-      let deletedBoardIndex;
-      user.boards.forEach((userBoard, index) => {
-        if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
-          deletedBoardIndex = index;
-        }
-      });
-      user.boards.splice(deletedBoardIndex, 1);
-      user = user.save();
+  //     let deletedBoardIndex;
+  //     user.boards.forEach((userBoard, index) => {
+  //       if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
+  //         deletedBoardIndex = index;
+  //       }
+  //     });
+  //     user.boards.splice(deletedBoardIndex, 1);
+  //     user = user.save();
 
-      if (!user) {
-        throw new CustomAPIError(
-          `Error: could not remove board from ${member}'s account`,
-          500
-        );
-      }
-    });
-  };
+  //     if (!user) {
+  //       throw new CustomAPIError(
+  //         `Error: could not remove board from ${member}'s account`,
+  //         500
+  //       );
+  //     }
+  //   });
+  // };
+
+  await _deleteBoardFromMemberUsers(board);
 
   let user = await User.findById(currentUser._id);
 
@@ -89,31 +91,31 @@ const deleteBoard = asyncWrapper(async (req, res, next) => {
     );
   }
 
-  const deleteBoardFromCurrentUser = async () => {
-    let deletedBoardIndex;
-    user.boards.forEach((userBoard, index) => {
-      if (JSON.stringify(userBoard._id) === JSON.stringify(boardId)) {
-        deletedBoardIndex = index;
-      }
-    });
-    user.boards.splice(deletedBoardIndex, 1);
+  user = await _deleteBoardFromCurrentUser(user, boardId);
 
-    user.activeBoard =
-      user.boards[user.boards.length - 1]._id || user.boards[0]._id;
+  console.log(user);
+  // const deleteBoardFromCurrentUser = async () => {
+  //   let deletedBoardIndex;
+  //   user.boards.forEach((userBoard, index) => {
+  //     if (JSON.stringify(userBoard._id) === JSON.stringify(boardId)) {
+  //       deletedBoardIndex = index;
+  //     }
+  //   });
+  //   user.boards.splice(deletedBoardIndex, 1);
 
-    console.log(user.activeBoard);
+  //   user.activeBoard =
+  //     user.boards[user.boards.length - 1]._id || user.boards[0]._id;
 
-    await user.save();
-    // if (!user) {
-    //   throw new CustomAPIError(
-    //     `Error: could not remove board from ${member}'s account`,
-    //     500
-    //   );
-    // }
-  };
+  //   console.log(user.activeBoard);
 
-  deleteBoardFromMemberUsers();
-  deleteBoardFromCurrentUser();
+  //   user = await user.save();
+  //   if (!user) {
+  //     throw new CustomAPIError(
+  //       `Error: could not remove board from ${member}'s account`,
+  //       500
+  //     );
+  //   }
+  // };
 
   let userAndLists = { user: user, lists: board.lists };
   res.json(userAndLists);
@@ -181,5 +183,59 @@ const deleteBoard = asyncWrapper(async (req, res, next) => {
   //   });
   // });
 });
+
+//private
+
+async function _deleteBoardFromMemberUsers(board) {
+  board.members.forEach(async (member) => {
+    let user = await User.find({ username: member })[0];
+    if (!user) {
+      throw new NotFoundError(
+        `Error: could not remove board from ${member}'s account`
+      );
+    }
+
+    let deletedBoardIndex;
+    user.boards.forEach((userBoard, index) => {
+      if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
+        deletedBoardIndex = index;
+      }
+    });
+    user.boards.splice(deletedBoardIndex, 1);
+    user = user.save();
+
+    if (!user) {
+      throw new CustomAPIError(
+        `Error: could not remove board from ${member}'s account`,
+        500
+      );
+    }
+  });
+}
+
+async function _deleteBoardFromCurrentUser(user, boardId) {
+  let deletedBoardIndex;
+  user.boards.forEach((userBoard, index) => {
+    if (JSON.stringify(userBoard._id) === JSON.stringify(boardId)) {
+      deletedBoardIndex = index;
+    }
+  });
+  user.boards.splice(deletedBoardIndex, 1);
+
+  user.activeBoard =
+    user.boards[user.boards.length - 1]._id || user.boards[0]._id;
+
+  console.log(user.activeBoard);
+
+  user = await user.save();
+  if (!user) {
+    throw new CustomAPIError(
+      `Error: could not remove board from ${member}'s account`,
+      500
+    );
+  }
+
+  return user;
+}
 
 module.exports = { createBoard, deleteBoard };
