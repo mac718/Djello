@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import Show from '../components/Show'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import Show from "../components/Show";
 import {
   handleLogOut,
   createBoard,
@@ -8,7 +8,7 @@ import {
   switchActiveBoard,
   showDeleteBoardWarningModal,
   closeDeleteBoardWarningModal,
-} from '../actions'
+} from "../actions";
 
 class ShowContainer extends Component {
   render() {
@@ -22,7 +22,7 @@ class ShowContainer extends Component {
       handleShowDeleteBoardWarningModal,
       handleCloseDeleteBoardWarningModal,
       showDeleteBoardWarningModal,
-    } = this.props
+    } = this.props;
     return (
       <Show
         handleLogoutClick={handleLogoutClick}
@@ -35,44 +35,45 @@ class ShowContainer extends Component {
         handleCloseDeleteBoardWarningModal={handleCloseDeleteBoardWarningModal}
         showDeleteBoardWarningModal={showDeleteBoardWarningModal}
       />
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => {
+  console.log(state);
   return {
     currentUser: state.currentUser,
     redirect: state.redirect,
     showDeleteBoardWarningModal: state.showDeleteBoardWarningModal,
-  }
-}
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     handleLogoutClick: (e) => {
-      dispatch(handleLogOut(e))
+      dispatch(handleLogOut(e));
     },
 
     handleCreateBoard: (e) => {
-      dispatch(createBoard(e))
+      dispatch(createBoard(e));
     },
 
     handleDeleteBoard: (boardId) => {
-      dispatch(deleteBoard(boardId))
-      dispatch(closeDeleteBoardWarningModal())
+      dispatch(deleteBoard(boardId));
+      dispatch(closeDeleteBoardWarningModal());
     },
 
     handleActiveBoardSwitch: (e) => {
-      dispatch(switchActiveBoard(e))
+      dispatch(switchActiveBoard(e));
     },
 
     handleShowDeleteBoardWarningModal: (boardId) => {
-      dispatch(showDeleteBoardWarningModal(boardId))
+      dispatch(showDeleteBoardWarningModal(boardId));
     },
 
     handleCloseDeleteBoardWarningModal: () => {
-      dispatch(closeDeleteBoardWarningModal())
+      dispatch(closeDeleteBoardWarningModal());
     },
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShowContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(ShowContainer);

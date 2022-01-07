@@ -491,7 +491,7 @@ export function deleteBoard(id) {
           alert(JSON.stringify(json.error));
         } else {
           console.log("current User " + JSON.stringify(json));
-          dispatch(updateCurrentUser(json));
+          dispatch(updateCurrentUser(json.user));
         }
       })
       .catch((err) => {

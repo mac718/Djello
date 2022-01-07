@@ -2,77 +2,78 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const Board = require("../models/board");
-const { createBoard } = require("../controllers/boards");
+const { createBoard, deleteBoard } = require("../controllers/boards");
 
 router.post("/createBoard", createBoard);
+router.delete("/deleteBoard", deleteBoard);
 
-router.delete("/deleteBoard", (req, res, next) => {
-  let boardId = req.body.board;
-  let currentUser = req.body.currentUser;
+// router.delete("/deleteBoard", (req, res, next) => {
+//   let boardId = req.body.board;
+//   let currentUser = req.body.currentUser;
 
-  Board.findById(boardId, (err, board) => {
-    if (err) {
-      console.error(err);
-      return res.json({
-        err: "Error: could not delete board.",
-      });
-    }
-    board.delete((err, board) => {
-      if (err) {
-        console.error(err);
-        return res.json({
-          err: "Error: could not delete board.",
-        });
-      }
-      board.members.forEach((member) => {
-        User.find({ username: member }, (err, user) => {
-          let deletedBoardIndex;
-          user[0].boards.forEach((userBoard, index) => {
-            if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
-              deletedBoardIndex = index;
-            }
-          });
-          user[0].boards.splice(deletedBoardIndex, 1);
-          user[0].save((err) => {
-            if (err) {
-              console.error(err);
-              return res.json({
-                err: `Error: could not delete board from member ${user[0].username}.`,
-              });
-            }
-          });
-        });
-      });
-      User.findById(currentUser._id, (err, user) => {
-        if (err) {
-          console.error(err);
-          return res.json({
-            err: "Error: could not update current user.",
-          });
-        }
-        if (board.members.includes(user.username)) {
-          let deletedBoardIndex;
-          user.boards.forEach((userBoard, index) => {
-            if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
-              deletedBoardIndex = index;
-            }
-          });
-          user.boards.splice(deletedBoardIndex, 1);
-        }
-        user.save((err, user) => {
-          if (err) {
-            console.error(err);
-            return res.json({
-              err: "Error: could not update current user.",
-            });
-          }
-          let userAndLists = { user: user, lists: board.lists };
-          return res.json(userAndLists);
-        });
-      });
-    });
-  });
-});
+//   Board.findById(boardId, (err, board) => {
+//     if (err) {
+//       console.error(err);
+//       return res.json({
+//         err: "Error: could not delete board.",
+//       });
+//     }
+//     board.delete((err, board) => {
+//       if (err) {
+//         console.error(err);
+//         return res.json({
+//           err: "Error: could not delete board.",
+//         });
+//       }
+//       board.members.forEach((member) => {
+//         User.find({ username: member }, (err, user) => {
+//           let deletedBoardIndex;
+//           user[0].boards.forEach((userBoard, index) => {
+//             if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
+//               deletedBoardIndex = index;
+//             }
+//           });
+//           user[0].boards.splice(deletedBoardIndex, 1);
+//           user[0].save((err) => {
+//             if (err) {
+//               console.error(err);
+//               return res.json({
+//                 err: `Error: could not delete board from member ${user[0].username}.`,
+//               });
+//             }
+//           });
+//         });
+//       });
+//       User.findById(currentUser._id, (err, user) => {
+//         if (err) {
+//           console.error(err);
+//           return res.json({
+//             err: "Error: could not update current user.",
+//           });
+//         }
+//         if (board.members.includes(user.username)) {
+//           let deletedBoardIndex;
+//           user.boards.forEach((userBoard, index) => {
+//             if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
+//               deletedBoardIndex = index;
+//             }
+//           });
+//           user.boards.splice(deletedBoardIndex, 1);
+//         }
+//         user.save((err, user) => {
+//           if (err) {
+//             console.error(err);
+//             return res.json({
+//               err: "Error: could not update current user.",
+//             });
+//           }
+//           let userAndLists = { user: user, lists: board.lists };
+//           return res.json(userAndLists);
+//         });
+//       });
+//     });
+//   });
+// });
 
 router.put("/changeBoardName", (req, res, next) => {
   let name = req.body.componentName;

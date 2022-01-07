@@ -1,6 +1,6 @@
-import React from 'react'
-import BoardContainer from '../containers/BoardContainer'
-import { Redirect } from 'react-router-dom'
+import React from "react";
+import BoardContainer from "../containers/BoardContainer";
+import { Redirect } from "react-router-dom";
 
 const Show = ({
   handleLogoutClick,
@@ -13,49 +13,53 @@ const Show = ({
   handleCloseDeleteBoardWarningModal,
   showDeleteBoardWarningModal,
 }) => {
-  let boards = []
-  let boardNames = []
-  let dropdownItems
+  let boards = [];
+  let boardNames = [];
+  let dropdownItems;
   if (currentUser.boards) {
     boards = currentUser.boards.map((board) => {
-      boardNames.push(board.name)
-      return <BoardContainer />
-    })
-    console.log(JSON.stringify(currentUser.boards))
+      boardNames.push(board.name);
+      return <BoardContainer />;
+    });
+    console.log(JSON.stringify(currentUser.boards));
     dropdownItems = currentUser.boards.map((board, i) => {
-      console.log(i + ' ' + board._id)
+      console.log(i + " " + board._id);
       return (
         <a
           className="navbar-item has-text-black"
           id={board._id}
           onClick={handleActiveBoardSwitch}
-          key={board._id + '1'}
+          key={board._id + "1"}
         >
           {board.name ? board.name : `board ${i + 1}`}
         </a>
-      )
-    })
+      );
+    });
   }
 
-  var activeBoard
+  console.log(currentUser.activeBoard);
+
+  let activeBoard;
   if (currentUser.activeBoard) {
     activeBoard = currentUser.boards.filter((board) => {
-      return board._id === currentUser.activeBoard
-    })
+      return (
+        JSON.stringify(board._id) === JSON.stringify(currentUser.activeBoard)
+      );
+    });
   }
 
-  activeBoard = <BoardContainer currentBoard={activeBoard} />
-  console.log(currentUser.activeBoard)
+  activeBoard = <BoardContainer currentBoard={activeBoard} />;
+  console.log(currentUser.activeBoard);
 
-  if (redirect === '/login') {
-    return <Redirect to={redirect} />
+  if (redirect === "/login") {
+    return <Redirect to={redirect} />;
   }
 
-  let deleteBoardWarningModalClasses
+  let deleteBoardWarningModalClasses;
   if (showDeleteBoardWarningModal === currentUser.activeBoard) {
-    deleteBoardWarningModalClasses = 'modal delete-warning is-active'
+    deleteBoardWarningModalClasses = "modal delete-warning is-active";
   } else {
-    deleteBoardWarningModalClasses = 'modal delete-warning'
+    deleteBoardWarningModalClasses = "modal delete-warning";
   }
 
   let deleteBoardWarningModal = (
@@ -93,7 +97,7 @@ const Show = ({
         onClick={handleCloseDeleteBoardWarningModal}
       ></button>
     </div>
-  )
+  );
 
   return (
     <div className="show has-background-white-bis">
@@ -171,7 +175,7 @@ const Show = ({
       <div className="current-board">{activeBoard}</div>
       {deleteBoardWarningModal}
     </div>
-  )
-}
+  );
+};
 
-export default Show
+export default Show;
