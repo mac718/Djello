@@ -6,11 +6,13 @@ const {
   createBoard,
   deleteBoard,
   changeBoardName,
+  switchActiveBoard,
 } = require("../controllers/boards");
 
 router.post("/createBoard", createBoard);
 router.delete("/deleteBoard", deleteBoard);
 router.put("/changeBoardName", changeBoardName);
+router.patch("/switchActiveBoard", switchActiveBoard);
 
 // router.delete("/deleteBoard", (req, res, next) => {
 //   let boardId = req.body.board;
@@ -131,37 +133,37 @@ router.put("/changeBoardName", changeBoardName);
 //   });
 // });
 
-router.patch("/switchActiveBoard", (req, res, next) => {
-  let boardId = req.body.boardId;
-  let currentUser = req.body.currentUser;
+// router.patch("/switchActiveBoard", (req, res, next) => {
+//   let boardId = req.body.boardId;
+//   let currentUser = req.body.currentUser;
 
-  User.findById(currentUser._id, (err, user) => {
-    if (err) {
-      console.error(err);
-      return res.json({
-        err: "Error: could not update current user's active board.",
-      });
-    }
-    user.activeBoard = boardId;
-    Board.findById(boardId, (err, board) => {
-      if (err) {
-        console.error(err);
-        return res.json({
-          err: "Error: could not update current user's active board.",
-        });
-      }
-      user.save((err, user) => {
-        if (err) {
-          console.error(err);
-          return res.json({
-            err: "Error: could not update current user's active board.",
-          });
-        }
-        let userAndLists = { user: user, lists: board.lists };
-        return res.json(userAndLists);
-      });
-    });
-  });
-});
+//   User.findById(currentUser._id, (err, user) => {
+//     if (err) {
+//       console.error(err);
+//       return res.json({
+//         err: "Error: could not update current user's active board.",
+//       });
+//     }
+//     user.activeBoard = boardId;
+//     Board.findById(boardId, (err, board) => {
+//       if (err) {
+//         console.error(err);
+//         return res.json({
+//           err: "Error: could not update current user's active board.",
+//         });
+//       }
+//       user.save((err, user) => {
+//         if (err) {
+//           console.error(err);
+//           return res.json({
+//             err: "Error: could not update current user's active board.",
+//           });
+//         }
+//         let userAndLists = { user: user, lists: board.lists };
+//         return res.json(userAndLists);
+//       });
+//     });
+//   });
+// });
 
 module.exports = router;

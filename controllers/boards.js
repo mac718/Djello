@@ -147,6 +147,68 @@ const changeBoardName = asyncWrapper(async (req, res) => {
   // });
 });
 
+const switchActiveBoard = asyncWrapper(async (req, res) => {
+  let boardId = req.body.boardId;
+  let currentUser = req.body.currentUser;
+
+  let user = await User.findById(currentUser._id);
+
+  if (!user) {
+    throw new NotFoundError(
+      "Error: could not update current user's active board."
+    );
+  }
+
+  user.activeBoard = boardId;
+
+  let board = await Board.findById(boardId);
+
+  if (!board) {
+    throw new NotFoundError(
+      "Error: could not update current user's active board."
+    );
+  }
+
+  user = await user.save();
+
+  if (!user) {
+    throw new NotFoundError(
+      "Error: could not update current user's active board."
+    );
+  }
+
+  let userAndLists = { user: user, lists: board.lists };
+  res.json(userAndLists);
+
+  // User.findById(currentUser._id, (err, user) => {
+  //   if (err) {
+  //     console.error(err);
+  //     return res.json({
+  //       err: "Error: could not update current user's active board.",
+  //     });
+  //   }
+  //   user.activeBoard = boardId;
+  //   Board.findById(boardId, (err, board) => {
+  //     if (err) {
+  //       console.error(err);
+  //       return res.json({
+  //         err: "Error: could not update current user's active board.",
+  //       });
+  //     }
+  //     user.save((err, user) => {
+  //       if (err) {
+  //         console.error(err);
+  //         return res.json({
+  //           err: "Error: could not update current user's active board.",
+  //         });
+  //       }
+  //       let userAndLists = { user: user, lists: board.lists };
+  //       return res.json(userAndLists);
+  //     });
+  //   });
+  // });
+});
+
 //private
 
 async function _deleteBoardFromMemberUsers(board) {
@@ -217,4 +279,9 @@ async function _updateUsersBoardName(user, activeBoardId, board) {
   user.boards.splice(modifiedBoardIndex, 1, board);
 }
 
-module.exports = { createBoard, deleteBoard, changeBoardName };
+module.exports = {
+  createBoard,
+  deleteBoard,
+  changeBoardName,
+  switchActiveBoard,
+};
