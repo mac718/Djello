@@ -2,10 +2,15 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const Board = require("../models/board");
-const { createBoard, deleteBoard } = require("../controllers/boards");
+const {
+  createBoard,
+  deleteBoard,
+  changeBoardName,
+} = require("../controllers/boards");
 
 router.post("/createBoard", createBoard);
 router.delete("/deleteBoard", deleteBoard);
+router.put("/changeBoardName", changeBoardName);
 
 // router.delete("/deleteBoard", (req, res, next) => {
 //   let boardId = req.body.board;
@@ -75,56 +80,56 @@ router.delete("/deleteBoard", deleteBoard);
 //   });
 // });
 
-router.put("/changeBoardName", (req, res, next) => {
-  let name = req.body.componentName;
-  let currentUser = req.body.currentUser;
-  let activeBoardId = currentUser.activeBoard;
+// router.put("/changeBoardName", (req, res, next) => {
+//   let name = req.body.componentName;
+//   let currentUser = req.body.currentUser;
+//   let activeBoardId = currentUser.activeBoard;
 
-  Board.findById(activeBoardId, (err, board) => {
-    if (err) {
-      console.error(err);
-      return res.json({
-        err: "Error: could not change board name.",
-      });
-    }
-    board.name = name;
-    board.save((err, board) => {
-      if (err) {
-        console.error(err);
-        return res.json({
-          err: "Error: could not change board name.",
-        });
-      }
+//   Board.findById(activeBoardId, (err, board) => {
+//     if (err) {
+//       console.error(err);
+//       return res.json({
+//         err: "Error: could not change board name.",
+//       });
+//     }
+//     board.name = name;
+//     board.save((err, board) => {
+//       if (err) {
+//         console.error(err);
+//         return res.json({
+//           err: "Error: could not change board name.",
+//         });
+//       }
 
-      User.findById(currentUser._id, (err, user) => {
-        if (err) {
-          console.error(err);
-          return res.json({
-            err: "Error: could not update current user.",
-          });
-        }
-        let modifiedBoardIndex;
-        user.boards.forEach((userBoard, index) => {
-          if (JSON.stringify(userBoard._id) === JSON.stringify(activeBoardId)) {
-            modifiedBoardIndex = index;
-          }
-        });
-        console.log("modifiedBoardIndex " + modifiedBoardIndex);
-        user.boards.splice(modifiedBoardIndex, 1, board);
-        user.save((err, user) => {
-          if (err) {
-            console.error(err);
-            return res.json({
-              err: "Error: could not update current user.",
-            });
-          }
-          let userAndLists = { user: user, lists: board.lists };
-          return res.json(userAndLists);
-        });
-      });
-    });
-  });
-});
+//       User.findById(currentUser._id, (err, user) => {
+//         if (err) {
+//           console.error(err);
+//           return res.json({
+//             err: "Error: could not update current user.",
+//           });
+//         }
+//         let modifiedBoardIndex;
+//         user.boards.forEach((userBoard, index) => {
+//           if (JSON.stringify(userBoard._id) === JSON.stringify(activeBoardId)) {
+//             modifiedBoardIndex = index;
+//           }
+//         });
+//         console.log("modifiedBoardIndex " + modifiedBoardIndex);
+//         user.boards.splice(modifiedBoardIndex, 1, board);
+//         user.save((err, user) => {
+//           if (err) {
+//             console.error(err);
+//             return res.json({
+//               err: "Error: could not update current user.",
+//             });
+//           }
+//           let userAndLists = { user: user, lists: board.lists };
+//           return res.json(userAndLists);
+//         });
+//       });
+//     });
+//   });
+// });
 
 router.patch("/switchActiveBoard", (req, res, next) => {
   let boardId = req.body.boardId;

@@ -212,9 +212,9 @@ function _findModifiedBoardIndex(user, id) {
 }
 
 async function _updateUsersBoardName(user, activeBoardId, board) {
-  let modifiedBoardIndex = findModifiedBoardIndex(user, activeBoardId);
+  let modifiedBoardIndex = _findModifiedBoardIndex(user, activeBoardId);
   console.log("modifiedBoardIndex " + modifiedBoardIndex);
   user.boards.splice(modifiedBoardIndex, 1, board);
 }
 
-module.exports = { createBoard, deleteBoard };
+module.exports = { createBoard, deleteBoard, changeBoardName };
