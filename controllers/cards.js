@@ -27,7 +27,7 @@ const createCard = asyncWrapper(async (req, res) => {
     throw new NotFoundError("Error: could not save card to list.");
   }
 
-  list = await _updateList(list, card);
+  list = await _addCardToList(list, card);
 
   let board = await Board.findById(currentUser.activeBoard);
 
@@ -47,77 +47,132 @@ const createCard = asyncWrapper(async (req, res) => {
 
   let userAndLists = { user: user, lists: board.lists };
   res.json(userAndLists);
+});
 
-  // card.save((err, card) => {
+const deleteCard = asyncWrapper(async (req, res) => {
+  const { cardId, listId, currentUser } = req.body;
+
+  let card = await Card.findById(cardId);
+
+  if (!card) {
+    throw new NotFoundError("Error: could not delete card.");
+  }
+
+  card = await card.delete();
+
+  if (!card) {
+    throw new CustomAPIError("Error: could not delete card.", 500);
+  }
+
+  let list = await List.findById(listId);
+
+  list = await _deleteCardFromList(list, card);
+
+  let board = await Board.findById(currentUser.activeBoard);
+
+  if (!board) {
+    throw new NotFoundError("Error: could not delete card.");
+  }
+
+  board = await _updateBoard(board, list);
+
+  let user = await User.findById(currentUser._id);
+
+  if (!user) {
+    throw new NotFoundError("Error: could not delete card.");
+  }
+
+  user = await _updateUser(user, board);
+
+  let userAndLists = { user: user, lists: board.lists };
+  res.json(userAndLists);
+
+  // Card.findById(cardId, (err, card) => {
   //   if (err) {
   //     console.error(err);
   //     return res.json({
-  //       err: "Error: could not create new card.",
+  //       err: "Error: could not delete card.",
   //     });
   //   }
-  //   List.findById(listId, (err, list) => {
+  //   card.delete((err) => {
   //     if (err) {
   //       console.error(err);
   //       return res.json({
-  //         err: "Error: could not update list.",
+  //         err: "Error: could not delete card.",
   //       });
   //     }
-  //     list.cards = [...list.cards, card];
-  //     list.save((err, list) => {
+  //     List.findById(listId, (err, list) => {
   //       if (err) {
   //         console.error(err);
   //         return res.json({
   //           err: "Error: could not update list.",
   //         });
   //       }
-  //       Board.findById(currentUser.activeBoard, (err, board) => {
+  //       console.log("cards" + list.cards);
+  //       let deletedCardIndex;
+  //       list.cards.forEach((listCard, index) => {
+  //         if (JSON.stringify(listCard._id) === JSON.stringify(card._id)) {
+  //           deletedCardIndex = index;
+  //         }
+  //       });
+  //       console.log("deleted card " + deletedCardIndex);
+  //       list.cards.splice(deletedCardIndex, 1);
+  //       list.save((err, list) => {
   //         if (err) {
   //           console.error(err);
   //           return res.json({
-  //             err: "Error: could not update board.",
+  //             err: "Error: could not update list.",
   //           });
   //         }
-  //         let modifiedListIndex;
-  //         board.lists.forEach((boardList, index) => {
-  //           if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
-  //             modifiedListIndex = index;
-  //           }
-  //         });
-
-  //         board.lists.splice(modifiedListIndex, 1, list);
-
-  //         board.save((err, board) => {
+  //         Board.findById(currentUser.activeBoard, (err, board) => {
   //           if (err) {
   //             console.error(err);
   //             return res.json({
-  //               err: "Error: could not update list.",
+  //               err: "Error: could not update board.",
   //             });
   //           }
-  //           User.findById(currentUser._id, (err, user) => {
+
+  //           let modifiedListIndex;
+  //           board.lists.forEach((boardList, index) => {
+  //             if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
+  //               modifiedListIndex = index;
+  //             }
+  //           });
+  //           board.lists.splice(modifiedListIndex, 1, list);
+  //           board.save((err, board) => {
   //             if (err) {
   //               console.error(err);
   //               return res.json({
-  //                 err: "Error: could not update current user.",
+  //                 err: "Error: could not update board.",
   //               });
   //             }
-  //             let modifiedBoardIndex;
-  //             user.boards.forEach((userBoard, index) => {
-  //               if (
-  //                 JSON.stringify(userBoard._id) === JSON.stringify(board._id)
-  //               ) {
-  //                 modifiedBoardIndex = index;
-  //               }
-  //             });
-  //             user.boards.splice(modifiedBoardIndex, 1, board);
-  //             user.save((err, user) => {
+  //             User.findById(currentUser._id, (err, user) => {
   //               if (err) {
   //                 console.error(err);
   //                 return res.json({
-  //                   err: "Error: could not update current user.",
+  //                   err: "Error: could not update current user",
   //                 });
   //               }
-  //               let userAndLists = { user: user, lists: board.lists };
-  //               return res.json(userAndLists);
+  //               let modifiedBoardIndex;
+  //               user.boards.forEach((userBoard, index) => {
+  //                 if (
+  //                   JSON.stringify(userBoard._id) === JSON.stringify(board._id)
+  //                 ) {
+  //                   modifiedBoardIndex = index;
+  //                 }
+  //               });
+  //               console.log(modifiedBoardIndex);
+  //               user.boards.splice(modifiedBoardIndex, 1, board);
+  //               user.save((err, user) => {
+  //                 if (err) {
+  //                   console.error(err);
+  //                   return res.json({
+  //                     err: "Error: could not update current user",
+  //                   });
+  //                 }
+  //                 let userAndLists = { user: user, lists: board.lists };
+  //                 return res.json(userAndLists);
+  //               });
   //             });
   //           });
   //         });
@@ -149,13 +204,31 @@ function _findModifiedBoardIndex(user, boardId) {
   return modifiedBoardIndex;
 }
 
-async function _updateList(list, card) {
+async function _addCardToList(list, card) {
   list.cards = [...list.cards, card];
 
   list = await list.save();
 
   if (!list) {
     throw new CustomAPIError("Error: could not update list.", 500);
+  }
+
+  return list;
+}
+
+async function _deleteCardFromList(list, card) {
+  let deletedCardIndex;
+  list.cards.forEach((listCard, index) => {
+    if (JSON.stringify(listCard._id) === JSON.stringify(card._id)) {
+      deletedCardIndex = index;
+    }
+  });
+
+  list.cards.splice(deletedCardIndex, 1);
+  list = await list.save();
+
+  if (!list) {
+    throw new CustomAPIError("Error: could not delete card.", 500);
   }
 
   return list;
@@ -194,4 +267,4 @@ async function _updateUser(user, board) {
   return user;
 }
 
-module.exports = { createCard };
+module.exports = { createCard, deleteCard };

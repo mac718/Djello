@@ -5,9 +5,10 @@ const Board = require("../models/board");
 const List = require("../models/list");
 const Card = require("../models/card");
 const FileUpload = require("../services/file_upload");
-const { createCard } = require("../controllers/cards");
+const { createCard, deleteCard } = require("../controllers/cards");
 
 router.post("/createCard", createCard);
+router.delete("/deleteCard", deleteCard);
 
 // router.post('/createCard', (req, res, next) => {
 //   let listId = req.body.listId
@@ -96,103 +97,103 @@ router.post("/createCard", createCard);
 //   })
 // })
 
-router.delete("/deleteCard", (req, res, next) => {
-  let { cardId, listId, currentUser } = req.body;
+// router.delete("/deleteCard", (req, res, next) => {
+//   let { cardId, listId, currentUser } = req.body;
 
-  Card.findById(cardId, (err, card) => {
-    if (err) {
-      console.error(err);
-      return res.json({
-        err: "Error: could not delete card.",
-      });
-    }
-    card.delete((err) => {
-      if (err) {
-        console.error(err);
-        return res.json({
-          err: "Error: could not delete card.",
-        });
-      }
-      List.findById(listId, (err, list) => {
-        if (err) {
-          console.error(err);
-          return res.json({
-            err: "Error: could not update list.",
-          });
-        }
-        console.log("cards" + list.cards);
-        let deletedCardIndex;
-        list.cards.forEach((listCard, index) => {
-          if (JSON.stringify(listCard._id) === JSON.stringify(card._id)) {
-            deletedCardIndex = index;
-          }
-        });
-        console.log("deleted card " + deletedCardIndex);
-        list.cards.splice(deletedCardIndex, 1);
-        list.save((err, list) => {
-          if (err) {
-            console.error(err);
-            return res.json({
-              err: "Error: could not update list.",
-            });
-          }
-          Board.findById(currentUser.activeBoard, (err, board) => {
-            if (err) {
-              console.error(err);
-              return res.json({
-                err: "Error: could not update board.",
-              });
-            }
+//   Card.findById(cardId, (err, card) => {
+//     if (err) {
+//       console.error(err);
+//       return res.json({
+//         err: "Error: could not delete card.",
+//       });
+//     }
+//     card.delete((err) => {
+//       if (err) {
+//         console.error(err);
+//         return res.json({
+//           err: "Error: could not delete card.",
+//         });
+//       }
+//       List.findById(listId, (err, list) => {
+//         if (err) {
+//           console.error(err);
+//           return res.json({
+//             err: "Error: could not update list.",
+//           });
+//         }
+//         console.log("cards" + list.cards);
+//         let deletedCardIndex;
+//         list.cards.forEach((listCard, index) => {
+//           if (JSON.stringify(listCard._id) === JSON.stringify(card._id)) {
+//             deletedCardIndex = index;
+//           }
+//         });
+//         console.log("deleted card " + deletedCardIndex);
+//         list.cards.splice(deletedCardIndex, 1);
+//         list.save((err, list) => {
+//           if (err) {
+//             console.error(err);
+//             return res.json({
+//               err: "Error: could not update list.",
+//             });
+//           }
+//           Board.findById(currentUser.activeBoard, (err, board) => {
+//             if (err) {
+//               console.error(err);
+//               return res.json({
+//                 err: "Error: could not update board.",
+//               });
+//             }
 
-            let modifiedListIndex;
-            board.lists.forEach((boardList, index) => {
-              if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
-                modifiedListIndex = index;
-              }
-            });
-            board.lists.splice(modifiedListIndex, 1, list);
-            board.save((err, board) => {
-              if (err) {
-                console.error(err);
-                return res.json({
-                  err: "Error: could not update board.",
-                });
-              }
-              User.findById(currentUser._id, (err, user) => {
-                if (err) {
-                  console.error(err);
-                  return res.json({
-                    err: "Error: could not update current user",
-                  });
-                }
-                let modifiedBoardIndex;
-                user.boards.forEach((userBoard, index) => {
-                  if (
-                    JSON.stringify(userBoard._id) === JSON.stringify(board._id)
-                  ) {
-                    modifiedBoardIndex = index;
-                  }
-                });
-                console.log(modifiedBoardIndex);
-                user.boards.splice(modifiedBoardIndex, 1, board);
-                user.save((err, user) => {
-                  if (err) {
-                    console.error(err);
-                    return res.json({
-                      err: "Error: could not update current user",
-                    });
-                  }
-                  let userAndLists = { user: user, lists: board.lists };
-                  return res.json(userAndLists);
-                });
-              });
-            });
-          });
-        });
-      });
-    });
-  });
-});
+//             let modifiedListIndex;
+//             board.lists.forEach((boardList, index) => {
+//               if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
+//                 modifiedListIndex = index;
+//               }
+//             });
+//             board.lists.splice(modifiedListIndex, 1, list);
+//             board.save((err, board) => {
+//               if (err) {
+//                 console.error(err);
+//                 return res.json({
+//                   err: "Error: could not update board.",
+//                 });
+//               }
+//               User.findById(currentUser._id, (err, user) => {
+//                 if (err) {
+//                   console.error(err);
+//                   return res.json({
+//                     err: "Error: could not update current user",
+//                   });
+//                 }
+//                 let modifiedBoardIndex;
+//                 user.boards.forEach((userBoard, index) => {
+//                   if (
+//                     JSON.stringify(userBoard._id) === JSON.stringify(board._id)
+//                   ) {
+//                     modifiedBoardIndex = index;
+//                   }
+//                 });
+//                 console.log(modifiedBoardIndex);
+//                 user.boards.splice(modifiedBoardIndex, 1, board);
+//                 user.save((err, user) => {
+//                   if (err) {
+//                     console.error(err);
+//                     return res.json({
+//                       err: "Error: could not update current user",
+//                     });
+//                   }
+//                   let userAndLists = { user: user, lists: board.lists };
+//                   return res.json(userAndLists);
+//                 });
+//               });
+//             });
+//           });
+//         });
+//       });
+//     });
+//   });
+// });
 
 router.put("/updateCardTitle", (req, res, next) => {
   let { listId, cardId, cardTitle, currentUser } = req.body;
