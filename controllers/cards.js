@@ -27,13 +27,7 @@ const createCard = asyncWrapper(async (req, res) => {
     throw new NotFoundError("Error: could not save card to list.");
   }
 
-  list.cards = [...list.cards, card];
-
-  list = await list.save();
-
-  if (!list) {
-    throw new CustomAPIError("Error: could not update list.", 500);
-  }
+  list = await _updateList(list, card);
 
   let board = await Board.findById(currentUser.activeBoard);
 
@@ -41,15 +35,7 @@ const createCard = asyncWrapper(async (req, res) => {
     throw new NotFoundError("Error: could not update board.");
   }
 
-  const modifiedListIndex = _findModifiedListIndex(board, list._id);
-
-  board.lists.splice(modifiedListIndex, 1, list);
-
-  board = await board.save();
-
-  if (!board) {
-    throw new CustomAPIError("Error: could not update board.", 500);
-  }
+  board = await _updateBoard(board, list);
 
   let user = await User.findById(currentUser._id);
 
@@ -57,15 +43,7 @@ const createCard = asyncWrapper(async (req, res) => {
     throw new NotFoundError("Error: user could not be updated.");
   }
 
-  const modifiedBoardIndex = _findModifiedBoardIndex(user, board._id);
-
-  user.boards.splice(modifiedBoardIndex, 1, board);
-
-  user = await user.save();
-
-  if (!user) {
-    throw new CustomAPIError("Error: could not update user.", 500);
-  }
+  user = await _updateUser(user, board);
 
   let userAndLists = { user: user, lists: board.lists };
   res.json(userAndLists);
@@ -169,6 +147,51 @@ function _findModifiedBoardIndex(user, boardId) {
     }
   });
   return modifiedBoardIndex;
+}
+
+async function _updateList(list, card) {
+  list.cards = [...list.cards, card];
+
+  list = await list.save();
+
+  if (!list) {
+    throw new CustomAPIError("Error: could not update list.", 500);
+  }
+
+  return list;
+}
+
+async function _updateBoard(board, list) {
+  console.log("list", list);
+  const modifiedListIndex = _findModifiedListIndex(board, list._id);
+
+  board.lists.splice(modifiedListIndex, 1, list);
+
+  try {
+    board = await board.save();
+  } catch (err) {
+    console.log(err);
+  }
+
+  if (!board) {
+    throw new CustomAPIError("Error: could not update board.", 500);
+  }
+
+  return board;
+}
+
+async function _updateUser(user, board) {
+  const modifiedBoardIndex = _findModifiedBoardIndex(user, board._id);
+
+  user.boards.splice(modifiedBoardIndex, 1, board);
+
+  user = await user.save();
+
+  if (!user) {
+    throw new CustomAPIError("Error: could not update user.", 500);
+  }
+
+  return user;
 }
 
 module.exports = { createCard };
