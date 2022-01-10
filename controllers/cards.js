@@ -167,27 +167,72 @@ const updateCardDescription = asyncWrapper(async (req, res) => {
 
   let userAndLists = { user: user, lists: board.lists };
   res.json(userAndLists);
+});
+
+const addMemberToCard = asyncWrapper(async (req, res) => {
+  const { listId, cardId, memberUsername, currentUser } = req.body;
+
+  let card = await Card.findById(cardId);
+
+  if (!card) {
+    throw new NotFoundError("Error: could not add member");
+  }
+
+  card = await _updateCardMembers(card, currentUser, memberUsername);
+
+  let list = await List.findById(listId);
+
+  if (!list) {
+    throw new NotFoundError("Error: could not add member");
+  }
+
+  list = await _updateList(list, card);
+
+  let board = await Board.findById(currentUser.activeBoard);
+
+  if (!board) {
+    throw new NotFoundError("Error: could not add member");
+  }
+
+  board = await _updateBoard(board, list);
+
+  let user = await User.findById(currentUser._id);
+
+  if (!user) {
+    throw new NotFoundError("Error: could not add member");
+  }
+
+  user = await _updateUser(user, board);
+
+  let userAndLists = { user: user, lists: board.lists };
+  res.json(userAndLists);
 
   // Card.findById(cardId, (err, card) => {
   //   if (err) {
   //     console.error(err);
   //     return res.json({
-  //       err: "Error: could not update card description.",
+  //       err: "Error: could not add member to card.",
   //     });
   //   }
 
-  //   card.description = cardDescription;
-  //   let date = new Date();
-  //   card.activity = [
-  //     ...card.activity,
-  //     `${currentUser.username} edited the description at ${date.toString()}`,
-  //   ];
+  //   if (!card.members.includes(memberUsername)) {
+  //     card.members = [...card.members, memberUsername];
+  //     let date = new Date();
+  //     card.activity = [
+  //       ...card.activity,
+  //       `${
+  //         currentUser.username
+  //       } added ${memberUsername} to the card at ${date.toString()}`,
+  //     ];
+  //   } else {
+  //     return res.status(500).send();
+  //   }
 
   //   card.save((err, card) => {
   //     if (err) {
   //       console.error(err);
   //       return res.json({
-  //         err: "Error: could not update card description.",
+  //         err: "Error: could not add member to card.",
   //       });
   //     }
   //     List.findById(listId, (err, list) => {
@@ -218,6 +263,7 @@ const updateCardDescription = asyncWrapper(async (req, res) => {
   //               err: "Error: could not update board.",
   //             });
   //           }
+  //           board.members = [...board.members, memberUsername];
   //           let modifiedListIndex;
   //           board.lists.forEach((boardList, index) => {
   //             if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
@@ -231,7 +277,7 @@ const updateCardDescription = asyncWrapper(async (req, res) => {
   //             if (err) {
   //               console.error(err);
   //               return res.json({
-  //                 err: "Error: could not update list.",
+  //                 err: "Error: could not update board.",
   //               });
   //             }
   //             User.findById(currentUser._id, (err, user) => {
@@ -403,9 +449,34 @@ async function _updateCardActivity(
   return card;
 }
 
+async function _updateCardMembers(card, currentUser, memberUsername) {
+  if (!card.members.includes(memberUsername)) {
+    card.members = [...card.members, memberUsername];
+
+    await _updateCardActivity(card, currentUser, memberUsername);
+  } else {
+    throw new CustomAPIError(
+      `Error: could not add ${memberUsername} to card.`,
+      500
+    );
+  }
+
+  card = await card.save();
+
+  if (!card) {
+    throw new CustomAPIError(
+      `Error: could not add ${memberUsername} to card.`,
+      500
+    );
+  }
+
+  return card;
+}
+
 module.exports = {
   createCard,
   deleteCard,
   updateCardTitle,
   updateCardDescription,
+  addMemberToCard,
 };

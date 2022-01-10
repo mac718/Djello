@@ -10,12 +10,14 @@ const {
   deleteCard,
   updateCardTitle,
   updateCardDescription,
+  addMemberToCard,
 } = require("../controllers/cards");
 
 router.post("/createCard", createCard);
 router.delete("/deleteCard", deleteCard);
 router.put("/updateCardTitle", updateCardTitle);
 router.put("/updateCardDescription", updateCardDescription);
+router.put("/addMemberToCard", addMemberToCard);
 
 // router.post('/createCard', (req, res, next) => {
 //   let listId = req.body.listId
@@ -419,117 +421,117 @@ router.put("/updateCardDescription", updateCardDescription);
 //   });
 // });
 
-router.put("/addMemberToCard", (req, res, next) => {
-  let { listId, cardId, memberUsername, currentUser } = req.body;
+// router.put("/addMemberToCard", (req, res, next) => {
+//   let { listId, cardId, memberUsername, currentUser } = req.body;
 
-  Card.findById(cardId, (err, card) => {
-    if (err) {
-      console.error(err);
-      return res.json({
-        err: "Error: could not add member to card.",
-      });
-    }
+//   Card.findById(cardId, (err, card) => {
+//     if (err) {
+//       console.error(err);
+//       return res.json({
+//         err: "Error: could not add member to card.",
+//       });
+//     }
 
-    if (!card.members.includes(memberUsername)) {
-      card.members = [...card.members, memberUsername];
-      let date = new Date();
-      card.activity = [
-        ...card.activity,
-        `${
-          currentUser.username
-        } added ${memberUsername} to the card at ${date.toString()}`,
-      ];
-    } else {
-      return res.status(500).send();
-    }
+//     if (!card.members.includes(memberUsername)) {
+//       card.members = [...card.members, memberUsername];
+//       let date = new Date();
+//       card.activity = [
+//         ...card.activity,
+//         `${
+//           currentUser.username
+//         } added ${memberUsername} to the card at ${date.toString()}`,
+//       ];
+//     } else {
+//       return res.status(500).send();
+//     }
 
-    card.save((err, card) => {
-      if (err) {
-        console.error(err);
-        return res.json({
-          err: "Error: could not add member to card.",
-        });
-      }
-      List.findById(listId, (err, list) => {
-        if (err) {
-          console.error(err);
-          return res.json({
-            err: "Error: could not update list.",
-          });
-        }
-        let modifiedCardIndex;
-        list.cards.forEach((listCard, index) => {
-          if (JSON.stringify(listCard._id) === JSON.stringify(card._id)) {
-            modifiedCardIndex = index;
-          }
-        });
-        list.cards.splice(modifiedCardIndex, 1, card);
-        list.save((err, list) => {
-          if (err) {
-            console.error(err);
-            return res.json({
-              err: "Error: could not update list.",
-            });
-          }
-          Board.findById(currentUser.activeBoard, (err, board) => {
-            if (err) {
-              console.error(err);
-              return res.json({
-                err: "Error: could not update board.",
-              });
-            }
-            board.members = [...board.members, memberUsername];
-            let modifiedListIndex;
-            board.lists.forEach((boardList, index) => {
-              if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
-                modifiedListIndex = index;
-              }
-            });
+//     card.save((err, card) => {
+//       if (err) {
+//         console.error(err);
+//         return res.json({
+//           err: "Error: could not add member to card.",
+//         });
+//       }
+//       List.findById(listId, (err, list) => {
+//         if (err) {
+//           console.error(err);
+//           return res.json({
+//             err: "Error: could not update list.",
+//           });
+//         }
+//         let modifiedCardIndex;
+//         list.cards.forEach((listCard, index) => {
+//           if (JSON.stringify(listCard._id) === JSON.stringify(card._id)) {
+//             modifiedCardIndex = index;
+//           }
+//         });
+//         list.cards.splice(modifiedCardIndex, 1, card);
+//         list.save((err, list) => {
+//           if (err) {
+//             console.error(err);
+//             return res.json({
+//               err: "Error: could not update list.",
+//             });
+//           }
+//           Board.findById(currentUser.activeBoard, (err, board) => {
+//             if (err) {
+//               console.error(err);
+//               return res.json({
+//                 err: "Error: could not update board.",
+//               });
+//             }
+//             board.members = [...board.members, memberUsername];
+//             let modifiedListIndex;
+//             board.lists.forEach((boardList, index) => {
+//               if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
+//                 modifiedListIndex = index;
+//               }
+//             });
 
-            board.lists.splice(modifiedListIndex, 1, list);
+//             board.lists.splice(modifiedListIndex, 1, list);
 
-            board.save((err, board) => {
-              if (err) {
-                console.error(err);
-                return res.json({
-                  err: "Error: could not update board.",
-                });
-              }
-              User.findById(currentUser._id, (err, user) => {
-                if (err) {
-                  console.error(err);
-                  return res.json({
-                    err: "Error: could not update current user.",
-                  });
-                }
-                let modifiedBoardIndex;
-                user.boards.forEach((userBoard, index) => {
-                  if (
-                    JSON.stringify(userBoard._id) === JSON.stringify(board._id)
-                  ) {
-                    modifiedBoardIndex = index;
-                  }
-                });
-                user.boards.splice(modifiedBoardIndex, 1, board);
-                user.save((err, user) => {
-                  if (err) {
-                    console.error(err);
-                    return res.json({
-                      err: "Error: could not update current user.",
-                    });
-                  }
+//             board.save((err, board) => {
+//               if (err) {
+//                 console.error(err);
+//                 return res.json({
+//                   err: "Error: could not update board.",
+//                 });
+//               }
+//               User.findById(currentUser._id, (err, user) => {
+//                 if (err) {
+//                   console.error(err);
+//                   return res.json({
+//                     err: "Error: could not update current user.",
+//                   });
+//                 }
+//                 let modifiedBoardIndex;
+//                 user.boards.forEach((userBoard, index) => {
+//                   if (
+//                     JSON.stringify(userBoard._id) === JSON.stringify(board._id)
+//                   ) {
+//                     modifiedBoardIndex = index;
+//                   }
+//                 });
+//                 user.boards.splice(modifiedBoardIndex, 1, board);
+//                 user.save((err, user) => {
+//                   if (err) {
+//                     console.error(err);
+//                     return res.json({
+//                       err: "Error: could not update current user.",
+//                     });
+//                   }
 
-                  let userAndLists = { user: user, lists: board.lists };
-                  return res.json(userAndLists);
-                });
-              });
-            });
-          });
-        });
-      });
-    });
-  });
-});
+//                   let userAndLists = { user: user, lists: board.lists };
+//                   return res.json(userAndLists);
+//                 });
+//               });
+//             });
+//           });
+//         });
+//       });
+//     });
+//   });
+// });
 
 router.post("/addBoardToMember", (req, res, next) => {
   let { username, boardId } = req.body;
