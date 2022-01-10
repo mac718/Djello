@@ -316,6 +316,81 @@ const addMemberToCard = asyncWrapper(async (req, res) => {
   // });
 });
 
+const addBoardToMember = asyncWrapper(async (req, res) => {
+  const { username, boardId } = req.body;
+
+  let user = await User.find({ username });
+
+  console.log("user", user);
+
+  if (!user) {
+    throw new NotFoundError("Error: could not add board access to memeber.");
+  }
+
+  let board = await Board.findById(boardId);
+
+  if (!board) {
+    throw new NotFoundError("Error: could not add board access to member.");
+  }
+
+  let repeat = false;
+  user[0].boards.forEach((userBoard) => {
+    if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
+      repeat = true;
+    }
+  });
+  if (!repeat) {
+    user[0].boards = [...user[0].boards, board];
+  }
+
+  user = await user[0].save();
+
+  if (!user) {
+    throw new CustomAPIError(
+      "Error: could not add board access to member.",
+      500
+    );
+  }
+
+  res.status(200).send();
+
+  // User.find({ username }, (err, user) => {
+  //   if (err) {
+  //     console.error(err);
+  //     return res.json({
+  //       err: "Error: could not add board to selected member's boards.",
+  //     });
+  //   }
+  //   Board.findById(boardId, (err, board) => {
+  //     if (err) {
+  //       console.error(err);
+  //       return res.json({
+  //         err: "Error: could not add board to selected member's boards.",
+  //       });
+  //     }
+  //     let repeat = false;
+  //     user[0].boards.forEach((userBoard) => {
+  //       if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
+  //         repeat = true;
+  //       }
+  //     });
+  //     if (!repeat) {
+  //       user[0].boards = [...user[0].boards, board];
+  //     }
+
+  //     user[0].save((err) => {
+  //       if (err) {
+  //         console.error(err);
+  //         return res.json({
+  //           err: "Error: could not add board to selected member's boards.",
+  //         });
+  //       }
+  //       res.status(200).send();
+  //     });
+  //   });
+  // });
+});
+
 //private
 
 function _findModifiedListIndex(board, listId) {
@@ -479,4 +554,5 @@ module.exports = {
   updateCardTitle,
   updateCardDescription,
   addMemberToCard,
+  addBoardToMember,
 };

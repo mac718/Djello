@@ -11,6 +11,7 @@ const {
   updateCardTitle,
   updateCardDescription,
   addMemberToCard,
+  addBoardToMember,
 } = require("../controllers/cards");
 
 router.post("/createCard", createCard);
@@ -18,6 +19,7 @@ router.delete("/deleteCard", deleteCard);
 router.put("/updateCardTitle", updateCardTitle);
 router.put("/updateCardDescription", updateCardDescription);
 router.put("/addMemberToCard", addMemberToCard);
+router.post("/addBoardToMember", addBoardToMember);
 
 // router.post('/createCard', (req, res, next) => {
 //   let listId = req.body.listId
@@ -533,45 +535,45 @@ router.put("/addMemberToCard", addMemberToCard);
 //   });
 // });
 
-router.post("/addBoardToMember", (req, res, next) => {
-  let { username, boardId } = req.body;
+// router.post("/addBoardToMember", (req, res, next) => {
+//   let { username, boardId } = req.body;
 
-  User.find({ username }, (err, user) => {
-    if (err) {
-      console.error(err);
-      return res.json({
-        err: "Error: could not add board to selected member's boards.",
-      });
-    }
-    Board.findById(boardId, (err, board) => {
-      if (err) {
-        console.error(err);
-        return res.json({
-          err: "Error: could not add board to selected member's boards.",
-        });
-      }
-      let repeat = false;
-      user[0].boards.forEach((userBoard) => {
-        if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
-          repeat = true;
-        }
-      });
-      if (!repeat) {
-        user[0].boards = [...user[0].boards, board];
-      }
+//   User.find({ username }, (err, user) => {
+//     if (err) {
+//       console.error(err);
+//       return res.json({
+//         err: "Error: could not add board to selected member's boards.",
+//       });
+//     }
+//     Board.findById(boardId, (err, board) => {
+//       if (err) {
+//         console.error(err);
+//         return res.json({
+//           err: "Error: could not add board to selected member's boards.",
+//         });
+//       }
+//       let repeat = false;
+//       user[0].boards.forEach((userBoard) => {
+//         if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
+//           repeat = true;
+//         }
+//       });
+//       if (!repeat) {
+//         user[0].boards = [...user[0].boards, board];
+//       }
 
-      user[0].save((err) => {
-        if (err) {
-          console.error(err);
-          return res.json({
-            err: "Error: could not add board to selected member's boards.",
-          });
-        }
-        res.status(200).send();
-      });
-    });
-  });
-});
+//       user[0].save((err) => {
+//         if (err) {
+//           console.error(err);
+//           return res.json({
+//             err: "Error: could not add board to selected member's boards.",
+//           });
+//         }
+//         res.status(200).send();
+//       });
+//     });
+//   });
+// });
 
 router.delete("/deleteMemberFromCard", (req, res, next) => {
   let { listId, cardId, username, currentUser } = req.body;
