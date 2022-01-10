@@ -103,7 +103,7 @@ const updateCardTitle = asyncWrapper(async (req, res) => {
     card.title = cardTitle;
   }
 
-  card = await _updateCardActivity(card, currentUser);
+  card = await _updateCardActivity(card, currentUser, "title");
 
   let list = await List.findById(listId);
 
@@ -131,31 +131,66 @@ const updateCardTitle = asyncWrapper(async (req, res) => {
 
   let userAndLists = { user: user, lists: board.lists };
   res.json(userAndLists);
+});
+
+const updateCardDescription = asyncWrapper(async (req, res) => {
+  const { listId, cardId, cardDescription, currentUser } = req.body;
+
+  let card = await Card.findById(cardId);
+
+  if (!card) {
+    throw new NotFoundError("Error: could not set description.");
+  }
+
+  card.description = cardDescription;
+  card = await _updateCardActivity(card, currentUser, "description");
+
+  let list = await List.findById(listId);
+
+  if (!list) {
+    throw new NotFoundError("Error: could not set description.");
+  }
+
+  list = await _updateList(list, card);
+
+  let board = await Board.findById(currentUser.activeBoard);
+
+  board = await _updateBoard(board, list);
+
+  let user = await User.findById(currentUser._id);
+
+  if (!list) {
+    throw new NotFoundError("Error: could not set description.");
+  }
+
+  user = await _updateUser(user, board);
+
+  let userAndLists = { user: user, lists: board.lists };
+  res.json(userAndLists);
 
   // Card.findById(cardId, (err, card) => {
   //   if (err) {
   //     console.error(err);
   //     return res.json({
-  //       err: "Error: could not update card title.",
+  //       err: "Error: could not update card description.",
   //     });
   //   }
 
-  //   if (cardTitle === "") {
-  //     card.title = "Title...";
-  //   } else {
-  //     card.title = cardTitle;
-  //   }
+  //   card.description = cardDescription;
+  //   let date = new Date();
+  //   card.activity = [
+  //     ...card.activity,
+  //     `${currentUser.username} edited the description at ${date.toString()}`,
+  //   ];
 
   //   card.save((err, card) => {
   //     if (err) {
   //       console.error(err);
   //       return res.json({
-  //         err: "Error: could not update card title.",
+  //         err: "Error: could not update card description.",
   //       });
   //     }
-  //     console.log(JSON.stringify(card));
   //     List.findById(listId, (err, list) => {
-  //       console.log("list id " + listId);
   //       if (err) {
   //         console.error(err);
   //         return res.json({
@@ -168,7 +203,6 @@ const updateCardTitle = asyncWrapper(async (req, res) => {
   //           modifiedCardIndex = index;
   //         }
   //       });
-
   //       list.cards.splice(modifiedCardIndex, 1, card);
   //       list.save((err, list) => {
   //         if (err) {
@@ -197,7 +231,7 @@ const updateCardTitle = asyncWrapper(async (req, res) => {
   //             if (err) {
   //               console.error(err);
   //               return res.json({
-  //                 err: "Error: could not update board.",
+  //                 err: "Error: could not update list.",
   //               });
   //             }
   //             User.findById(currentUser._id, (err, user) => {
@@ -345,19 +379,33 @@ async function _updateList(list, card) {
   return list;
 }
 
-async function _updateCardActivity(card, currentUser) {
+async function _updateCardActivity(
+  card,
+  currentUser,
+  cardAttributeToBeUpdated
+) {
   let date = new Date();
   card.activity = [
     ...card.activity,
-    `${currentUser.username} edited the title at ${date.toString()}`,
+    `${
+      currentUser.username
+    } edited the ${cardAttributeToBeUpdated} at ${date.toString()}`,
   ];
   card = await card.save();
 
   if (!card) {
-    throw new CustomAPIError("Error: could not set title", 500);
+    throw new CustomAPIError(
+      `Error: could not set ${cardAttributeToBeUpdated}`,
+      500
+    );
   }
 
   return card;
 }
 
-module.exports = { createCard, deleteCard, updateCardTitle };
+module.exports = {
+  createCard,
+  deleteCard,
+  updateCardTitle,
+  updateCardDescription,
+};
