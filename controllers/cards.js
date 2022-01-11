@@ -391,6 +391,172 @@ const addBoardToMember = asyncWrapper(async (req, res) => {
   // });
 });
 
+const deleteMemberFromCard = asyncWrapper(async (req, res) => {
+  const { listId, cardId, username, currentUser } = req.body;
+
+  let card = await Card.findById(cardId);
+
+  if (!card) {
+    throw new NotFoundError("Error: could not remove member from card.");
+  }
+
+  let deletedMemberIndex;
+  card.members.forEach((member, index) => {
+    if (JSON.stringify(member) === username) {
+      deletedMemberIndex = index;
+    }
+  });
+  card.members.splice(deletedMemberIndex, 1);
+
+  let date = new Date();
+  card.activity = [
+    ...card.activity,
+    `${
+      currentUser.username
+    } removed ${username} from the card at ${date.toString()}`,
+  ];
+
+  card = await card.save();
+
+  if (!card) {
+    throw new CustomAPIError("Error: could not delete member.", 500);
+  }
+
+  let list = await List.findById(listId);
+
+  list = await _updateList(list, card);
+
+  if (!list) {
+    throw new CustomAPIError("Error: could not delete member.", 500);
+  }
+
+  let board = await Board.findById(currentUser.activeBoard);
+
+  board = await _updateBoard(board, list);
+
+  if (!board) {
+    throw new CustomAPIError("Error: could not delete member.", 500);
+  }
+
+  let user = await User.findById(currentUser._id);
+
+  user = await _updateUser(user, board);
+
+  if (!user) {
+    throw new CustomAPIError("Error: could not delete member.", 500);
+  }
+
+  let userAndLists = { user: user, lists: board.lists };
+  res.json(userAndLists);
+
+  // Card.findById(cardId, (err, card) => {
+  //   if (err) {
+  //     console.error(err);
+  //     return res.json({
+  //       err: "Error: could not remove member from card.",
+  //     });
+  //   }
+  //   let deletedMemberIndex;
+  //   card.members.forEach((member, index) => {
+  //     if (JSON.stringify(member) === username) {
+  //       deletedMemberIndex = index;
+  //     }
+  //   });
+  //   card.members.splice(deletedMemberIndex, 1);
+  //   let date = new Date();
+  //   card.activity = [
+  //     ...card.activity,
+  //     `${
+  //       currentUser.username
+  //     } removed ${username} from the card at ${date.toString()}`,
+  //   ];
+  //   card.save((err, card) => {
+  //     if (err) {
+  //       console.error(err);
+  //       return res.json({
+  //         err: "Error: could not remove member from card.",
+  //       });
+  //     }
+  //     List.findById(listId, (err, list) => {
+  //       if (err) {
+  //         console.error(err);
+  //         return res.json({
+  //           err: "Error: could not update list.",
+  //         });
+  //       }
+  //       let modifiedCardIndex;
+  //       list.cards.forEach((listCard, index) => {
+  //         if (JSON.stringify(listCard._id) === JSON.stringify(card._id)) {
+  //           modifiedCardIndex = index;
+  //         }
+  //       });
+  //       list.cards.splice(modifiedCardIndex, 1, card);
+  //       list.save((err, list) => {
+  //         if (err) {
+  //           console.error(err);
+  //           return res.json({
+  //             err: "Error: could not update list.",
+  //           });
+  //         }
+  //         Board.findById(currentUser.activeBoard, (err, board) => {
+  //           if (err) {
+  //             console.error(err);
+  //             return res.json({
+  //               err: "Error: could not update board.",
+  //             });
+  //           }
+
+  //           let modifiedListIndex;
+  //           board.lists.forEach((boardList, index) => {
+  //             if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
+  //               modifiedListIndex = index;
+  //             }
+  //           });
+
+  //           board.lists.splice(modifiedListIndex, 1, list);
+
+  //           board.save((err, board) => {
+  //             if (err) {
+  //               console.error(err);
+  //               return res.json({
+  //                 err: "Error: could not update board.",
+  //               });
+  //             }
+  //             User.findById(currentUser._id, (err, user) => {
+  //               if (err) {
+  //                 console.error(err);
+  //                 return res.json({
+  //                   err: "Error: could not update current user.",
+  //                 });
+  //               }
+  //               let modifiedBoardIndex;
+  //               user.boards.forEach((userBoard, index) => {
+  //                 if (
+  //                   JSON.stringify(userBoard._id) === JSON.stringify(board._id)
+  //                 ) {
+  //                   modifiedBoardIndex = index;
+  //                 }
+  //               });
+  //               user.boards.splice(modifiedBoardIndex, 1, board);
+  //               user.save((err, user) => {
+  //                 if (err) {
+  //                   console.error(err);
+  //                   return res.json({
+  //                     err: "Error: could not update current user.",
+  //                   });
+  //                 }
+  //                 let userAndLists = { user: user, lists: board.lists };
+  //                 return res.json(userAndLists);
+  //               });
+  //             });
+  //           });
+  //         });
+  //       });
+  //     });
+  //   });
+  // });
+});
+
 //private
 
 function _findModifiedListIndex(board, listId) {
@@ -493,10 +659,6 @@ async function _updateList(list, card) {
 
   list = await list.save();
 
-  if (!list) {
-    throw new CustomAPIError("Error: could not set title.", 500);
-  }
-
   return list;
 }
 
@@ -555,4 +717,5 @@ module.exports = {
   updateCardDescription,
   addMemberToCard,
   addBoardToMember,
+  deleteMemberFromCard,
 };
