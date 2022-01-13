@@ -13,7 +13,11 @@ const {
   addMemberToCard,
   addBoardToMember,
   deleteMemberFromCard,
+  addAttachmentUrlToCard,
+  uploadPhoto,
 } = require("../controllers/cards");
+
+const mw = FileUpload.single("photo");
 
 router.post("/createCard", createCard);
 router.delete("/deleteCard", deleteCard);
@@ -22,6 +26,8 @@ router.put("/updateCardDescription", updateCardDescription);
 router.put("/addMemberToCard", addMemberToCard);
 router.post("/addBoardToMember", addBoardToMember);
 router.delete("/deleteMemberFromCard", deleteMemberFromCard);
+router.post("/addAttachmentUrlToCard", addAttachmentUrlToCard);
+router.post("/uploadPhoto", mw, uploadPhoto);
 
 // router.post('/createCard', (req, res, next) => {
 //   let listId = req.body.listId
@@ -688,113 +694,113 @@ router.delete("/deleteMemberFromCard", deleteMemberFromCard);
 //   });
 // });
 
-router.post("/addAttachmentUrlToCard", (req, res, next) => {
-  let { cardId, listId, url, currentUser } = req.body;
+// router.post("/addAttachmentUrlToCard", (req, res, next) => {
+//   let { cardId, listId, url, currentUser } = req.body;
 
-  Card.findById(cardId, (err, card) => {
-    if (err) {
-      console.error(err);
-      return res.json({
-        err: "Error: could not add attachment url to card.",
-      });
-    }
-    card.attachments = [...card.attachments, url];
-    card.save((err, card) => {
-      if (err) {
-        console.error(err);
-        return res.json({
-          err: "Error: could not add attachment url to card.",
-        });
-      }
-      List.findById(listId, (err, list) => {
-        if (err) {
-          console.error(err);
-          return res.json({
-            err: "Error: could not update list.",
-          });
-        }
-        let modifiedCardIndex;
-        list.cards.forEach((listCard, index) => {
-          if (JSON.stringify(listCard._id) === JSON.stringify(card._id)) {
-            modifiedCardIndex = index;
-          }
-        });
-        list.cards.splice(modifiedCardIndex, 1, card);
-        list.save((err, list) => {
-          if (err) {
-            console.error(err);
-            return res.json({
-              err: "Error: could not update list.",
-            });
-          }
-          Board.findById(currentUser.activeBoard, (err, board) => {
-            if (err) {
-              console.error(err);
-              return res.json({
-                err: "Error: could not update board.",
-              });
-            }
-            let modifiedListIndex;
-            board.lists.forEach((boardList, index) => {
-              if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
-                modifiedListIndex = index;
-              }
-            });
-            board.lists.splice(modifiedListIndex, 1, list);
-            board.save((err, board) => {
-              if (err) {
-                console.error(err);
-                return res.json({
-                  err: "Error: could not update board.",
-                });
-              }
-              User.findById(currentUser._id, (err, user) => {
-                if (err) {
-                  console.error(err);
-                  return res.json({
-                    err: "Error: could not update current user.",
-                  });
-                }
-                let modifiedBoardIndex;
-                user.boards.forEach((userBoard, index) => {
-                  if (
-                    JSON.stringify(userBoard._id) === JSON.stringify(board._id)
-                  ) {
-                    modifiedBoardIndex = index;
-                  }
-                });
-                user.boards.splice(modifiedBoardIndex, 1, board);
-                user.save((err, user) => {
-                  if (err) {
-                    console.error(err);
-                    return res.json({
-                      err: "Error: could not update current user.",
-                    });
-                  }
-                  let userAndLists = { user: user, lists: board.lists };
-                  return res.json(userAndLists);
-                });
-              });
-            });
-          });
-        });
-      });
-    });
-  });
-});
+//   Card.findById(cardId, (err, card) => {
+//     if (err) {
+//       console.error(err);
+//       return res.json({
+//         err: "Error: could not add attachment url to card.",
+//       });
+//     }
+//     card.attachments = [...card.attachments, url];
+//     card.save((err, card) => {
+//       if (err) {
+//         console.error(err);
+//         return res.json({
+//           err: "Error: could not add attachment url to card.",
+//         });
+//       }
+//       List.findById(listId, (err, list) => {
+//         if (err) {
+//           console.error(err);
+//           return res.json({
+//             err: "Error: could not update list.",
+//           });
+//         }
+//         let modifiedCardIndex;
+//         list.cards.forEach((listCard, index) => {
+//           if (JSON.stringify(listCard._id) === JSON.stringify(card._id)) {
+//             modifiedCardIndex = index;
+//           }
+//         });
+//         list.cards.splice(modifiedCardIndex, 1, card);
+//         list.save((err, list) => {
+//           if (err) {
+//             console.error(err);
+//             return res.json({
+//               err: "Error: could not update list.",
+//             });
+//           }
+//           Board.findById(currentUser.activeBoard, (err, board) => {
+//             if (err) {
+//               console.error(err);
+//               return res.json({
+//                 err: "Error: could not update board.",
+//               });
+//             }
+//             let modifiedListIndex;
+//             board.lists.forEach((boardList, index) => {
+//               if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
+//                 modifiedListIndex = index;
+//               }
+//             });
+//             board.lists.splice(modifiedListIndex, 1, list);
+//             board.save((err, board) => {
+//               if (err) {
+//                 console.error(err);
+//                 return res.json({
+//                   err: "Error: could not update board.",
+//                 });
+//               }
+//               User.findById(currentUser._id, (err, user) => {
+//                 if (err) {
+//                   console.error(err);
+//                   return res.json({
+//                     err: "Error: could not update current user.",
+//                   });
+//                 }
+//                 let modifiedBoardIndex;
+//                 user.boards.forEach((userBoard, index) => {
+//                   if (
+//                     JSON.stringify(userBoard._id) === JSON.stringify(board._id)
+//                   ) {
+//                     modifiedBoardIndex = index;
+//                   }
+//                 });
+//                 user.boards.splice(modifiedBoardIndex, 1, board);
+//                 user.save((err, user) => {
+//                   if (err) {
+//                     console.error(err);
+//                     return res.json({
+//                       err: "Error: could not update current user.",
+//                     });
+//                   }
+//                   let userAndLists = { user: user, lists: board.lists };
+//                   return res.json(userAndLists);
+//                 });
+//               });
+//             });
+//           });
+//         });
+//       });
+//     });
+//   });
+// });
 
-const mw = FileUpload.single("photo");
-router.post("/uploadPhoto", mw, (req, res, next) => {
-  FileUpload.upload({
-    data: req.file.buffer,
-    name: req.file.originalname,
-    mimetype: req.file.mimetype,
-  })
-    .then((data) => {
-      console.log(JSON.stringify(data));
-      return res.json(data);
-    })
-    .catch(next);
-});
+// const mw = FileUpload.single("photo");
+// router.post("/uploadPhoto", mw, (req, res, next) => {
+//   FileUpload.upload({
+//     data: req.file.buffer,
+//     name: req.file.originalname,
+//     mimetype: req.file.mimetype,
+//   })
+//     .then((data) => {
+//       console.log(JSON.stringify(data));
+//       return res.json(data);
+//     })
+//     .catch(next);
+// });
 
 module.exports = router;

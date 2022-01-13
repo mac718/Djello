@@ -206,114 +206,6 @@ const addMemberToCard = asyncWrapper(async (req, res) => {
 
   let userAndLists = { user: user, lists: board.lists };
   res.json(userAndLists);
-
-  // Card.findById(cardId, (err, card) => {
-  //   if (err) {
-  //     console.error(err);
-  //     return res.json({
-  //       err: "Error: could not add member to card.",
-  //     });
-  //   }
-
-  //   if (!card.members.includes(memberUsername)) {
-  //     card.members = [...card.members, memberUsername];
-  //     let date = new Date();
-  //     card.activity = [
-  //       ...card.activity,
-  //       `${
-  //         currentUser.username
-  //       } added ${memberUsername} to the card at ${date.toString()}`,
-  //     ];
-  //   } else {
-  //     return res.status(500).send();
-  //   }
-
-  //   card.save((err, card) => {
-  //     if (err) {
-  //       console.error(err);
-  //       return res.json({
-  //         err: "Error: could not add member to card.",
-  //       });
-  //     }
-  //     List.findById(listId, (err, list) => {
-  //       if (err) {
-  //         console.error(err);
-  //         return res.json({
-  //           err: "Error: could not update list.",
-  //         });
-  //       }
-  //       let modifiedCardIndex;
-  //       list.cards.forEach((listCard, index) => {
-  //         if (JSON.stringify(listCard._id) === JSON.stringify(card._id)) {
-  //           modifiedCardIndex = index;
-  //         }
-  //       });
-  //       list.cards.splice(modifiedCardIndex, 1, card);
-  //       list.save((err, list) => {
-  //         if (err) {
-  //           console.error(err);
-  //           return res.json({
-  //             err: "Error: could not update list.",
-  //           });
-  //         }
-  //         Board.findById(currentUser.activeBoard, (err, board) => {
-  //           if (err) {
-  //             console.error(err);
-  //             return res.json({
-  //               err: "Error: could not update board.",
-  //             });
-  //           }
-  //           board.members = [...board.members, memberUsername];
-  //           let modifiedListIndex;
-  //           board.lists.forEach((boardList, index) => {
-  //             if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
-  //               modifiedListIndex = index;
-  //             }
-  //           });
-
-  //           board.lists.splice(modifiedListIndex, 1, list);
-
-  //           board.save((err, board) => {
-  //             if (err) {
-  //               console.error(err);
-  //               return res.json({
-  //                 err: "Error: could not update board.",
-  //               });
-  //             }
-  //             User.findById(currentUser._id, (err, user) => {
-  //               if (err) {
-  //                 console.error(err);
-  //                 return res.json({
-  //                   err: "Error: could not update current user.",
-  //                 });
-  //               }
-  //               let modifiedBoardIndex;
-  //               user.boards.forEach((userBoard, index) => {
-  //                 if (
-  //                   JSON.stringify(userBoard._id) === JSON.stringify(board._id)
-  //                 ) {
-  //                   modifiedBoardIndex = index;
-  //                 }
-  //               });
-  //               user.boards.splice(modifiedBoardIndex, 1, board);
-  //               user.save((err, user) => {
-  //                 if (err) {
-  //                   console.error(err);
-  //                   return res.json({
-  //                     err: "Error: could not update current user.",
-  //                   });
-  //                 }
-
-  //                 let userAndLists = { user: user, lists: board.lists };
-  //                 return res.json(userAndLists);
-  //               });
-  //             });
-  //           });
-  //         });
-  //       });
-  //     });
-  //   });
-  // });
 });
 
 const addBoardToMember = asyncWrapper(async (req, res) => {
@@ -353,42 +245,6 @@ const addBoardToMember = asyncWrapper(async (req, res) => {
   }
 
   res.status(200).send();
-
-  // User.find({ username }, (err, user) => {
-  //   if (err) {
-  //     console.error(err);
-  //     return res.json({
-  //       err: "Error: could not add board to selected member's boards.",
-  //     });
-  //   }
-  //   Board.findById(boardId, (err, board) => {
-  //     if (err) {
-  //       console.error(err);
-  //       return res.json({
-  //         err: "Error: could not add board to selected member's boards.",
-  //       });
-  //     }
-  //     let repeat = false;
-  //     user[0].boards.forEach((userBoard) => {
-  //       if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
-  //         repeat = true;
-  //       }
-  //     });
-  //     if (!repeat) {
-  //       user[0].boards = [...user[0].boards, board];
-  //     }
-
-  //     user[0].save((err) => {
-  //       if (err) {
-  //         console.error(err);
-  //         return res.json({
-  //           err: "Error: could not add board to selected member's boards.",
-  //         });
-  //       }
-  //       res.status(200).send();
-  //     });
-  //   });
-  // });
 });
 
 const deleteMemberFromCard = asyncWrapper(async (req, res) => {
@@ -448,33 +304,89 @@ const deleteMemberFromCard = asyncWrapper(async (req, res) => {
 
   let userAndLists = { user: user, lists: board.lists };
   res.json(userAndLists);
+});
+
+const addAttachmentUrlToCard = asyncWrapper(async (req, res) => {
+  const { cardId, listId, url, currentUser } = req.body;
+
+  let card = await Card.findById(cardId);
+
+  if (!card) {
+    throw new NotFoundError("Error: could not add attachment url to card.");
+  }
+
+  card.attachments = [...card.attachments, url];
+
+  card = await card.save();
+
+  if (!card) {
+    throw new CustomAPIError(
+      "Error: could not add attachment url to card.",
+      500
+    );
+  }
+
+  let list = await List.findById(listId);
+
+  if (!list) {
+    throw NotFoundError("Error: could not add attachment url to card.");
+  }
+
+  list = await _updateList(list, card);
+
+  if (!list) {
+    throw new CustomAPIError(
+      "Error: could not add attachment url to card.",
+      500
+    );
+  }
+
+  let board = await Board.findById(currentUser.activeBoard);
+
+  if (!board) {
+    throw NotFoundError("Error: could not add attachment url to card.");
+  }
+
+  board = await _updateBoard(board, list);
+
+  if (!list) {
+    throw new CustomAPIError(
+      "Error: could not add attachment url to card.",
+      500
+    );
+  }
+
+  let user = await User.findById(currentUser._id);
+
+  if (!user) {
+    throw NotFoundError("Error: could not add attachment url to card.");
+  }
+
+  user = await _updateUser(user, list);
+
+  if (!user) {
+    throw new CustomAPIError(
+      "Error: could not add attachment url to card.",
+      500
+    );
+  }
+
+  let userAndLists = { user: user, lists: board.lists };
+  res.json(userAndLists);
 
   // Card.findById(cardId, (err, card) => {
   //   if (err) {
   //     console.error(err);
   //     return res.json({
-  //       err: "Error: could not remove member from card.",
+  //       err: "Error: could not add attachment url to card.",
   //     });
   //   }
-  //   let deletedMemberIndex;
-  //   card.members.forEach((member, index) => {
-  //     if (JSON.stringify(member) === username) {
-  //       deletedMemberIndex = index;
-  //     }
-  //   });
-  //   card.members.splice(deletedMemberIndex, 1);
-  //   let date = new Date();
-  //   card.activity = [
-  //     ...card.activity,
-  //     `${
-  //       currentUser.username
-  //     } removed ${username} from the card at ${date.toString()}`,
-  //   ];
+  //   card.attachments = [...card.attachments, url];
   //   card.save((err, card) => {
   //     if (err) {
   //       console.error(err);
   //       return res.json({
-  //         err: "Error: could not remove member from card.",
+  //         err: "Error: could not add attachment url to card.",
   //       });
   //     }
   //     List.findById(listId, (err, list) => {
@@ -505,16 +417,13 @@ const deleteMemberFromCard = asyncWrapper(async (req, res) => {
   //               err: "Error: could not update board.",
   //             });
   //           }
-
   //           let modifiedListIndex;
   //           board.lists.forEach((boardList, index) => {
   //             if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
   //               modifiedListIndex = index;
   //             }
   //           });
-
   //           board.lists.splice(modifiedListIndex, 1, list);
-
   //           board.save((err, board) => {
   //             if (err) {
   //               console.error(err);
@@ -555,6 +464,17 @@ const deleteMemberFromCard = asyncWrapper(async (req, res) => {
   //     });
   //   });
   // });
+});
+
+const uploadPhoto = asyncWrapper(async (req, res, next) => {
+  const data = await FileUpload.upload({
+    data: req.file.buffer,
+    name: req.file.originalname,
+    mimetype: req.file.mimetype,
+  });
+
+  console.log(JSON.stringify(data));
+  res.json(data);
 });
 
 //private
@@ -718,4 +638,6 @@ module.exports = {
   addMemberToCard,
   addBoardToMember,
   deleteMemberFromCard,
+  addAttachmentUrlToCard,
+  uploadPhoto,
 };
