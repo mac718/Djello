@@ -362,7 +362,7 @@ const addAttachmentUrlToCard = asyncWrapper(async (req, res) => {
     throw NotFoundError("Error: could not add attachment url to card.");
   }
 
-  user = await _updateUser(user, list);
+  user = await _updateUser(user, board);
 
   if (!user) {
     throw new CustomAPIError(
