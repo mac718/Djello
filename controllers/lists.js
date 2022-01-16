@@ -40,52 +40,6 @@ const createList = asyncWrapper(async (req, res) => {
 
   let userAndLists = { user: user, lists: board.lists };
   res.json(userAndLists);
-
-  // list.save((err, list) => {
-  //   routeHelper.handleErr(err, next);
-  //   Board.findById(activeBoard, (err, board) => {
-  //     if (err) {
-  //       console.error(err);
-  //       return res.json({ err: "Error: could not add new list." });
-  //     }
-
-  //     board.lists = [...board.lists, list];
-  //     board.save((err, board) => {
-  //       if (err) {
-  //         console.error(err);
-  //         return res.json({ err: "Error: could not add new list." });
-  //       }
-  //       User.find({ username: username }, (err, user) => {
-  //         console.log("user " + JSON.stringify(user[0].boards[0]._id));
-  //         console.log(JSON.stringify(board._id));
-  //         if (err) {
-  //           console.error(err);
-  //           return res.json({ err: "Error: could not add new list." });
-  //         }
-  //         let oldBoard = user[0].boards.filter((json) => {
-  //           return JSON.stringify(json._id) == JSON.stringify(board._id);
-  //         })[0];
-
-  //         console.log("oldBOard " + JSON.stringify(oldBoard));
-  //         let oldBoardIndex = user[0].boards.indexOf(oldBoard);
-
-  //         user[0].boards.splice(oldBoardIndex, 1, board);
-
-  //         console.log("user boards " + JSON.stringify(user[0].boards));
-  //         user[0].save((err, user) => {
-  //           if (err) {
-  //             console.error(err);
-  //             return res.json({ err: "Error: could not add new list." });
-  //           }
-  //           console.log("server user " + user);
-  //           console.log("board.lists " + board.lists);
-  //           let userAndLists = { user: user, lists: board.lists };
-  //           return res.json(userAndLists);
-  //         });
-  //       });
-  //     });
-  //   });
-  // });
 });
 
 const changeListName = asyncWrapper(async (req, res) => {
@@ -121,52 +75,102 @@ const changeListName = asyncWrapper(async (req, res) => {
     throw new NotFoundError("Error: could not save new list name");
   }
 
-  let user = await _updateUser(currentUser, board);
+  user = await _updateUser(user, board);
+
+  let userAndLists = { user: user, lists: board.lists };
+  res.json(userAndLists);
+});
+
+const deleteList = asyncWrapper(async (req, res) => {
+  const { listId, currentUser } = req.body;
+
+  let list = await List.findById(listId);
+
+  console.log("listerino", list);
+
+  if (!list) {
+    throw new NotFoundError("Error: could not delete list.");
+  }
+
+  list = await list.delete();
+
+  if (!list) {
+    throw new CustomAPIError("Error: could not delete list.", 500);
+  }
+
+  let board = await Board.findById(currentUser.activeBoard);
+
+  if (!board) {
+    throw new NotFoundError("Error: could not delete list.");
+  }
+
+  let deletedListIndex;
+  board.lists.forEach((boardList, index) => {
+    if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
+      deletedListIndex = index;
+    }
+  });
+  board.lists.splice(deletedListIndex, 1);
+
+  board = await board.save();
+  if (!board) {
+    throw new CustomAPIError("Error: could not delete list.", 500);
+  }
+
+  let user = await User.findById(currentUser._id);
+
+  if (!user) {
+    throw new NotFoundError("Error: could not delete list.");
+  }
+
+  user = await _updateUser(user, board);
 
   let userAndLists = { user: user, lists: board.lists };
   res.json(userAndLists);
 
   // List.findById(listId, (err, list) => {
-  //   console.log("list ID", listId);
   //   if (err) {
   //     console.error(err);
-  //     return res.json({ err: "Error: could not save new list name" });
+  //     return res.json({ err: "Error: could not delete list." });
   //   }
-
-  //   list.name = name;
-  //   console.log(list.name);
-  //   list.save((err, list) => {
-  //     Board.findById(activeBoardId, (err, board) => {
+  //   list.delete((err, list) => {
+  //     if (err) {
+  //       console.error(err);
+  //       return res.json({ err: "Error: could not delete list." });
+  //     }
+  //     Board.findById(currentUser.activeBoard, (err, board) => {
   //       if (err) {
   //         console.error(err);
-  //         return res.json({ err: "Error: could not save new list name" });
+  //         return res.json({ err: "Error: could not delete list." });
   //       }
-  //       let modifiedListIndex;
+  //       let deletedListIndex;
   //       board.lists.forEach((boardList, index) => {
-  //         if (JSON.stringify(boardList._id) === JSON.stringify(listId)) {
-  //           modifiedListIndex = index;
+  //         if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
+  //           deletedListIndex = index;
   //         }
   //       });
-  //       board.lists.splice(modifiedListIndex, 1, list);
-  //       User.findById(currentUser._id, (err, user) => {
+  //       board.lists.splice(deletedListIndex, 1);
+  //       board.save((err, board) => {
   //         if (err) {
   //           console.error(err);
-  //           return res.json({ err: "Error: could not save new list name" });
+  //           return res.json({ err: "Error: could not delete list." });
   //         }
-  //         let modifiedBoardIndex;
-  //         user.boards.forEach((userBoard, index) => {
-  //           if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
-  //             modifiedBoardIndex = index;
-  //           }
-  //         });
-  //         user.boards.splice(modifiedBoardIndex, 1, board);
-  //         user.save((err, user) => {
-  //           if (err) {
-  //             console.error(err);
-  //             return res.json({ err: "Error: could not save new list name" });
-  //           }
-  //           let userAndLists = { user: user, lists: board.lists };
-  //           return res.json(userAndLists);
+  //         User.findById(currentUser._id, (err, user) => {
+  //           let modifiedBoardIndex;
+  //           user.boards.forEach((userBoard, index) => {
+  //             if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
+  //               modifiedBoardIndex = index;
+  //             }
+  //           });
+  //           user.boards.splice(modifiedBoardIndex, 1, board);
+  //           user.save((err, user) => {
+  //             if (err) {
+  //               console.error(err);
+  //               return res.json({ err: "Error: could not delete list." });
+  //             }
+  //             let userAndLists = { user: user, lists: board.lists };
+  //             return res.json(userAndLists);
+  //           });
   //         });
   //       });
   //     });
@@ -228,4 +232,4 @@ async function _updateUser(user, board) {
   return user;
 }
 
-module.exports = { createList, changeListName };
+module.exports = { createList, changeListName, deleteList };

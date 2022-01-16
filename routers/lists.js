@@ -5,11 +5,16 @@ const Board = require("../models/board");
 const List = require("../models/list");
 const Card = require("../models/card");
 const RouteHelpers = require("./RouterHelpers");
-const { createList, changeListName } = require("../controllers/lists");
+const {
+  createList,
+  changeListName,
+  deleteList,
+} = require("../controllers/lists");
 const routeHelper = new RouteHelpers();
 
 router.post("/createList", createList);
 router.put("/changeListName", changeListName);
+router.delete("/deleteList", deleteList);
 
 // router.post("/createList", (req, res, next) => {
 //   let list = new List({ name: "", cards: [] });
@@ -63,58 +68,58 @@ router.put("/changeListName", changeListName);
 //   });
 // });
 
-router.delete("/deleteList", (req, res, next) => {
-  let { listId, currentUser } = req.body;
+//router.delete("/deleteList", (req, res, next) => {
+// let { listId, currentUser } = req.body;
 
-  List.findById(listId, (err, list) => {
-    if (err) {
-      console.error(err);
-      return res.json({ err: "Error: could not delete list." });
-    }
-    list.delete((err, list) => {
-      if (err) {
-        console.error(err);
-        return res.json({ err: "Error: could not delete list." });
-      }
-      Board.findById(currentUser.activeBoard, (err, board) => {
-        if (err) {
-          console.error(err);
-          return res.json({ err: "Error: could not delete list." });
-        }
-        let deletedListIndex;
-        board.lists.forEach((boardList, index) => {
-          if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
-            deletedListIndex = index;
-          }
-        });
-        board.lists.splice(deletedListIndex, 1);
-        board.save((err, board) => {
-          if (err) {
-            console.error(err);
-            return res.json({ err: "Error: could not delete list." });
-          }
-          User.findById(currentUser._id, (err, user) => {
-            let modifiedBoardIndex;
-            user.boards.forEach((userBoard, index) => {
-              if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
-                modifiedBoardIndex = index;
-              }
-            });
-            user.boards.splice(modifiedBoardIndex, 1, board);
-            user.save((err, user) => {
-              if (err) {
-                console.error(err);
-                return res.json({ err: "Error: could not delete list." });
-              }
-              let userAndLists = { user: user, lists: board.lists };
-              return res.json(userAndLists);
-            });
-          });
-        });
-      });
-    });
-  });
-});
+// List.findById(listId, (err, list) => {
+//   if (err) {
+//     console.error(err);
+//     return res.json({ err: "Error: could not delete list." });
+//   }
+//   list.delete((err, list) => {
+//     if (err) {
+//       console.error(err);
+//       return res.json({ err: "Error: could not delete list." });
+//     }
+//     Board.findById(currentUser.activeBoard, (err, board) => {
+//       if (err) {
+//         console.error(err);
+//         return res.json({ err: "Error: could not delete list." });
+//       }
+//       let deletedListIndex;
+//       board.lists.forEach((boardList, index) => {
+//         if (JSON.stringify(boardList._id) === JSON.stringify(list._id)) {
+//           deletedListIndex = index;
+//         }
+//       });
+//       board.lists.splice(deletedListIndex, 1);
+//       board.save((err, board) => {
+//         if (err) {
+//           console.error(err);
+//           return res.json({ err: "Error: could not delete list." });
+//         }
+//         User.findById(currentUser._id, (err, user) => {
+//           let modifiedBoardIndex;
+//           user.boards.forEach((userBoard, index) => {
+//             if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
+//               modifiedBoardIndex = index;
+//             }
+//           });
+//           user.boards.splice(modifiedBoardIndex, 1, board);
+//           user.save((err, user) => {
+//             if (err) {
+//               console.error(err);
+//               return res.json({ err: "Error: could not delete list." });
+//             }
+//             let userAndLists = { user: user, lists: board.lists };
+//             return res.json(userAndLists);
+//           });
+//         });
+//       });
+//     });
+//   });
+// });
+//});
 
 // router.put("/changeListName", (req, res) => {
 //   let name = req.body.componentName;
