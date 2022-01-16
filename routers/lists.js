@@ -5,82 +5,62 @@ const Board = require("../models/board");
 const List = require("../models/list");
 const Card = require("../models/card");
 const RouteHelpers = require("./RouterHelpers");
+const { createList } = require("../controllers/lists");
 const routeHelper = new RouteHelpers();
 
-router.post("/createList", (req, res, next) => {
-  let list = new List({ name: "", cards: [] });
-  let activeBoard = req.body["activeBoard"];
-  let username = req.cookies["user"];
+router.post("/createList", createList);
 
-  // Board.findById(activeBoard, (err, board) => {
-  //   board.lists = [...board.lists, list];
-  //   board.save((err, board) => {
-  //     User.find({ username: username }, (err, user) => {
-  //       let oldBoard = user[0].boards.filter((json) => {
-  //         return JSON.stringify(json._id) == JSON.stringify(board._id);
-  //       })[0];
-  //       let oldBoardIndex = user[0].boards.indexOf(oldBoard);
-  //       user[0].boards.splice(oldBoardIndex, 1, board);
-  //       user[0].save((err, user) => {
-  //         if (err) {
-  //           console.error(err);
-  //           return res.json({ err: "Error: could not add new list." });
-  //         }
-  //         console.log("server user " + user);
-  //         console.log("board.lists " + board.lists);
-  //         let userAndLists = { user: user, lists: board.lists };
-  //         return res.json(userAndLists);
-  //       });
-  //     });
-  //   });
-  // });
+// router.post("/createList", (req, res, next) => {
+//   let list = new List({ name: "", cards: [] });
+//   let activeBoard = req.body["activeBoard"];
+//   let username = req.cookies["user"];
 
-  list.save((err, list) => {
-    routeHelper.handleErr(err, next);
-    Board.findById(activeBoard, (err, board) => {
-      if (err) {
-        console.error(err);
-        return res.json({ err: "Error: could not add new list." });
-      }
+//   list.save((err, list) => {
+//     routeHelper.handleErr(err, next);
+//     Board.findById(activeBoard, (err, board) => {
+//       if (err) {
+//         console.error(err);
+//         return res.json({ err: "Error: could not add new list." });
+//       }
 
-      board.lists = [...board.lists, list];
-      board.save((err, board) => {
-        if (err) {
-          console.error(err);
-          return res.json({ err: "Error: could not add new list." });
-        }
-        User.find({ username: username }, (err, user) => {
-          console.log("user " + JSON.stringify(user[0].boards[0]._id));
-          console.log(JSON.stringify(board._id));
-          if (err) {
-            console.error(err);
-            return res.json({ err: "Error: could not add new list." });
-          }
-          let oldBoard = user[0].boards.filter((json) => {
-            return JSON.stringify(json._id) == JSON.stringify(board._id);
-          })[0];
+//       board.lists = [...board.lists, list];
+//       board.save((err, board) => {
+//         if (err) {
+//           console.error(err);
+//           return res.json({ err: "Error: could not add new list." });
+//         }
+//         User.find({ username: username }, (err, user) => {
+//           console.log("user " + JSON.stringify(user[0].boards[0]._id));
+//           console.log(JSON.stringify(board._id));
+//           if (err) {
+//             console.error(err);
+//             return res.json({ err: "Error: could not add new list." });
+//           }
+//           let oldBoard = user[0].boards.filter((json) => {
+//             return JSON.stringify(json._id) == JSON.stringify(board._id);
+//           })[0];
 
-          console.log("oldBOard " + JSON.stringify(oldBoard));
-          let oldBoardIndex = user[0].boards.indexOf(oldBoard);
+//           console.log("oldBOard " + JSON.stringify(oldBoard));
+//           let oldBoardIndex = user[0].boards.indexOf(oldBoard);
 
-          user[0].boards.splice(oldBoardIndex, 1, board);
+//           user[0].boards.splice(oldBoardIndex, 1, board);
 
-          console.log("user boards " + JSON.stringify(user[0].boards));
-          user[0].save((err, user) => {
-            if (err) {
-              console.error(err);
-              return res.json({ err: "Error: could not add new list." });
-            }
-            console.log("server user " + user);
-            console.log("board.lists " + board.lists);
-            let userAndLists = { user: user, lists: board.lists };
-            return res.json(userAndLists);
-          });
-        });
-      });
-    });
-  });
-});
+//           console.log("user boards " + JSON.stringify(user[0].boards));
+//           user[0].save((err, user) => {
+//             if (err) {
+//               console.error(err);
+//               return res.json({ err: "Error: could not add new list." });
+//             }
+//             console.log("server user " + user);
+//             console.log("board.lists " + board.lists);
+//             let userAndLists = { user: user, lists: board.lists };
+//             return res.json(userAndLists);
+//           });
+//         });
+//       });
+//     });
+//   });
+// });
 
 router.delete("/deleteList", (req, res, next) => {
   let { listId, currentUser } = req.body;
