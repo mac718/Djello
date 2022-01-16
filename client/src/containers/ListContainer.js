@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import List from '../components/List'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import List from "../components/List";
 import {
   deleteList,
   changeName,
@@ -10,7 +10,7 @@ import {
   changeTitle,
   showDeleteListWarningModal,
   closeDeleteListWarningModal,
-} from '../actions'
+} from "../actions";
 
 class ListContainer extends Component {
   render() {
@@ -28,7 +28,7 @@ class ListContainer extends Component {
       showDeleteListWarningModal,
       handleShowDeleteListWarningModal,
       handleCloseDeleteListWarningModal,
-    } = this.props
+    } = this.props;
     return (
       <List
         id={id}
@@ -45,7 +45,7 @@ class ListContainer extends Component {
         handleShowDeleteListWarningModal={handleShowDeleteListWarningModal}
         handleCloseDeleteListWarningModal={handleCloseDeleteListWarningModal}
       />
-    )
+    );
   }
 }
 
@@ -56,48 +56,48 @@ const mapStateToProps = (state, ownProps) => {
     showCardForm: state.showCardForm,
     lists: state.activeBoardLists,
     showDeleteListWarningModal: state.showDeleteListWarningModal,
-  }
-}
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
     deleteList: (listId) => {
-      dispatch(deleteList(listId))
-      dispatch(closeDeleteListWarningModal())
+      dispatch(deleteList(listId));
+      dispatch(closeDeleteListWarningModal());
     },
 
     handleListNameChange: (e) => {
-      let componentName = e.target.value
-      dispatch(changeName(e, componentName, '/changeListName'))
+      let componentName = e.target.value;
+      dispatch(changeName(e, componentName, "/changeListName"));
     },
 
     handleShowCardForm: (e) => {
-      let listId = e.target.parentElement.id
-      dispatch(createCardForm(listId))
+      let listId = e.target.parentElement.id;
+      dispatch(createCardForm(listId));
     },
 
     handleHideCardForm: (e) => {
-      dispatch(hideCardForm())
+      dispatch(hideCardForm());
     },
 
     handleSaveCard: (e) => {
-      dispatch(saveCard(e))
+      dispatch(saveCard(e));
     },
 
     handleTitleChange: (e) => {
-      let title = e.target.value
-      console.log(title)
-      dispatch(changeTitle(title))
+      let title = e.target.value;
+      console.log(title);
+      dispatch(changeTitle(title));
     },
 
     handleShowDeleteListWarningModal: (listId) => {
-      dispatch(showDeleteListWarningModal(listId))
+      dispatch(showDeleteListWarningModal(listId));
     },
 
     handleCloseDeleteListWarningModal: () => {
-      dispatch(closeDeleteListWarningModal())
+      dispatch(closeDeleteListWarningModal());
     },
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(ListContainer);

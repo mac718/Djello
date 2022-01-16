@@ -88,6 +88,92 @@ const createList = asyncWrapper(async (req, res) => {
   // });
 });
 
+const changeListName = asyncWrapper(async (req, res) => {
+  const name = req.body.componentName;
+  const { currentUser, listId } = req.body;
+  const activeBoardId = currentUser.activeBoard;
+
+  let list = await List.findById(listId);
+
+  if (!list) {
+    throw new NotFoundError("Error: could not save new list name");
+  }
+
+  list.name = name;
+
+  list = await list.save();
+
+  if (!list) {
+    throw new CustomAPIError("Error: could not save new list name", 500);
+  }
+
+  let board = await Board.findById(activeBoardId);
+
+  if (!board) {
+    throw new NotFoundError("Error: could not save new list name");
+  }
+
+  board = await _updateBoard(board, list);
+
+  let user = await User.findById(currentUser._id);
+
+  if (!user) {
+    throw new NotFoundError("Error: could not save new list name");
+  }
+
+  let user = await _updateUser(currentUser, board);
+
+  let userAndLists = { user: user, lists: board.lists };
+  res.json(userAndLists);
+
+  // List.findById(listId, (err, list) => {
+  //   console.log("list ID", listId);
+  //   if (err) {
+  //     console.error(err);
+  //     return res.json({ err: "Error: could not save new list name" });
+  //   }
+
+  //   list.name = name;
+  //   console.log(list.name);
+  //   list.save((err, list) => {
+  //     Board.findById(activeBoardId, (err, board) => {
+  //       if (err) {
+  //         console.error(err);
+  //         return res.json({ err: "Error: could not save new list name" });
+  //       }
+  //       let modifiedListIndex;
+  //       board.lists.forEach((boardList, index) => {
+  //         if (JSON.stringify(boardList._id) === JSON.stringify(listId)) {
+  //           modifiedListIndex = index;
+  //         }
+  //       });
+  //       board.lists.splice(modifiedListIndex, 1, list);
+  //       User.findById(currentUser._id, (err, user) => {
+  //         if (err) {
+  //           console.error(err);
+  //           return res.json({ err: "Error: could not save new list name" });
+  //         }
+  //         let modifiedBoardIndex;
+  //         user.boards.forEach((userBoard, index) => {
+  //           if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
+  //             modifiedBoardIndex = index;
+  //           }
+  //         });
+  //         user.boards.splice(modifiedBoardIndex, 1, board);
+  //         user.save((err, user) => {
+  //           if (err) {
+  //             console.error(err);
+  //             return res.json({ err: "Error: could not save new list name" });
+  //           }
+  //           let userAndLists = { user: user, lists: board.lists };
+  //           return res.json(userAndLists);
+  //         });
+  //       });
+  //     });
+  //   });
+  // });
+});
+
 //private
 
 function _findModifiedBoardIndex(user, boardId) {
@@ -142,4 +228,4 @@ async function _updateUser(user, board) {
   return user;
 }
 
-module.exports = { createList };
+module.exports = { createList, changeListName };

@@ -5,10 +5,11 @@ const Board = require("../models/board");
 const List = require("../models/list");
 const Card = require("../models/card");
 const RouteHelpers = require("./RouterHelpers");
-const { createList } = require("../controllers/lists");
+const { createList, changeListName } = require("../controllers/lists");
 const routeHelper = new RouteHelpers();
 
 router.post("/createList", createList);
+router.put("/changeListName", changeListName);
 
 // router.post("/createList", (req, res, next) => {
 //   let list = new List({ name: "", cards: [] });
@@ -115,59 +116,59 @@ router.delete("/deleteList", (req, res, next) => {
   });
 });
 
-router.put("/changeListName", (req, res) => {
-  let name = req.body.componentName;
-  let currentUser = req.body.currentUser;
-  let activeBoardId = currentUser.activeBoard;
-  let listId = req.body.listId;
+// router.put("/changeListName", (req, res) => {
+//   let name = req.body.componentName;
+//   let currentUser = req.body.currentUser;
+//   let activeBoardId = currentUser.activeBoard;
+//   let listId = req.body.listId;
 
-  List.findById(listId, (err, list) => {
-    console.log("list ID", listId);
-    if (err) {
-      console.error(err);
-      return res.json({ err: "Error: could not save new list name" });
-    }
+//   List.findById(listId, (err, list) => {
+//     console.log("list ID", listId);
+//     if (err) {
+//       console.error(err);
+//       return res.json({ err: "Error: could not save new list name" });
+//     }
 
-    list.name = name;
-    console.log(list.name);
-    list.save((err, list) => {
-      Board.findById(activeBoardId, (err, board) => {
-        if (err) {
-          console.error(err);
-          return res.json({ err: "Error: could not save new list name" });
-        }
-        let modifiedListIndex;
-        board.lists.forEach((boardList, index) => {
-          if (JSON.stringify(boardList._id) === JSON.stringify(listId)) {
-            modifiedListIndex = index;
-          }
-        });
-        board.lists.splice(modifiedListIndex, 1, list);
-        User.findById(currentUser._id, (err, user) => {
-          if (err) {
-            console.error(err);
-            return res.json({ err: "Error: could not save new list name" });
-          }
-          let modifiedBoardIndex;
-          user.boards.forEach((userBoard, index) => {
-            if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
-              modifiedBoardIndex = index;
-            }
-          });
-          user.boards.splice(modifiedBoardIndex, 1, board);
-          user.save((err, user) => {
-            if (err) {
-              console.error(err);
-              return res.json({ err: "Error: could not save new list name" });
-            }
-            let userAndLists = { user: user, lists: board.lists };
-            return res.json(userAndLists);
-          });
-        });
-      });
-    });
-  });
-});
+//     list.name = name;
+//     console.log(list.name);
+//     list.save((err, list) => {
+//       Board.findById(activeBoardId, (err, board) => {
+//         if (err) {
+//           console.error(err);
+//           return res.json({ err: "Error: could not save new list name" });
+//         }
+//         let modifiedListIndex;
+//         board.lists.forEach((boardList, index) => {
+//           if (JSON.stringify(boardList._id) === JSON.stringify(listId)) {
+//             modifiedListIndex = index;
+//           }
+//         });
+//         board.lists.splice(modifiedListIndex, 1, list);
+//         User.findById(currentUser._id, (err, user) => {
+//           if (err) {
+//             console.error(err);
+//             return res.json({ err: "Error: could not save new list name" });
+//           }
+//           let modifiedBoardIndex;
+//           user.boards.forEach((userBoard, index) => {
+//             if (JSON.stringify(userBoard._id) === JSON.stringify(board._id)) {
+//               modifiedBoardIndex = index;
+//             }
+//           });
+//           user.boards.splice(modifiedBoardIndex, 1, board);
+//           user.save((err, user) => {
+//             if (err) {
+//               console.error(err);
+//               return res.json({ err: "Error: could not save new list name" });
+//             }
+//             let userAndLists = { user: user, lists: board.lists };
+//             return res.json(userAndLists);
+//           });
+//         });
+//       });
+//     });
+//   });
+// });
 
 router.put("/updateListAfterDnd", (req, res, next) => {
   let currentUser = req.body.currentUser;

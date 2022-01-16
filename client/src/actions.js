@@ -507,6 +507,7 @@ export function changeName(e, componentName, route) {
     let listId;
     if (route === "/changeListName") {
       listId = e.target.parentElement.parentElement.id;
+      console.log("jumpers", listId);
     }
     if (route === "/changeBoardName") {
       document.getElementById("board-name").innerHTML = "";
